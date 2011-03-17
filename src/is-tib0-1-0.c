@@ -103,199 +103,6 @@ void static dpr(GtkWidget *widget, gpointer data)
 	gtk_widget_show(vbox);
 	switch (gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook2)))
 	{
-		case 2:
-		if ((flags&8)!=0)
-		{
-			table=gtk_table_new(4, 2, FALSE);
-			gtk_widget_show(table);
-			label=gtk_label_new(_("Text size:"));
-			gtk_widget_show(label);
-			gtk_table_attach(GTK_TABLE(table), label, 1, 2, 0, 1, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-			label=gtk_label_new(_("Tick label size:"));
-			gtk_widget_show(label);
-			gtk_table_attach(GTK_TABLE(table), label, 1, 2, 2, 3, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-			entry1=gtk_entry_new();
-			entry2=gtk_entry_new();
-			hsp=gtk_hseparator_new();
-			gtk_widget_show(hsp);
-			if ((flags&32)!=0) /* polar case */
-			{
-				label=gtk_label_new(_("Radial axis text:"));
-				gtk_widget_show(label);
-				gtk_table_attach(GTK_TABLE(table), label, 0, 1, 0, 1, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-				label=gtk_label_new(_("Azimuthal axis text:"));
-				gtk_widget_show(label);
-				gtk_table_attach(GTK_TABLE(table), label, 0, 1, 2, 3, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-				/*plt2=PLOT_POLAR(plot3);
-				gtk_entry_set_text(GTK_ENTRY(entry1), g_strdup(plt2->rlab));
-				gtk_entry_set_text(GTK_ENTRY(entry2), g_strdup(plt2->thlab));
-				adj1=(GtkAdjustment *) gtk_adjustment_new((plt2->lfsize), 8, 64, 1.0, 5.0, 0.0);
-				adj2=(GtkAdjustment *) gtk_adjustment_new((plt2->afsize), 8, 64, 1.0, 5.0, 0.0);
-				spin1=gtk_spin_button_new(adj1, 0, 0);
-				spin2=gtk_spin_button_new(adj2, 0, 0);*/
-				gtk_widget_show(entry1);
-				gtk_widget_show(entry2);
-				/*gtk_widget_show(spin1);
-				gtk_widget_show(spin2);*/
-				gtk_table_attach(GTK_TABLE(table), entry1, 0, 1, 1, 2, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-				gtk_table_attach(GTK_TABLE(table), entry2, 0, 1, 3, 4, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-				gtk_table_attach(GTK_TABLE(table), spin1, 1, 2, 1, 2, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-				gtk_table_attach(GTK_TABLE(table), spin2, 1, 2, 3, 4, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-				gtk_box_pack_start(GTK_BOX(vbox), table, FALSE, FALSE, 2);
-				gtk_box_pack_start(GTK_BOX(vbox), hsp, FALSE, FALSE, 2);
-				ck2=gtk_check_button_new_with_label(_("Multiple plots for Results over index j"));
-				gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ck2), (flagd&2));
-				gtk_widget_show(ck2);
-				gtk_box_pack_start(GTK_BOX(vbox), ck2, FALSE, FALSE, 2);
-				ck3=gtk_check_button_new_with_label(_("Multiple plots for Results over index k"));
-				gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ck3), (flagd&4));
-				gtk_widget_show(ck3);
-				gtk_box_pack_start(GTK_BOX(vbox), ck3, FALSE, FALSE, 2);
-				gtk_container_add(GTK_CONTAINER(content), vbox);
-				if (gtk_dialog_run(GTK_DIALOG(helpwin))==GTK_RESPONSE_APPLY)
-				{
-					/*(plt2->rlab)=g_strdup(gtk_entry_get_text(GTK_ENTRY(entry1)));
-					(plt2->thlab)=g_strdup(gtk_entry_get_text(GTK_ENTRY(entry2)));
-					(plt2->lfsize)=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spin1));
-					(plt2->afsize)=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spin2));
-					g_object_get(G_OBJECT(plot3), "rmin", &xi, "rmax", &xf, "thmin", &mny, "thmax", &mxy, NULL);*/
-					if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ck2)))
-					{
-						if ((flagd&2)==0)
-						{
-							flagd^=2;
-							if ((flags&4)!=0)
-							{
-							}
-						}
-					}
-					else if ((flagd&2)!=0)
-					{
-						flagd^=2;
-						if ((flags&4)!=0)
-						{
-						}
-					}
-					if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ck3)))
-					{
-						if ((flagd&4)==0)
-						{
-							flagd^=4;
-							if ((flags&4)!=0)
-							{
-							}
-						}
-					}
-					else if ((flagd&4)!=0)
-					{
-						flagd^=4;
-						if ((flags&4)!=0)
-						{
-						}
-					}
-					/*plot_polar_update_scale(plot3, xi, xf, mny, mxy);*/
-				}
-			}
-			else
-			{
-				label=gtk_label_new(_("X axis text:"));
-				gtk_widget_show(label);
-				gtk_table_attach(GTK_TABLE(table), label, 0, 1, 0, 1, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-				label=gtk_label_new(_("Y axis text:"));
-				gtk_widget_show(label);
-				gtk_table_attach(GTK_TABLE(table), label, 0, 1, 2, 3, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-				plt=PLOT_LINEAR(plot3);
-				gtk_entry_set_text(GTK_ENTRY(entry1), g_strdup(plt->xlab));
-				gtk_entry_set_text(GTK_ENTRY(entry2), g_strdup(plt->ylab));
-				adj1=(GtkAdjustment *) gtk_adjustment_new((plt->lfsize), 8, 64, 1.0, 5.0, 0.0);
-				adj2=(GtkAdjustment *) gtk_adjustment_new((plt->afsize), 8, 64, 1.0, 5.0, 0.0);
-				spin1=gtk_spin_button_new(adj1, 0, 0);
-				spin2=gtk_spin_button_new(adj2, 0, 0);
-				gtk_widget_show(entry1);
-				gtk_widget_show(entry2);
-				gtk_widget_show(spin1);
-				gtk_widget_show(spin2);
-				gtk_table_attach(GTK_TABLE(table), entry1, 0, 1, 1, 2, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-				gtk_table_attach(GTK_TABLE(table), entry2, 0, 1, 3, 4, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-				gtk_table_attach(GTK_TABLE(table), spin1, 1, 2, 1, 2, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-				gtk_table_attach(GTK_TABLE(table), spin2, 1, 2, 3, 4, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-				gtk_box_pack_start(GTK_BOX(vbox), table, FALSE, FALSE, 2);
-				gtk_box_pack_start(GTK_BOX(vbox), hsp, FALSE, FALSE, 2);
-				ck2=gtk_check_button_new_with_label(_("Multiple plots for Results over index j"));
-				gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ck2), (flagd&2));
-				gtk_widget_show(ck2);
-				gtk_box_pack_start(GTK_BOX(vbox), ck2, FALSE, FALSE, 2);
-				ck3=gtk_check_button_new_with_label(_("Multiple plots for Results over index k"));
-				gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ck3), (flagd&4));
-				gtk_widget_show(ck3);
-				gtk_box_pack_start(GTK_BOX(vbox), ck3, FALSE, FALSE, 2);
-				gtk_container_add(GTK_CONTAINER(content), vbox);
-				if (gtk_dialog_run(GTK_DIALOG(helpwin))==GTK_RESPONSE_APPLY)
-				{
-					(plt->xlab)=g_strdup(gtk_entry_get_text(GTK_ENTRY(entry1)));
-					(plt->ylab)=g_strdup(gtk_entry_get_text(GTK_ENTRY(entry2)));
-					(plt->lfsize)=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spin1));
-					(plt->afsize)=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spin2));
-					g_object_get(G_OBJECT(plot3), "xmin", &xi, "xmax", &xf, "ymin", &mny, "ymax", &mxy, NULL);
-					if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ck2)))
-					{
-						if ((flagd&2)==0)
-						{
-							flagd^=2;
-							if ((flags&4)!=0)
-							{
-							}
-						}
-					}
-					else if ((flagd&2)!=0)
-					{
-						flagd^=2;
-						if ((flags&4)!=0)
-						{
-						}
-					}
-					if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ck3)))
-					{
-						if ((flagd&4)==0)
-						{
-							flagd^=4;
-							if ((flags&4)!=0)
-							{
-							}
-						}
-					}
-					else if ((flagd&4)!=0)
-					{
-						flagd^=4;
-						if ((flags&4)!=0)
-						{
-						}
-					}
-					plot_linear_update_scale(plot3, xi, xf, mny, mxy);
-				}
-			}
-		}
-		else if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(bat)))
-		{
-			ck2=gtk_check_button_new_with_label(_("Multiple plots for Results over index j"));
-			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ck2), (flagd&2));
-			gtk_widget_show(ck2);
-			gtk_box_pack_start(GTK_BOX(vbox), ck2, FALSE, FALSE, 2);
-			ck3=gtk_check_button_new_with_label(_("Multiple plots for Results over index k"));
-			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ck3), (flagd&4));
-			gtk_widget_show(ck3);
-			gtk_box_pack_start(GTK_BOX(vbox), ck3, FALSE, FALSE, 2);
-			gtk_container_add(GTK_CONTAINER(content), vbox);
-			if (gtk_dialog_run(GTK_DIALOG(helpwin))==GTK_RESPONSE_APPLY)
-			{
-				if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ck2))) flagd|=2;
-				else if ((flagd&2)!=0) flagd^=2;
-				if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ck3))) flagd|=4;
-				else if ((flagd&4)!=0) flagd^=4;
-			}
-		}
-		gtk_widget_destroy(helpwin);
-		break;
 		case 1:
 		table=gtk_table_new(4, 2, FALSE);
 		gtk_widget_show(table);
@@ -1055,619 +862,6 @@ void static prt(GtkWidget *widget, gpointer data)
 	}
 }
 
-void static sav(GtkWidget *widget, gpointer data)
-{
-	GtkWidget *wfile, *dialog, *cont, *label;
-	PlotLinear *plt;
-	gchar *contents, *str, *str2, *fout=NULL;
-	gchar s1[10], s2[10], s3[10];
-	gint j, k, sz2;
-	gdouble num, num2;
-	GError *Err=NULL;
-
-	switch (gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook2)))
-	{
-		case 2:
-		if ((flags&28)==28)
-		{
-			wfile=gtk_file_chooser_dialog_new(_("Select Data File"), GTK_WINDOW(window), GTK_FILE_CHOOSER_ACTION_SAVE, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT, NULL);
-			g_signal_connect(G_OBJECT(wfile), "destroy", G_CALLBACK(gtk_widget_destroy), G_OBJECT(wfile));
-			gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(wfile), TRUE);
-			if (gtk_dialog_run(GTK_DIALOG(wfile))==GTK_RESPONSE_ACCEPT)
-			{
-				fout=gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(wfile));
-				dialog=gtk_dialog_new_with_buttons(_("Parameter selection"), GTK_WINDOW(wfile), GTK_DIALOG_MODAL|GTK_DIALOG_DESTROY_WITH_PARENT, "Visibility", 1, "Domain Shift", 2, "Chirp", 3, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
-				cont=gtk_dialog_get_content_area(GTK_DIALOG (dialog));
-				label=gtk_label_new(_("Select Parameter to save:"));
-				gtk_container_add(GTK_CONTAINER(cont), label);
-				switch (gtk_dialog_run(GTK_DIALOG(dialog)))
-				{
-					case 1:
-					/*
-					fill contents
-					g_file_set_contents(fout, contents, -1, &Err);
-					g_free(contents);
-					if (Err)
-					{
-						str=g_strdup_printf(_("Error Saving file: %s"), (gchar *) Err);
-						gtk_statusbar_push(GTK_STATUSBAR(statusbar), gtk_statusbar_get_context_id(GTK_STATUSBAR(statusbar), str), str);
-						g_free(str);
-						g_error_free(Err);
-					}
-					 */
-					break;
-					case 2:
-					/*
-					fill contents
-					g_file_set_contents(fout, contents, -1, &Err);
-					g_free(contents);
-					if (Err)
-					{
-						str=g_strdup_printf(_("Error Saving file: %s"), (gchar *) Err);
-						gtk_statusbar_push(GTK_STATUSBAR(statusbar), gtk_statusbar_get_context_id(GTK_STATUSBAR(statusbar), str), str);
-						g_free(str);
-						g_error_free(Err);
-					}
-					 */
-					break;
-					case 3:
-					/*
-					fill contents
-					g_file_set_contents(fout, contents, -1, &Err);
-					g_free(contents);
-					if (Err)
-					{
-						str=g_strdup_printf(_("Error Saving file: %s"), (gchar *) Err);
-						gtk_statusbar_push(GTK_STATUSBAR(statusbar), gtk_statusbar_get_context_id(GTK_STATUSBAR(statusbar), str), str);
-						g_free(str);
-						g_error_free(Err);
-					}
-					*/
-					break;
-					default:
-					break;
-				}
-				gtk_widget_destroy(dialog);
-				g_free(fout);
-			}
-			gtk_widget_destroy(wfile);
-		}
-		else if ((flags&12)==12)
-		{
-			wfile=gtk_file_chooser_dialog_new(_("Select Data File"), GTK_WINDOW(window), GTK_FILE_CHOOSER_ACTION_SAVE, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT, NULL);
-			g_signal_connect(G_OBJECT(wfile), "destroy", G_CALLBACK(gtk_widget_destroy), G_OBJECT(wfile));
-			gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(wfile), TRUE);
-			if (gtk_dialog_run(GTK_DIALOG(wfile))==GTK_RESPONSE_ACCEPT)
-			{
-				fout=gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(wfile));
-				dialog=gtk_dialog_new_with_buttons(_("Parameter selection"), GTK_WINDOW(wfile), GTK_DIALOG_MODAL|GTK_DIALOG_DESTROY_WITH_PARENT, "Visibility", 1, "Domain Shift", 2, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
-				cont=gtk_dialog_get_content_area(GTK_DIALOG (dialog));
-				label=gtk_label_new(_("Select Parameter to save:"));
-				gtk_container_add(GTK_CONTAINER(cont), label);
-				switch (gtk_dialog_run(GTK_DIALOG(dialog)))
-				{
-					case 1:
-					/*
-					fill contents
-					g_file_set_contents(fout, contents, -1, &Err);
-					g_free(contents);
-					if (Err)
-					{
-						str=g_strdup_printf(_("Error Saving file: %s"), (gchar *) Err);
-						gtk_statusbar_push(GTK_STATUSBAR(statusbar), gtk_statusbar_get_context_id(GTK_STATUSBAR(statusbar), str), str);
-						g_free(str);
-						g_error_free(Err);
-					}
-					 */
-					break;
-					case 2:
-					/*
-					fill contents
-					g_file_set_contents(fout, contents, -1, &Err);
-					g_free(contents);
-					if (Err)
-					{
-						str=g_strdup_printf(_("Error Saving file: %s"), (gchar *) Err);
-						gtk_statusbar_push(GTK_STATUSBAR(statusbar), gtk_statusbar_get_context_id(GTK_STATUSBAR(statusbar), str), str);
-						g_free(str);
-						g_error_free(Err);
-					}
-					 */
-					break;
-					default:
-					break;
-				}
-				gtk_widget_destroy(dialog);
-				g_free(fout);
-			}
-			gtk_widget_destroy(wfile);
-		}
-		else if ((flags&2)!=0)
-		{
-			gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook2), 1);
-			wfile=gtk_file_chooser_dialog_new(_("Select Data File"), GTK_WINDOW(window), GTK_FILE_CHOOSER_ACTION_SAVE, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT, NULL);
-			g_signal_connect(G_OBJECT(wfile), "destroy", G_CALLBACK(gtk_widget_destroy), G_OBJECT(wfile));
-			gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(wfile), TRUE);
-			if (gtk_dialog_run(GTK_DIALOG(wfile))==GTK_RESPONSE_ACCEPT)
-			{
-				fout=gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(wfile));
-				dialog=gtk_dialog_new_with_buttons(_("Parameter selection"), GTK_WINDOW(wfile), GTK_DIALOG_MODAL|GTK_DIALOG_DESTROY_WITH_PARENT, "Real/Imaginary", 1, "Magnitude/Phase", 2, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
-				cont=gtk_dialog_get_content_area(GTK_DIALOG (dialog));
-				label=gtk_label_new(_("Select Parameter to save:"));
-				gtk_container_add(GTK_CONTAINER(cont), label);
-				switch (gtk_dialog_run(GTK_DIALOG(dialog)))
-				{
-					case 1:
-					str2=g_strdup(_("INVERSE_D\tREAL_VAL \tIMAG_VAL "));
-					contents=g_strdup(str2);
-					for (k=1; k<=jdimxf; k++)
-					{
-						str=g_strjoin("\t", contents, str2, NULL);
-						g_free(contents);
-						contents=g_strdup(str);
-					}
-					plt=PLOT_LINEAR(plot2);
-					sz2=g_array_index((plt->sizes), gint, 0);/* check that this is what is wanted and compatibility with multiplots */
-					g_snprintf(s1, 10, "%f", g_array_index(stars, gdouble, 0));
-					str2=g_strjoin("\t", "0.0000000", s1, "0.0000000", NULL);
-					for (k=1; k<=jdimxf; k++)
-					{
-						g_snprintf(s1, 10, "%f", g_array_index(stars, gdouble, 2*k*sz2));
-						str=g_strjoin("\t", str2, "0.0000000", s1, "0.0000000", NULL);
-						g_free(str2);
-						str2=g_strdup(str);
-						g_free(str);
-					}
-					str=g_strdup(contents);
-					g_free(contents);
-					contents=g_strjoin("\n", str, str2, NULL);
-					g_free(str);
-					g_free(str2);
-					for (j=1; j<sz2; j++)
-					{
-						g_snprintf(s1, 10, "%f", j*g_array_index(delf, gdouble, 0));
-						g_snprintf(s2, 10, "%f", g_array_index(stars, gdouble, j));
-						g_snprintf(s3, 10, "%f", g_array_index(stars, gdouble, (2*sz2)-j));
-						str2=g_strjoin("\t", s1, s2, s3, NULL);
-						k=1;
-						while (k<=jdimxf)
-						{
-							g_snprintf(s1, 10, "%f", j*g_array_index(delf, gdouble, 0));
-							g_snprintf(s2, 10, "%f", g_array_index(stars, gdouble, (2*k*sz2)+j));
-							g_snprintf(s3, 10, "%f", g_array_index(stars, gdouble, (2*(++k)*sz2)-j));
-							str=g_strjoin("\t", str2, s1, s2, s3, NULL);
-							g_free(str2);
-							str2=g_strdup(str);
-							g_free(str);
-						}
-						str=g_strdup(contents);
-						g_free(contents);
-						contents=g_strjoin("\n", str, str2, NULL);
-						g_free(str);
-						g_free(str2);
-					}
-					g_file_set_contents(fout, contents, -1, &Err);
-					g_free(contents);
-					if (Err)
-					{
-						str=g_strdup_printf(_("Error Saving file: %s"), (gchar *) Err);
-						gtk_statusbar_push(GTK_STATUSBAR(statusbar), gtk_statusbar_get_context_id(GTK_STATUSBAR(statusbar), str), str);
-						g_free(str);
-						g_error_free(Err);
-					}
-					g_free(fout);
-					break;
-					case 2:
-					str2=g_strdup(_("INVERSE_D\tMAGNITUDE\tPHASE    "));
-					contents=g_strdup(str2);
-					for (k=1; k<=jdimxf; k++)
-					{
-						str=g_strjoin("\t", contents, str2, NULL);
-						g_free(contents);
-						contents=g_strdup(str);
-					}
-					plt=PLOT_LINEAR(plot2);
-					sz2=g_array_index((plt->sizes), gint, 0);/* check that this is what is wanted and compatibility with multiplots */
-					g_snprintf(s1, 10, "%f", g_array_index(stars, gdouble, 0));
-					str2=g_strjoin("\t", "0.0000000", s1, "0.0000000", NULL);
-					for (k=1; k<=jdimxf; k++)
-					{
-						g_snprintf(s1, 10, "%f", g_array_index(stars, gdouble, 2*k*sz2));
-						str=g_strjoin("\t", str2, "0.0000000", s1, "0.0000000", NULL);
-						g_free(str2);
-						str2=g_strdup(str);
-						g_free(str);
-					}
-					str=g_strdup(contents);
-					g_free(contents);
-					contents=g_strjoin("\n", str, str2, NULL);
-					g_free(str);
-					g_free(str2);
-					for (j=1; j<sz2; j++)
-					{
-						g_snprintf(s1, 10, "%f", j*g_array_index(delf, gdouble, 0));
-						num=g_array_index(stars, gdouble, j);
-						num2=g_array_index(stars, gdouble, (2*sz2)-j);
-						g_snprintf(s3, 10, "%f", atan2(num2, num));
-						num*=num;
-						num2*=num2;
-						num+=num2;
-						num=sqrt(num);
-						g_snprintf(s2, 10, "%f", num);
-						str2=g_strjoin("\t", s1, s2, s3, NULL);
-						k=1;
-						while (k<=jdimxf)
-						{
-							g_snprintf(s1, 10, "%f", j*g_array_index(delf, gdouble, 0));
-							num=g_array_index(stars, gdouble, (2*k*sz2)+j);
-							num2=g_array_index(stars, gdouble, (2*(++k)*sz2)-j);
-							g_snprintf(s3, 10, "%f", atan2(num2, num));
-							num*=num;
-							num2*=num2;
-							num+=num2;
-							num=sqrt(num);
-							g_snprintf(s2, 10, "%f", num);
-							str=g_strjoin("\t", str2, s1, s2, s3, NULL);
-							g_free(str2);
-							str2=g_strdup(str);
-							g_free(str);
-						}
-						str=g_strdup(contents);
-						g_free(contents);
-						contents=g_strjoin("\n", str, str2, NULL);
-						g_free(str);
-						g_free(str2);
-					}
-					g_file_set_contents(fout, contents, -1, &Err);
-					g_free(contents);
-					if (Err)
-					{
-						str=g_strdup_printf(_("Error Saving file: %s"), (gchar *) Err);
-						gtk_statusbar_push(GTK_STATUSBAR(statusbar), gtk_statusbar_get_context_id(GTK_STATUSBAR(statusbar), str), str);
-						g_free(str);
-						g_error_free(Err);
-					}
-					g_free(fout);
-					break;
-					default:
-					break;
-				}
-			}
-			gtk_widget_destroy(wfile);
-		}
-		else
-		{
-			gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook2), 0);
-			str=g_strdup(_("No available processed data."));
-			gtk_statusbar_push(GTK_STATUSBAR(statusbar), gtk_statusbar_get_context_id(GTK_STATUSBAR(statusbar), str), str);
-			g_free(str);
-		}
-		break;
-		case 1:
-		if ((flags&2)!=0)
-		{
-			wfile=gtk_file_chooser_dialog_new(_("Select Data File"), GTK_WINDOW(window), GTK_FILE_CHOOSER_ACTION_SAVE, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT, NULL);
-			g_signal_connect(G_OBJECT(wfile), "destroy", G_CALLBACK(gtk_widget_destroy), G_OBJECT(wfile));
-			gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(wfile), TRUE);
-			if (gtk_dialog_run(GTK_DIALOG(wfile))==GTK_RESPONSE_ACCEPT)
-			{
-				fout=gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(wfile));
-				dialog=gtk_dialog_new_with_buttons(_("Parameter selection"), GTK_WINDOW(wfile), GTK_DIALOG_MODAL|GTK_DIALOG_DESTROY_WITH_PARENT, "Real/Imaginary", 1, "Magnitude/Phase", 2, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
-				cont=gtk_dialog_get_content_area(GTK_DIALOG (dialog));
-				label=gtk_label_new(_("Select Parameter to save:"));
-				gtk_container_add(GTK_CONTAINER(cont), label);
-				switch (gtk_dialog_run(GTK_DIALOG(dialog)))
-				{
-					case 1:
-					str2=g_strdup(_("INVERSE_D\tREAL_VAL \tIMAG_VAL "));
-					contents=g_strdup(str2);
-					for (k=1; k<=jdimxf; k++)
-					{
-						str=g_strjoin("\t", contents, str2, NULL);
-						g_free(contents);
-						contents=g_strdup(str);
-					}
-					plt=PLOT_LINEAR(plot2);
-					sz2=g_array_index((plt->sizes), gint, 0);/* check that this is what is wanted and compatibility with multiplots */
-					g_snprintf(s1, 10, "%f", g_array_index(stars, gdouble, 0));
-					str2=g_strjoin("\t", "0.0000000", s1, "0.0000000", NULL);
-					for (k=1; k<=jdimxf; k++)
-					{
-						g_snprintf(s1, 10, "%f", g_array_index(stars, gdouble, 2*k*sz2));
-						str=g_strjoin("\t", str2, "0.0000000", s1, "0.0000000", NULL);
-						g_free(str2);
-						str2=g_strdup(str);
-						g_free(str);
-					}
-					str=g_strdup(contents);
-					g_free(contents);
-					contents=g_strjoin("\n", str, str2, NULL);
-					g_free(str);
-					g_free(str2);
-					for (j=1; j<sz2; j++)
-					{
-						g_snprintf(s1, 10, "%f", j*g_array_index(delf, gdouble, 0));
-						g_snprintf(s2, 10, "%f", g_array_index(stars, gdouble, j));
-						g_snprintf(s3, 10, "%f", g_array_index(stars, gdouble, (2*sz2)-j));
-						str2=g_strjoin("\t", s1, s2, s3, NULL);
-						k=1;
-						while (k<=jdimxf)
-						{
-							g_snprintf(s1, 10, "%f", j*g_array_index(delf, gdouble, 0));
-							g_snprintf(s2, 10, "%f", g_array_index(stars, gdouble, (2*k*sz2)+j));
-							g_snprintf(s3, 10, "%f", g_array_index(stars, gdouble, (2*(++k)*sz2)-j));
-							str=g_strjoin("\t", str2, s1, s2, s3, NULL);
-							g_free(str2);
-							str2=g_strdup(str);
-							g_free(str);
-						}
-						str=g_strdup(contents);
-						g_free(contents);
-						contents=g_strjoin("\n", str, str2, NULL);
-						g_free(str);
-						g_free(str2);
-					}
-					g_file_set_contents(fout, contents, -1, &Err);
-					g_free(contents);
-					if (Err)
-					{
-						str=g_strdup_printf(_("Error Saving file: %s"), (gchar *) Err);
-						gtk_statusbar_push(GTK_STATUSBAR(statusbar), gtk_statusbar_get_context_id(GTK_STATUSBAR(statusbar), str), str);
-						g_free(str);
-						g_error_free(Err);
-					}
-					g_free(fout);
-					break;
-					case 2:
-					str2=g_strdup(_("INVERSE_D\tMAGNITUDE\tPHASE    "));
-					contents=g_strdup(str2);
-					for (k=1; k<=jdimxf; k++)
-					{
-						str=g_strjoin("\t", contents, str2, NULL);
-						g_free(contents);
-						contents=g_strdup(str);
-					}
-					plt=PLOT_LINEAR(plot2);
-					sz2=g_array_index((plt->sizes), gint, 0);/* check that this is what is wanted and compatibility with multiplots */
-					g_snprintf(s1, 10, "%f", g_array_index(stars, gdouble, 0));
-					str2=g_strjoin("\t", "0.0000000", s1, "0.0000000", NULL);
-					for (k=1; k<=jdimxf; k++)
-					{
-						g_snprintf(s1, 10, "%f", g_array_index(stars, gdouble, 2*k*sz2));
-						str=g_strjoin("\t", str2, "0.0000000", s1, "0.0000000", NULL);
-						g_free(str2);
-						str2=g_strdup(str);
-						g_free(str);
-					}
-					str=g_strdup(contents);
-					g_free(contents);
-					contents=g_strjoin("\n", str, str2, NULL);
-					g_free(str);
-					g_free(str2);
-					for (j=1; j<sz2; j++)
-					{
-						g_snprintf(s1, 10, "%f", j*g_array_index(delf, gdouble, 0));
-						num=g_array_index(stars, gdouble, j);
-						num2=g_array_index(stars, gdouble, (2*sz2)-j);
-						g_snprintf(s3, 10, "%f", atan2(num2, num));
-						num*=num;
-						num2*=num2;
-						num+=num2;
-						num=sqrt(num);
-						g_snprintf(s2, 10, "%f", num);
-						str2=g_strjoin("\t", s1, s2, s3, NULL);
-						k=1;
-						while (k<=jdimxf)
-						{
-							g_snprintf(s1, 10, "%f", j*g_array_index(delf, gdouble, 0));
-							num=g_array_index(stars, gdouble, (2*k*sz2)+j);
-							num2=g_array_index(stars, gdouble, (2*(++k)*sz2)-j);
-							g_snprintf(s3, 10, "%f", atan2(num2, num));
-							num*=num;
-							num2*=num2;
-							num+=num2;
-							num=sqrt(num);
-							g_snprintf(s2, 10, "%f", num);
-							str=g_strjoin("\t", str2, s1, s2, s3, NULL);
-							g_free(str2);
-							str2=g_strdup(str);
-							g_free(str);
-						}
-						str=g_strdup(contents);
-						g_free(contents);
-						contents=g_strjoin("\n", str, str2, NULL);
-						g_free(str);
-						g_free(str2);
-					}
-					g_file_set_contents(fout, contents, -1, &Err);
-					g_free(contents);
-					if (Err)
-					{
-						str=g_strdup_printf(_("Error Saving file: %s"), (gchar *) Err);
-						gtk_statusbar_push(GTK_STATUSBAR(statusbar), gtk_statusbar_get_context_id(GTK_STATUSBAR(statusbar), str), str);
-						g_free(str);
-						g_error_free(Err);
-					}
-					g_free(fout);
-					break;
-					default:
-					break;
-				}
-			}
-			gtk_widget_destroy(wfile);
-		}
-		else
-		{
-			gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook2), 0);
-			str=g_strdup(_("No available processed data."));
-			gtk_statusbar_push(GTK_STATUSBAR(statusbar), gtk_statusbar_get_context_id(GTK_STATUSBAR(statusbar), str), str);
-			g_free(str);
-		}
-		break;
-		default:
-		if ((flags&2)!=0)
-		{
-			gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook2), 1);
-			wfile=gtk_file_chooser_dialog_new(_("Select Data File"), GTK_WINDOW(window), GTK_FILE_CHOOSER_ACTION_SAVE, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT, NULL);
-			g_signal_connect(G_OBJECT(wfile), "destroy", G_CALLBACK(gtk_widget_destroy), G_OBJECT(wfile));
-			gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(wfile), TRUE);
-			if (gtk_dialog_run(GTK_DIALOG(wfile))==GTK_RESPONSE_ACCEPT)
-			{
-				fout=gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(wfile));
-				dialog=gtk_dialog_new_with_buttons(_("Parameter selection"), GTK_WINDOW(wfile), GTK_DIALOG_MODAL|GTK_DIALOG_DESTROY_WITH_PARENT, "Real/Imaginary", 1, "Magnitude/Phase", 2, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
-				cont=gtk_dialog_get_content_area(GTK_DIALOG (dialog));
-				label=gtk_label_new(_("Select Parameter to save:"));
-				gtk_container_add(GTK_CONTAINER(cont), label);
-				switch (gtk_dialog_run(GTK_DIALOG(dialog)))
-				{
-					case 1:
-					str2=g_strdup(_("INVERSE_D\tREAL_VAL \tIMAG_VAL "));
-					contents=g_strdup(str2);
-					for (k=1; k<=jdimxf; k++)
-					{
-						str=g_strjoin("\t", contents, str2, NULL);
-						g_free(contents);
-						contents=g_strdup(str);
-					}
-					plt=PLOT_LINEAR(plot2);
-					sz2=g_array_index((plt->sizes), gint, 0);/* check that this is what is wanted and compatibility with multiplots */
-					g_snprintf(s1, 10, "%f", g_array_index(stars, gdouble, 0));
-					str2=g_strjoin("\t", "0.0000000", s1, "0.0000000", NULL);
-					for (k=1; k<=jdimxf; k++)
-					{
-						g_snprintf(s1, 10, "%f", g_array_index(stars, gdouble, 2*k*sz2));
-						str=g_strjoin("\t", str2, "0.0000000", s1, "0.0000000", NULL);
-						g_free(str2);
-						str2=g_strdup(str);
-						g_free(str);
-					}
-					str=g_strdup(contents);
-					g_free(contents);
-					contents=g_strjoin("\n", str, str2, NULL);
-					g_free(str);
-					g_free(str2);
-					for (j=1; j<sz2; j++)
-					{
-						g_snprintf(s1, 10, "%f", j*g_array_index(delf, gdouble, 0));
-						g_snprintf(s2, 10, "%f", g_array_index(stars, gdouble, j));
-						g_snprintf(s3, 10, "%f", g_array_index(stars, gdouble, (2*sz2)-j));
-						str2=g_strjoin("\t", s1, s2, s3, NULL);
-						k=1;
-						while (k<=jdimxf)
-						{
-							g_snprintf(s1, 10, "%f", j*g_array_index(delf, gdouble, 0));
-							g_snprintf(s2, 10, "%f", g_array_index(stars, gdouble, (2*k*sz2)+j));
-							g_snprintf(s3, 10, "%f", g_array_index(stars, gdouble, (2*(++k)*sz2)-j));
-							str=g_strjoin("\t", str2, s1, s2, s3, NULL);
-							g_free(str2);
-							str2=g_strdup(str);
-							g_free(str);
-						}
-						str=g_strdup(contents);
-						g_free(contents);
-						contents=g_strjoin("\n", str, str2, NULL);
-						g_free(str);
-						g_free(str2);
-					}
-					g_file_set_contents(fout, contents, -1, &Err);
-					g_free(contents);
-					if (Err)
-					{
-						str=g_strdup_printf(_("Error Saving file: %s"), (gchar *) Err);
-						gtk_statusbar_push(GTK_STATUSBAR(statusbar), gtk_statusbar_get_context_id(GTK_STATUSBAR(statusbar), str), str);
-						g_free(str);
-						g_error_free(Err);
-					}
-					g_free(fout);
-					break;
-					case 2:
-					str2=g_strdup(_("INVERSE_D\tMAGNITUDE\tPHASE    "));
-					contents=g_strdup(str2);
-					for (k=1; k<=jdimxf; k++)
-					{
-						str=g_strjoin("\t", contents, str2, NULL);
-						g_free(contents);
-						contents=g_strdup(str);
-					}
-					plt=PLOT_LINEAR(plot2);
-					sz2=g_array_index((plt->sizes), gint, 0);/* check that this is what is wanted and compatibility with multiplots */
-					g_snprintf(s1, 10, "%f", g_array_index(stars, gdouble, 0));
-					str2=g_strjoin("\t", "0.0000000", s1, "0.0000000", NULL);
-					for (k=1; k<=jdimxf; k++)
-					{
-						g_snprintf(s1, 10, "%f", g_array_index(stars, gdouble, 2*k*sz2));
-						str=g_strjoin("\t", str2, "0.0000000", s1, "0.0000000", NULL);
-						g_free(str2);
-						str2=g_strdup(str);
-						g_free(str);
-					}
-					str=g_strdup(contents);
-					g_free(contents);
-					contents=g_strjoin("\n", str, str2, NULL);
-					g_free(str);
-					g_free(str2);
-					for (j=1; j<sz2; j++)
-					{
-						g_snprintf(s1, 10, "%f", j*g_array_index(delf, gdouble, 0));
-						num=g_array_index(stars, gdouble, j);
-						num2=g_array_index(stars, gdouble, (2*sz2)-j);
-						g_snprintf(s3, 10, "%f", atan2(num2, num));
-						num*=num;
-						num2*=num2;
-						num+=num2;
-						num=sqrt(num);
-						g_snprintf(s2, 10, "%f", num);
-						str2=g_strjoin("\t", s1, s2, s3, NULL);
-						k=1;
-						while (k<=jdimxf)
-						{
-							g_snprintf(s1, 10, "%f", j*g_array_index(delf, gdouble, 0));
-							num=g_array_index(stars, gdouble, (2*k*sz2)+j);
-							num2=g_array_index(stars, gdouble, (2*(++k)*sz2)-j);
-							g_snprintf(s3, 10, "%f", atan2(num2, num));
-							num*=num;
-							num2*=num2;
-							num+=num2;
-							num=sqrt(num);
-							g_snprintf(s2, 10, "%f", num);
-							str=g_strjoin("\t", str2, s1, s2, s3, NULL);
-							g_free(str2);
-							str2=g_strdup(str);
-							g_free(str);
-						}
-						str=g_strdup(contents);
-						g_free(contents);
-						contents=g_strjoin("\n", str, str2, NULL);
-						g_free(str);
-						g_free(str2);
-					}
-					g_file_set_contents(fout, contents, -1, &Err);
-					g_free(contents);
-					if (Err)
-					{
-						str=g_strdup_printf(_("Error Saving file: %s"), (gchar *) Err);
-						gtk_statusbar_push(GTK_STATUSBAR(statusbar), gtk_statusbar_get_context_id(GTK_STATUSBAR(statusbar), str), str);
-						g_free(str);
-						g_error_free(Err);
-					}
-					g_free(fout);
-					break;
-					default:
-					break;
-				}
-			}
-			gtk_widget_destroy(wfile);
-		}
-		else
-		{
-			str=g_strdup(_("No available processed data."));
-			gtk_statusbar_push(GTK_STATUSBAR(statusbar), gtk_statusbar_get_context_id(GTK_STATUSBAR(statusbar), str), str);
-			g_free(str);
-		}
-		break;
-	}
-}
-
 void static upg(GtkWidget *widget, gpointer data)
 {
 	PlotLinear *plt;
@@ -2178,7 +1372,7 @@ void static reset2(GtkWidget *widget, gpointer data)
 	}
 }
 
-int main( int argc, char *argv[])
+int main(int argc, char *argv[])
 {
 	GtkAdjustment *adj;
 	GtkWidget *vbox, *mnb, *mnu, *smnu, *mni, *hpane, *table, *label, *butt;
@@ -2191,7 +1385,7 @@ int main( int argc, char *argv[])
 	textdomain(PACKAGE);
 	gtk_init(&argc, &argv);
 	window=gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_title(GTK_WINDOW(window), _("Harmonic Spectrum Analyser"));
+	gtk_window_set_title(GTK_WINDOW(window), _("Inverse Scattering"));
 	g_signal_connect_swapped(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 	vbox=gtk_vbox_new(FALSE, 0);
 	gtk_container_add(GTK_CONTAINER(window), vbox);
@@ -2252,7 +1446,7 @@ int main( int argc, char *argv[])
 	group=gtk_radio_menu_item_get_group(GTK_RADIO_MENU_ITEM(dlm));
 	gtk_menu_shell_append(GTK_MENU_SHELL(smnu), dlm);
 	gtk_widget_show(dlm);
-	mni=gtk_menu_item_new_with_label(_("Data Format:"));
+	mni=gtk_menu_item_new_with_label(_("Input Data Format:"));
 	gtk_menu_shell_append(GTK_MENU_SHELL(mnu), mni);
 	gtk_widget_show(mni);
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(mni), smnu);
@@ -2261,10 +1455,6 @@ int main( int argc, char *argv[])
 	gtk_menu_shell_append(GTK_MENU_SHELL(mnu), trac);
 	gtk_widget_show(trac);
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(trac), tracmenu);
-	trans=gtk_check_menu_item_new_with_label(_("Transmission Measurement?"));
-	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(trans), TRUE);
-	gtk_menu_shell_append(GTK_MENU_SHELL(mnu), trans);
-	gtk_widget_show(trans);
 	dBs=gtk_check_menu_item_new_with_label(_("Data in dBs?"));
 	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(dBs), TRUE);
 	gtk_menu_shell_append(GTK_MENU_SHELL(mnu), dBs);
@@ -2279,40 +1469,6 @@ int main( int argc, char *argv[])
 	gtk_menu_shell_append(GTK_MENU_SHELL(mnu), mni);
 	gtk_widget_show(mni);
 	mni=gtk_menu_item_new_with_mnemonic(_("_Properties"));
-	gtk_widget_show(mni);
-	gtk_menu_item_set_submenu(GTK_MENU_ITEM(mni), mnu);
-	gtk_menu_shell_append(GTK_MENU_SHELL(mnb), mni);
-	mnu=gtk_menu_new();
-	smnu=gtk_menu_new();
-	ncmp=gtk_radio_menu_item_new_with_label(group3, _("None"));
-	group3=gtk_radio_menu_item_get_group(GTK_RADIO_MENU_ITEM(ncmp));
-	gtk_menu_shell_append(GTK_MENU_SHELL(smnu), ncmp);
-	gtk_widget_show(ncmp);
-	lcmp=gtk_radio_menu_item_new_with_label(group3, _("1st order\nspectral shadowing"));
-	group3=gtk_radio_menu_item_get_group(GTK_RADIO_MENU_ITEM(lcmp));
-	gtk_menu_shell_append(GTK_MENU_SHELL(smnu), lcmp);
-	gtk_widget_show(lcmp);
-	mni=gtk_menu_item_new_with_label(_("Nonlinear\nCompensation:"));
-	gtk_menu_shell_append(GTK_MENU_SHELL(mnu), mni);
-	gtk_widget_show(mni);
-	gtk_menu_item_set_submenu(GTK_MENU_ITEM(mni), smnu);
-	bat=gtk_check_menu_item_new_with_label(_("Batch Process Data?"));
-	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(bat), FALSE);
-	gtk_menu_shell_append(GTK_MENU_SHELL(mnu), bat);
-	gtk_widget_show(bat);
-	twopionx=gtk_check_menu_item_new_with_label(_("Invert domain?"));
-	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(twopionx), FALSE);
-	gtk_menu_shell_append(GTK_MENU_SHELL(mnu), twopionx);
-	gtk_widget_show(twopionx);
-	chi=gtk_check_menu_item_new_with_label(_("Calculate Chirp?"));
-	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(chi), FALSE);
-	gtk_menu_shell_append(GTK_MENU_SHELL(mnu), chi);
-	gtk_widget_show(chi);
-	opttri=gtk_check_menu_item_new_with_label(_("Optimise Triangle fit?"));
-	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(opttri), FALSE);
-	gtk_menu_shell_append(GTK_MENU_SHELL(mnu), opttri);
-	gtk_widget_show(opttri);
-	mni=gtk_menu_item_new_with_mnemonic(_("_Advanced"));
 	gtk_widget_show(mni);
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(mni), mnu);
 	gtk_menu_shell_append(GTK_MENU_SHELL(mnb), mni);
@@ -2389,10 +1545,10 @@ int main( int argc, char *argv[])
 	g_signal_connect(G_OBJECT(butt), "clicked", G_CALLBACK(reset), NULL);
 	gtk_table_attach(GTK_TABLE(table), butt, 2, 3, 2, 4, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(butt);
-	tr=gtk_button_new_with_label(_("Transform Spectrum"));
+	tr=gtk_button_new_with_label(_("Reconstruct Profile"));
 	gtk_table_attach(GTK_TABLE(table), tr, 0, 3, 4, 5, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(tr);
-	label=gtk_label_new(_("Spectrum"));
+	label=gtk_label_new(_("IS control"));
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), table, label);
 	table=gtk_table_new(6, 3, FALSE);
 	gtk_widget_show(table);
@@ -2456,10 +1612,10 @@ int main( int argc, char *argv[])
 	g_signal_connect(G_OBJECT(butt), "clicked", G_CALLBACK(reset2), NULL);
 	gtk_table_attach(GTK_TABLE(table), butt, 2, 3, 4, 6, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(butt);
-	pr=gtk_button_new_with_label(_("Process\nSpectrum"));
+	pr=gtk_button_new_with_label(_("Calculate\nSpectrum"));
 	gtk_table_attach(GTK_TABLE(table), pr, 0, 1, 4, 6, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(pr);
-	label=gtk_label_new(_("Inverse Spectrum"));
+	label=gtk_label_new(_("T-matrix control"));
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), table, label);
 	gtk_widget_show(notebook);
 	gtk_paned_add1(GTK_PANED(hpane), notebook);
@@ -2468,36 +1624,23 @@ int main( int argc, char *argv[])
 	table=gtk_table_new(1, 1, FALSE);
 	gtk_widget_show(table);
 	plot1=plot_linear_new();
+	((PLOT_LINEAR(plot1))->xlab)=g_strdup(_("Wavelength (nm)"));
+	((PLOT_LINEAR(plot1))->xlab)=g_strdup(_("Reflection (dB)"));
 	g_signal_connect(plot1, "moved", G_CALLBACK(pltmv), NULL);
 	gtk_widget_show(plot1);
 	gtk_table_attach(GTK_TABLE(table), plot1, 0, 1, 0, 1, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK |GTK_EXPAND, 2, 2);
-	label=gtk_label_new(_("Spectrum"));
+	label=gtk_label_new(_("Reflection Spectrum"));
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook2), table, label);
 	table=gtk_table_new(1, 1, FALSE);
 	gtk_widget_show(table);
 	plot2=plot_linear_new();
-	((PLOT_LINEAR(plot2))->xlab)=g_strdup(_("Inverse Domain"));
+	((PLOT_LINEAR(plot2))->xlab)=g_strdup(_("Position (mm)"));
+	((PLOT_LINEAR(plot2))->ylab)=g_strdup(_("Coupling Coefficient (/mm)"));
 	g_signal_connect(plot2, "moved", G_CALLBACK(pltmv), NULL);
 	gtk_widget_show(plot2);
 	gtk_table_attach(GTK_TABLE(table), plot2, 0, 1, 0, 1, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-	label=gtk_label_new(_("Inverse Spectrum"));
+	label=gtk_label_new(_("Spatial Profile"));
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook2), table, label);
-	rest=gtk_table_new(4, 2, FALSE);
-	gtk_widget_show(rest);
-	label=gtk_label_new(_("Visibility"));
-	gtk_table_attach(GTK_TABLE(rest), label, 0, 1, 0, 1, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-	gtk_widget_show(label);
-	visl=gtk_label_new("");
-	gtk_table_attach(GTK_TABLE(rest), visl, 0, 1, 1, 2, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-	gtk_widget_show(visl);
-	label=gtk_label_new(_("Domain Shift"));
-	gtk_table_attach(GTK_TABLE(rest), label, 1, 2, 0, 1, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-	gtk_widget_show(label);
-	dsl=gtk_label_new("");
-	gtk_table_attach(GTK_TABLE(rest), dsl, 1, 2, 1, 2, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-	gtk_widget_show(dsl);
-	label=gtk_label_new(_("Analysis Results"));
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook2), rest, label);
 	gtk_widget_show(notebook2);
 	gtk_paned_add2(GTK_PANED(hpane), notebook2);
 	statusbar=gtk_statusbar_new();
