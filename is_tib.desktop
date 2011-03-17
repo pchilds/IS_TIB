@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=InvScatt
+Comment=A GUI to using the Toeplitz Inner Bordering method for performing Inverse Scattering.
+Exec=InvScatt
+Icon=
+Terminal=0
+Type=Application
+Categories=Education;Science;Math;NumericalAnalysis;

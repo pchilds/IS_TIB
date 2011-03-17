@@ -1,0 +1,22 @@
+InvScatt
+--------
+Version 0.1.0, January 2011
+
+InvScatt is a program for performing inverse scattering using the Toeplitz Inner Bordering method.
+A GUI is provided for convenient data display and printing.
+
+Motivation; Technology; License
+---------------------------------------------
+InvScatt uses the PlotLinear widget to visualise data. Transformation of the data is carried out using the toeplitz inner bordering method developed by Oleg Belai et. al. [1].
+The code is designed for gtk+2, though an update to gtk3 is in the making.
+Harmonic is released under the GNU GPL version 2 or (at your option) any later versions. See the accompanying COPYING file for details.
+
+Usage
+-----
+
+
+References
+----------
+1. O.V. Belai, L.L. Frumin, E.V. Podvilov and D.A. Shapiro, “Efficient numerical method of the fiber Bragg grating synthesis,” in J. Opt. Soc. Am. B, Vol. 24, Iss. 7, pp. 1451–1457 (2007).
+
+----------------------- THE END --------------------------------
