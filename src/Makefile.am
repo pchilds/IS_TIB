@@ -2,9 +2,17 @@
 AM_CFLAGS=$(IS_CFLAGS)
 AM_CPPFLAGS= -DLOCALEDIR=\"$(localedir)\" -DPACKAGE=\"$(PACKAGE)\"
 bin_PROGRAMS=InvScatt
-InvScatt_SOURCES=	\
-	is-tib0-1-0.c	\
+InvScatt_SOURCES=		\
+	main.c			\
+	main.h			\
+	util.c			\
+	util.h			\
+	data.c			\
+	data.h			\
+	proc.c			\
+	proc.h			\
+	disp.c			\
+	disp.h			\
 	plotlinear0-1-0.c	\
-	is-tib0-1-0.h	\
 	plotlinear0-1-0.h
 InvScatt_LDADD=$(IS_LIBS)

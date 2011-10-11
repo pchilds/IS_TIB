@@ -1,8 +1,8 @@
 /***************************************************************************
- *            is-tib.h
+ *            proc.h
  *
- *  Sat Mar  17 17:18:14 2011
- *  Copyright  2011  Paul Childs
+ *  Sat Dec  4 17:18:14 2010
+ *  Copyright  2010  Paul Childs
  *  <pchilds@physics.org>
  ****************************************************************************/
 
@@ -22,7 +22,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
-#ifndef __INVSCATT_H__
-#define __INVSCATT_H__
-#endif __COMPUTER_H__
-
+#ifndef __PROC_H__
+#	define __PROC_H__
+#	include "main.h"
+	extern gint fgs;
+	extern GtkWidget *dBs, *fst, *kms, *nbk, *neg, *pt1, *pt2, *sbr, *tx, *wdw, *wsp, *wst;
+	void prs(GtkWidget*, gpointer);
+	void trs(GtkWidget*, gpointer);
+#endif

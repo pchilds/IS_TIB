@@ -1,6 +1,6 @@
 AC_PREREQ([2.65])
 AC_INIT([IS-TIB],[0.1.0],[pchilds@physics.org],[is-tib],[https://github.com/pchilds/IS_TIB])
-AC_CONFIG_SRCDIR([src/is-tib0-1-0.h])
+AC_CONFIG_SRCDIR([src/main.h])
 AC_CONFIG_AUX_DIR([confsupp])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])

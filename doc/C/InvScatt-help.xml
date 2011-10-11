@@ -56,8 +56,16 @@
   </sect1>
   <sect1 id="base-domain"><title>The Base Domain</title>
     <sect2><title>Navigating the Plots</title>
-      <para>
-        InvScatt uses a customised plotting widget for displaying data. For further information and/or feedback see the documentation given in its <ulink type="http" url="https://www.github.com/pchilds/GtkPlot">repository</ulink>.
+      <para>InvScatt uses a customised set of plotting widgets for displaying data. For further information and/or feedback see the documentation given in its <ulink type="http" url="https://github.com/pchilds/GtkPlot">repository</ulink>.</para>
+      <para>The range of the plot can be zoomed in and out (horizontally and/or vertically) according to the zoom mode selected by clicking on the two boxes in the top right corner of each plot. The box on the left controls whether zooming is to be performed in the horizontal direction only (when two dotted vertical lines are shown), in the vertical direction only (when two dotted horizontal lines are shown) or both horzontally and vertically (A dashed rectangle is shown). The range to zoom over is selecting by clicking at one corner/edge and dragging and releasing at the opposite corner/edge. For convenience, zooming can alternately be perfomed with a single click (if the setting in the left box is toggled until an X is displayed).</para>
+      <para>The box on the right controls whether to zoom in or out (arrows pointing out or in respectively). For the case of zooming in, the resultant image displayed in the plot is the image loosely fitted to the bounding click-drag-release box ("loosely" as the plot tries to fit the axes range to sensible power of ten multiples of 1, 2 and 5). For the case of zooming out, the resultant image is a loose fit to the extrapolation of shrinking the original entire plot into the bounding click-drag-release box.</para>
+      <tip><title>tip</title>
+        <para>If e.g you wanted to display more range to the top left of a linear graph then (with zoom out mode set) you would select a bounding box in the bottom right of the plot.</para>
+      </tip>
+      <para>By selecting Display Properties in the Properties menu other features of the plots can be altered to allow smooth transfer of data results to a publication ready format without the need of an intermediary step of editing figures. Select the tab appropriate to the plot you wish to change and press "Apply" to make a change and "Close" when done. Apart from the title, font and sizes of the axes and their tick label numbers, the colour of each plot can be changed using the colour selection tool.</para>
+      <tip><title>tip</title>
+        <para>Keep in mind that if the plot is to be published it will be a lot smaller than what is displayed on the screen. Font sizes in excess of 20 points are generally needed to ensure good readability for the end-user. When printing in black and white some colours may not be clearly seen or be readily distinguishable from other colours.</para>
+      </tip>
     </sect2>
   </sect1>
 </article>
