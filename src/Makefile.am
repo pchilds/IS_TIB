@@ -12,7 +12,5 @@ InvScatt_SOURCES=		\
 	proc.c			\
 	proc.h			\
 	disp.c			\
-	disp.h			\
-	plotlinear0-1-0.c	\
-	plotlinear0-1-0.h
+	disp.h
 InvScatt_LDADD=$(IS_LIBS)
