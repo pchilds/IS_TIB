@@ -33,12 +33,12 @@ void dpa(GtkWidget *wgt, gpointer dta)
 	GdkColor clr;
 	gdouble mny, mxy, xi, xf;
 	gdouble *dpr;
-	PlotLinear *plt;
+	GtkPlotLinear *plt;
 
 	switch (gtk_notebook_get_current_page(GTK_NOTEBOOK(nb2)))
 	{
 		case 1:
-		plt=PLOT_LINEAR(pt2);
+		plt=GTK_PLOT_LINEAR(pt2);
 		g_free(plt->xlab);
 		g_free(plt->ylab);
 		pango_font_description_free(plt->lfont);
@@ -62,10 +62,10 @@ void dpa(GtkWidget *wgt, gpointer dta)
 		xi=((gdouble) (clr.blue))/65535;
 		*dpr=xi;
 		g_object_get(G_OBJECT(pt2), "xmin", &xi, "xmax", &xf, "ymin", &mny, "ymax", &mxy, NULL);
-		plot_linear_update_scale(pt2, xi, xf, mny, mxy);
+		gtk_plot_linear_update_scale(pt2, xi, xf, mny, mxy);
 		break;
 		default:
-		plt=PLOT_LINEAR(pt1);
+		plt=GTK_PLOT_LINEAR(pt1);
 		g_free(plt->xlab);
 		g_free(plt->ylab);
 		pango_font_description_free(plt->lfont);
@@ -107,7 +107,7 @@ void dpa(GtkWidget *wgt, gpointer dta)
 		xi=((gdouble) (clr.blue))/65535;
 		*dpr=xi;
 		g_object_get(G_OBJECT(pt1), "xmin", &xi, "xmax", &xf, "ymin", &mny, "ymax", &mxy, NULL);
-		plot_linear_update_scale(pt1, xi, xf, mny, mxy);
+		gtk_plot_linear_update_scale(pt1, xi, xf, mny, mxy);
 		break;
 	}
 }
@@ -122,7 +122,7 @@ void dpr(GtkWidget *wgt, gpointer dta)
 	GtkAdjustment *adj;
 	GtkWidget *btt, *hbx, *hwn, *lbl, *spr, *tbl, *vbx;
 	guint alp;
-	PlotLinear *plt;
+	GtkPlotLinear *plt;
 
 	hwn=gtk_dialog_new_with_buttons(_("Display Properties"), GTK_WINDOW(dta), GTK_DIALOG_DESTROY_WITH_PARENT, NULL);
 	g_signal_connect_swapped(G_OBJECT(hwn), "destroy", G_CALLBACK(gtk_widget_destroy), G_OBJECT(hwn));
@@ -138,7 +138,7 @@ void dpr(GtkWidget *wgt, gpointer dta)
 	gtk_notebook_set_tab_pos(GTK_NOTEBOOK(nb2), GTK_POS_TOP);
 	tbl=gtk_table_new(4, 2, FALSE);
 	gtk_widget_show(tbl);
-	plt=PLOT_LINEAR(pt1);
+	plt=GTK_PLOT_LINEAR(pt1);
 	lbl=gtk_label_new(_("Axis label font:"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(tbl), lbl, 1, 2, 0, 1, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
@@ -225,7 +225,7 @@ void dpr(GtkWidget *wgt, gpointer dta)
 	gtk_notebook_append_page(GTK_NOTEBOOK(nb2), hbx, lbl);
 	tbl=gtk_table_new(4, 2, FALSE);
 	gtk_widget_show(tbl);
-	plt=PLOT_LINEAR(pt2);
+	plt=GTK_PLOT_LINEAR(pt2);
 	lbl=gtk_label_new(_("Axis label font:"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(tbl), lbl, 1, 2, 0, 1, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
@@ -318,9 +318,9 @@ void upc(GtkWidget *wgt, gpointer dta)
 {
 	GdkColor cl1;
 	guint16 alp;
-	PlotLinear *plt;
+	GtkPlotLinear *plt;
 
-	plt=PLOT_LINEAR(pt1);
+	plt=GTK_PLOT_LINEAR(pt1);
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(wgt)))
 	{
 		(cl1.red)=(guint16) (65535*g_array_index((plt->rd), gdouble, 0));

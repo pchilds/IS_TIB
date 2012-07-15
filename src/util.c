@@ -56,7 +56,7 @@ void abt(GtkWidget *wgt, gpointer dta)
 	g_signal_connect_swapped(G_OBJECT(hwn), "response", G_CALLBACK(gtk_widget_destroy), G_OBJECT(hwn));
 }
 
-void pmv(PlotLinear *plt, gpointer dta)
+void pmv(GtkPlotLinear *plt, gpointer dta)
 {
 	gchar *str;
 

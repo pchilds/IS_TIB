@@ -28,5 +28,5 @@
 	extern GtkWidget *sbr;
 	void hlp(GtkWidget*, gpointer);
 	void abt(GtkWidget*, gpointer);
-	void pmv(PlotLinear*, gpointer);
+	void pmv(GtkPlotLinear*, gpointer);
 #endif

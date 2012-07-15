@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 	GtkAccelGroup *acc=NULL;
 	GtkAdjustment *adj;
 	GtkWidget *vbx, *mnb, *mnu, *smn, *mni, *hpn, *tbl, *lbl, *btt;
-	PlotLinear *plt;
+	GtkPlotLinear *plt;
 
 	bindtextdomain(PACKAGE, LOCALEDIR);
 	bind_textdomain_codeset(PACKAGE, "UTF-8");
@@ -234,7 +234,7 @@ int main(int argc, char *argv[])
 	gtk_paned_add1(GTK_PANED(hpn), tbl);
 	tbl=gtk_table_new(1, 1, FALSE);
 	gtk_widget_show(tbl);
-	pt1=plot_linear_new();
+	pt1=gtk_plot_linear_new();
 	g_signal_connect(pt1, "moved", G_CALLBACK(pmv), NULL);
 	gtk_widget_show(pt1);
 	gtk_table_attach(GTK_TABLE(tbl), pt1, 0, 1, 0, 1, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK |GTK_EXPAND, 2, 2);
@@ -274,7 +274,7 @@ int main(int argc, char *argv[])
 	gtk_paned_add1(GTK_PANED(hpn), tbl);
 	tbl=gtk_table_new(1, 1, FALSE);
 	gtk_widget_show(tbl);
-	pt2=plot_linear_new();
+	pt2=gtk_plot_linear_new();
 	g_signal_connect(pt2, "moved", G_CALLBACK(pmv), NULL);
 	gtk_widget_show(pt2);
 	gtk_table_attach(GTK_TABLE(tbl), pt2, 0, 1, 0, 1, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK |GTK_EXPAND, 2, 2);
@@ -285,7 +285,7 @@ int main(int argc, char *argv[])
 	gtk_box_pack_start(GTK_BOX(vbx), sbr, FALSE, FALSE, 2);
 	gtk_widget_show(sbr);
 	{fld=g_strdup("/home"); flr=g_strdup("/home"); fgs=0;}
-	plt=PLOT_LINEAR(pt1);
+	plt=GTK_PLOT_LINEAR(pt1);
 	{g_array_set_size((plt->sizes), 2); g_array_set_size((plt->ind), 2);}
 	gtk_widget_show(wdw);
 	gtk_main();

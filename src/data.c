@@ -36,7 +36,7 @@ void opd(GtkWidget *wgt, gpointer dta)
 	gint k, lc, sal;
 	gint *ipr;
 	GtkWidget *wfl;
-	PlotLinear *plt;
+	GtkPlotLinear *plt;
 
 	wfl=gtk_file_chooser_dialog_new(_("Select Data File"), GTK_WINDOW(dta), GTK_FILE_CHOOSER_ACTION_OPEN, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL);
 	gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(wfl), FALSE);
@@ -54,7 +54,7 @@ void opd(GtkWidget *wgt, gpointer dta)
 		{
 			sta=g_strsplit_set(cts, "\r\n", 0);
 			sal=g_strv_length(sta);
-			plt=PLOT_LINEAR(pt1);
+			plt=GTK_PLOT_LINEAR(pt1);
 			ipr=&g_array_index((plt->sizes), gint, 1);
 			*ipr=0;
 			lc=((plt->xdata)->len);
@@ -197,7 +197,7 @@ void opd(GtkWidget *wgt, gpointer dta)
 			str=g_strdup_printf(_("File: %s successfully loaded."), fin);
 			gtk_statusbar_push(GTK_STATUSBAR(sbr), gtk_statusbar_get_context_id(GTK_STATUSBAR(sbr), str), str);
 			g_free(str);
-			plot_linear_update_scale_pretty(pt1, xi, xf, mny, mxy);
+			gtk_plot_linear_update_scale_pretty(pt1, xi, xf, mny, mxy);
 			gtk_notebook_set_current_page(GTK_NOTEBOOK(nbk), 0);
 		}
 		else
@@ -297,29 +297,29 @@ void prg(GtkWidget *wgt, gpointer dta)
 				flt=gtk_file_chooser_get_filter(GTK_FILE_CHOOSER(wfl));
 				if (flt==eps)
 				{
-					if (g_str_has_suffix(f1, ".eps")) plot_linear_print_eps(pt2, f1);
+					if (g_str_has_suffix(f1, ".eps")) gtk_plot_linear_print_eps(pt2, f1);
 					else
 					{
 						f2=g_strconcat(f1, ".eps", NULL);
-						plot_linear_print_eps(pt2, f2);
+						gtk_plot_linear_print_eps(pt2, f2);
 						g_free(f2);
 					}
 				}
 				else if (flt==svg)
 				{
-					if (g_str_has_suffix(f1, ".svg")) plot_linear_print_svg(pt2, f1);
+					if (g_str_has_suffix(f1, ".svg")) gtk_plot_linear_print_svg(pt2, f1);
 					else
 					{
 						f2=g_strconcat(f1, ".svg", NULL);
-						plot_linear_print_svg(pt2, f2);
+						gtk_plot_linear_print_svg(pt2, f2);
 						g_free(f2);
 					}
 				}
-				else if (g_str_has_suffix(f1, ".png")) plot_linear_print_png(pt2, f1);
+				else if (g_str_has_suffix(f1, ".png")) gtk_plot_linear_print_png(pt2, f1);
 				else
 				{
 					f2=g_strconcat(f1, ".png", NULL);
-					plot_linear_print_png(pt2, f2);
+					gtk_plot_linear_print_png(pt2, f2);
 					g_free(f2);
 				}
 				g_free(f1);
@@ -358,29 +358,29 @@ void prg(GtkWidget *wgt, gpointer dta)
 				flt=gtk_file_chooser_get_filter(GTK_FILE_CHOOSER(wfl));
 				if (flt==eps)
 				{
-					if (g_str_has_suffix(f1, ".eps")) plot_linear_print_eps(pt1, f1);
+					if (g_str_has_suffix(f1, ".eps")) gtk_plot_linear_print_eps(pt1, f1);
 					else
 					{
 						f2=g_strconcat(f1, ".eps", NULL);
-						plot_linear_print_eps(pt1, f2);
+						gtk_plot_linear_print_eps(pt1, f2);
 						g_free(f2);
 					}
 				}
 				else if (flt==svg)
 				{
-					if (g_str_has_suffix(f1, ".svg")) plot_linear_print_svg(pt1, f1);
+					if (g_str_has_suffix(f1, ".svg")) gtk_plot_linear_print_svg(pt1, f1);
 					else
 					{
 						f2=g_strconcat(f1, ".svg", NULL);
-						plot_linear_print_svg(pt1, f2);
+						gtk_plot_linear_print_svg(pt1, f2);
 						g_free(f2);
 					}
 				}
-				else if (g_str_has_suffix(f1, ".png")) plot_linear_print_png(pt1, f1);
+				else if (g_str_has_suffix(f1, ".png")) gtk_plot_linear_print_png(pt1, f1);
 				else
 				{
 					f2=g_strconcat(f1, ".png", NULL);
-					plot_linear_print_png(pt1, f2);
+					gtk_plot_linear_print_png(pt1, f2);
 					g_free(f2);
 				}
 				g_free(f1);
@@ -428,29 +428,29 @@ void prg(GtkWidget *wgt, gpointer dta)
 				flt=gtk_file_chooser_get_filter(GTK_FILE_CHOOSER(wfl));
 				if (flt==eps)
 				{
-					if (g_str_has_suffix(f1, ".eps")) plot_linear_print_eps(pt1, f1);
+					if (g_str_has_suffix(f1, ".eps")) gtk_plot_linear_print_eps(pt1, f1);
 					else
 					{
 						f2=g_strconcat(f1, ".eps", NULL);
-						plot_linear_print_eps(pt1, f2);
+						gtk_plot_linear_print_eps(pt1, f2);
 						g_free(f2);
 					}
 				}
 				else if (flt==svg)
 				{
-					if (g_str_has_suffix(f1, ".svg")) plot_linear_print_svg(pt1, f1);
+					if (g_str_has_suffix(f1, ".svg")) gtk_plot_linear_print_svg(pt1, f1);
 					else
 					{
 						f2=g_strconcat(f1, ".svg", NULL);
-						plot_linear_print_svg(pt1, f2);
+						gtk_plot_linear_print_svg(pt1, f2);
 						g_free(f2);
 					}
 				}
-				else if (g_str_has_suffix(f1, ".png")) plot_linear_print_png(pt1, f1);
+				else if (g_str_has_suffix(f1, ".png")) gtk_plot_linear_print_png(pt1, f1);
 				else
 				{
 					f2=g_strconcat(f1, ".png", NULL);
-					plot_linear_print_png(pt1, f2);
+					gtk_plot_linear_print_png(pt1, f2);
 					g_free(f2);
 				}
 				g_free(f1);
@@ -501,7 +501,7 @@ void prt(GtkWidget *wgt, gpointer dta)
 void sav(GtkWidget *wgt, gpointer dta)
 {
 	GtkWidget *wfl, *dlg, *cnt, *lbl;
-	PlotLinear *plt;
+	GtkPlotLinear *plt;
 	gchar *cts, *str, *st2, *fot=NULL;
 	gchar s1[10], s2[10], s3[10], s4[10];
 	gint j, k, sz4;
@@ -519,7 +519,7 @@ void sav(GtkWidget *wgt, gpointer dta)
 			gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(wfl), TRUE);
 			if (gtk_dialog_run(GTK_DIALOG(wfl))==GTK_RESPONSE_ACCEPT)
 			{
-				plt=PLOT_LINEAR(pt2);
+				plt=GTK_PLOT_LINEAR(pt2);
 				g_free(flr);
 				flr=gtk_file_chooser_get_current_folder(GTK_FILE_CHOOSER(wfl));
 				fot=gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(wfl));
@@ -609,7 +609,7 @@ void sav(GtkWidget *wgt, gpointer dta)
 			gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(wfl), TRUE);
 			if (gtk_dialog_run(GTK_DIALOG(wfl))==GTK_RESPONSE_ACCEPT)
 			{
-				plt=PLOT_LINEAR(pt1);
+				plt=GTK_PLOT_LINEAR(pt1);
 				g_free(flr);
 				flr=gtk_file_chooser_get_current_folder(GTK_FILE_CHOOSER(wfl));
 				fot=gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(wfl));

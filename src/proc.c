@@ -26,13 +26,13 @@
 
 void prs(GtkWidget *wgt, gpointer dta)
 {
-	PlotLinear *plt;
+	GtkPlotLinear *plt;
 	gint sz;
 	gchar *str;
 
 	if ((fgs&PROC_TRS)!=0)
 	{
-		plt=PLOT_LINEAR(pt2);
+		plt=GTK_PLOT_LINEAR(pt2);
 		sz=g_array_index((plt->sizes), gint, 0);
 		fgs|=PROC_PRS;
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(nbk), 0);
@@ -53,11 +53,11 @@ void trs(GtkWidget *wgt, gpointer dta) /* need to incorporate case for inversion
 	gdouble *dpr;
 	gint j, lc, sp, st;
 	gint *ipr;
-	PlotLinear *plt;
+	GtkPlotLinear *plt;
 
 	if ((fgs&PROC_OPN)!=0)
 	{
-		plt=PLOT_LINEAR(pt1);
+		plt=GTK_PLOT_LINEAR(pt1);
 		lc=g_array_index((plt->sizes), gint, 0);
 		iv=gtk_spin_button_get_value(GTK_SPIN_BUTTON(wst));
 		j=0;
@@ -190,7 +190,7 @@ void trs(GtkWidget *wgt, gpointer dta) /* need to incorporate case for inversion
 		fftw_destroy_plan(p);
 		fftw_free(y);*/
 		sp-=st;
-		plt=PLOT_LINEAR(pt2);
+		plt=GTK_PLOT_LINEAR(pt2);
 		ipr=&g_array_index((plt->sizes), gint, 0);
 		{g_array_set_size((plt->xdata), sp); g_array_set_size((plt->ydata),sp);}
 		dpr=&g_array_index((plt->ydata), gdouble, 0);
@@ -208,7 +208,7 @@ void trs(GtkWidget *wgt, gpointer dta) /* need to incorporate case for inversion
 			dpr=&g_array_index((plt->xdata), gdouble, j);
 			*dpr=j*dx;
 		}
-		plot_linear_update_scale_pretty(pt2, 0, *dpr, 0, yx);
+		gtk_plot_linear_update_scale_pretty(pt2, 0, *dpr, 0, yx);
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(nbk), 1);
 		fgs|=PROC_TRS;
 	}
