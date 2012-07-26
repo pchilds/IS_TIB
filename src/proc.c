@@ -30,11 +30,11 @@ void prs(GtkWidget *wgt, gpointer dta)
 	gint sz;
 	gchar *str;
 
-	if ((fgs&PROC_TRS)!=0)
+	if ((fgs&PROC_ZDT)!=0)
 	{
 		plt=GTK_PLOT_LINEAR(pt2);
 		sz=g_array_index((plt->sizes), gint, 0);
-		fgs|=PROC_PRS;
+		fgs|=PROC_LDT;
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(nbk), 0);
 	}
 	else
@@ -47,106 +47,217 @@ void prs(GtkWidget *wgt, gpointer dta)
 
 void trs(GtkWidget *wgt, gpointer dta) /* need to incorporate case for inversion to 2pi/x */
 {
-	GArray *k, *r;
+	fftw_complex *ir, *rf, *ym, *zm, *tm;
+	fftw_complex beta, cue;
+	fftw_plan p;
 	gchar *str;
-	gdouble dx, iv, iv2, yx;
+	gdouble h, L, dx, iv, iv2, cm, mxy, mny;
 	gdouble *dpr;
-	gint j, lc, sp, st;
+	gint j, m, sz4, nx4, sp, st, zd;
 	gint *ipr;
 	GtkPlotLinear *plt;
 
-	if ((fgs&PROC_OPN)!=0)
+	if ((fgs&PROC_LDT)!=0)
 	{
 		plt=GTK_PLOT_LINEAR(pt1);
-		lc=g_array_index((plt->sizes), gint, 0);
+		sz4=g_array_index((plt->sizes), gint, 0);
+		nx4=g_array_index((plt->ind), gint, 1);
 		iv=gtk_spin_button_get_value(GTK_SPIN_BUTTON(wst));
 		j=0;
-		while ((j<lc)&&(iv>g_array_index((plt->xdata), gdouble, j))) j++;
+		while ((j<sz4)&&(iv>g_array_index((plt->xdata), gdouble, j))) j++;
 		st=j;
 		iv=gtk_spin_button_get_value(GTK_SPIN_BUTTON(wsp));
-		while ((j<lc)&&(iv>=g_array_index((plt->xdata), gdouble, j))) j++;
-		sp=j;
-		r=g_array_sized_new(FALSE, FALSE, sizeof(gdouble), sp);
-		if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(kms)))/* interpolate */
-		{
-			if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(dBs)))
-			{
-				iv2=gtk_spin_button_get_value(GTK_SPIN_BUTTON(fst));
-				if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(tx)))
-				{
-					if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(neg))) /* -TdB0- */
-					{
-						/* fill array */
-					}
-					else /* +TdB0- */
-					{
-						/* fill array */
-					}
-				}
-				else if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(neg))) /* -RdB0- */
-				{
-					/* fill array */
-				}
-				else /* +RdB0- */
-				{
-					/* fill array */
-				}
-			}
-			else if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(tx))) /* -Tl0- +Tl0- */
-			{
-				iv2=gtk_spin_button_get_value(GTK_SPIN_BUTTON(fst));
-				/* fill array */
-			}
-			else /* -Rl0- +Rl0- */
-			{
-				iv2=gtk_spin_button_get_value(GTK_SPIN_BUTTON(fst));
-				/* fill array */
-			}
-		}
-		else if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(dBs)))
+		while ((j<sz4)&&(iv>=g_array_index((plt->xdata), gdouble, j))) j++;
+		sp=j-st;
+		zd=1<<gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(zpd));
+		rf=(fftw_complex*) fftw_malloc(sizeof(fftw_complex)*zd);
+		for (j=0;j<zd;j++) {rf[j][0]=0; rf[j][1]=0;}
+		if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(dBs)))
 		{
 			iv2=gtk_spin_button_get_value(GTK_SPIN_BUTTON(fst));
 			if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(tx)))
 			{
-				if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(neg))) /* -TdB0o+ */
+				if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(neg)))
 				{
-					/*dx=g_array_index((plt->xdata), gdouble, sp-1)-g_array_index((plt->xdata), gdouble, st);*/
-					for (j=st;j<sp;j++)
+					if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(kms)))/* interpolate */
 					{
-						iv=1-exp(LNTOT*(iv2-g_array_index((plt->ydata), gdouble, j)));
-						g_array_append_val(r, iv);
+						dx=MY_C_2PI*(g_array_index((plt->xdata), gdouble, st+sp-1)-g_array_index((plt->xdata), gdouble, st))/(sp-1);
+						L=7.5e9/dx;
+						for (j=0;j<(sp+1)/2;j++)
+						{
+							iv=g_array_index((plt->ydata), gdouble, st+j+sp/2);
+							iv-=L*g_array_index((plt->xdata), gdouble, st+j+sp/2);
+							{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
+							iv=dx*sqrt(1-exp(LNTOT*(iv2-g_array_index((plt->ydata), gdouble, st+j+sp/2))));
+							{rf[j][0]*=iv; rf[j][1]*=iv;}
+						}
+						for (j=1;j<=sp/2;j++)
+						{ 
+							iv=g_array_index((plt->ydata), gdouble, st-j+sp/2);
+							iv-=L*g_array_index((plt->xdata), gdouble, st-j+sp/2);
+							{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
+							iv=dx*sqrt(1-exp(LNTOT*(iv2-g_array_index((plt->ydata), gdouble, st-j+sp/2))));
+							{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
+						}
+					}
+					else /* -TdB0o+ */
+					{
+						dx=((1/g_array_index((plt->xdata), gdouble, st))-(1/g_array_index((plt->xdata), gdouble, st+sp-1)))/(sp-1);
+						L=G_PI_2/dx;
+						dx*=3.0e17;
+						for (j=0;j<(sp+1)/2;j++)
+						{
+							iv=g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2);
+							iv-=L/g_array_index((plt->xdata), gdouble, st-j+(sp-1)/2);
+							{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
+							iv=dx*sqrt(1-exp(LNTOT*(iv2-g_array_index((plt->ydata), gdouble, st+j+sp/2))));
+							{rf[j][0]*=iv; rf[j][1]*=iv;}
+						}
+						for (j=1;j<=sp/2;j++)
+						{ 
+							iv=g_array_index((plt->ydata), gdouble, st+j+(sp-1)/2);
+							iv-=L/g_array_index((plt->xdata), gdouble, st+j+(sp-1)/2);
+							{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
+							iv=dx*sqrt(1-exp(LNTOT*(iv2-g_array_index((plt->ydata), gdouble, st-j+sp/2))));
+							{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
+						}
+					}
+				}
+				else if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(kms)))/* interpolate */
+				{
+					dx=MY_C_2PI*(g_array_index((plt->xdata), gdouble, st+sp-1)-g_array_index((plt->xdata), gdouble, st))/(sp-1);
+					L=7.5e9/dx;
+					for (j=0;j<(sp+1)/2;j++)
+					{
+						iv=g_array_index((plt->ydata), gdouble, st+j+sp/2);
+						iv-=L*g_array_index((plt->xdata), gdouble, st+j+sp/2);
+						{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
+						iv=dx*sqrt(1-exp(LNTOT*(g_array_index((plt->ydata), gdouble, st+j+sp/2)-iv2)));
+						{rf[j][0]*=iv; rf[j][1]*=iv;}
+					}
+					for (j=1;j<=sp/2;j++)
+					{
+						iv=g_array_index((plt->ydata), gdouble, st-j+sp/2);
+						iv-=L*g_array_index((plt->xdata), gdouble, st-j+sp/2);
+						{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
+						iv=dx*sqrt(1-exp(LNTOT*(g_array_index((plt->ydata), gdouble, st-j+sp/2)-iv2)));
+						{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
 					}
 				}
 				else /* +TdB0o+ */
 				{
-					/*dx=g_array_index((plt->xdata), gdouble, sp-1)-g_array_index((plt->xdata), gdouble, st);*/
-					for (j=st;j<sp;j++)
+					dx=((1/g_array_index((plt->xdata), gdouble, st))-(1/g_array_index((plt->xdata), gdouble, st+sp-1)))/(sp-1);
+					L=G_PI_2/dx;
+					dx*=3.0e17;
+					for (j=0;j<(sp+1)/2;j++)
 					{
-						iv=1-exp(LNTOT*(g_array_index((plt->ydata), gdouble, j)-iv2));
-						g_array_append_val(r, iv);
+						iv=g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2);
+						iv-=L/g_array_index((plt->xdata), gdouble, st-j+(sp-1)/2);
+						{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
+						iv=dx*sqrt(1-exp(LNTOT*(g_array_index((plt->ydata), gdouble, st+j+sp/2)-iv2)));
+						{rf[j][0]*=iv; rf[j][1]*=iv;}
+					}
+					for (j=1;j<=sp/2;j++)
+					{
+						iv=g_array_index((plt->ydata), gdouble, st+j+(sp-1)/2);
+						iv-=L/g_array_index((plt->xdata), gdouble, st+j+(sp-1)/2);
+						{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
+						iv=dx*sqrt(1-exp(LNTOT*(g_array_index((plt->ydata), gdouble, st-j+sp/2)-iv2)));
+						{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
 					}
 				}
 			}
-			else if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(neg))) /* -RdB0o+ */
+			else if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(neg)))
 			{
-				/*dx=g_array_index((plt->xdata), gdouble, sp-1)-g_array_index((plt->xdata), gdouble, st);*/
-				for (j=st;j<sp;j++)
+				if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(kms)))/* interpolate */
 				{
-					iv=exp(LNTOT*(iv2-g_array_index((plt->ydata), gdouble, j)));
-					g_array_append_val(r, iv);
+					dx=MY_C_2PI*(g_array_index((plt->xdata), gdouble, st+sp-1)-g_array_index((plt->xdata), gdouble, st))/(sp-1);
+					L=7.5e9/dx;
+					for (j=0;j<(sp+1)/2;j++)
+					{
+						iv=g_array_index((plt->ydata), gdouble, st+j+sp/2);
+						iv-=L*g_array_index((plt->xdata), gdouble, st+j+sp/2);
+						{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
+						iv=dx*exp(LNTOW*(iv2-g_array_index((plt->ydata), gdouble, st+j+sp/2)));
+						{rf[j][0]*=iv; rf[j][1]*=iv;}
+					}
+					for (j=1;j<=sp/2;j++)
+					{
+						iv=g_array_index((plt->ydata), gdouble, st-j+sp/2);
+						iv-=L*g_array_index((plt->xdata), gdouble, st-j+sp/2);
+						{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
+						iv=dx*exp(LNTOW*(iv2-g_array_index((plt->ydata), gdouble, st-j+sp/2)));
+						{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
+					}
+				}
+				else /* -RdB0o+ */
+				{
+					dx=((1/g_array_index((plt->xdata), gdouble, st))-(1/g_array_index((plt->xdata), gdouble, st+sp-1)))/(sp-1);
+					L=G_PI_2/dx;
+					dx*=3.0e17;
+					for (j=0;j<(sp+1)/2;j++)
+					{
+						iv=g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2);
+						iv-=L/g_array_index((plt->xdata), gdouble, st-j+(sp-1)/2);
+						{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
+						iv=dx*exp(LNTOW*(iv2-g_array_index((plt->ydata), gdouble, st+j+sp/2)));
+						{rf[j][0]*=iv; rf[j][1]*=iv;}
+					}
+					for (j=1;j<=sp/2;j++)
+					{
+						iv=g_array_index((plt->ydata), gdouble, st+j+(sp-1)/2);
+						iv-=L/g_array_index((plt->xdata), gdouble, st+j+(sp-1)/2);
+						{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
+						iv=dx*exp(LNTOW*(iv2-g_array_index((plt->ydata), gdouble, st-j+sp/2)));
+						{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
+					}
+				}
+			}
+			else if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(kms)))/* interpolate */
+			{
+				dx=MY_C_2PI*(g_array_index((plt->xdata), gdouble, st+sp-1)-g_array_index((plt->xdata), gdouble, st))/(sp-1);
+				L=7.5e9/dx;
+				for (j=0;j<(sp+1)/2;j++)
+				{
+					iv=g_array_index((plt->ydata), gdouble, st+j+sp/2);
+					iv-=L*g_array_index((plt->xdata), gdouble, st+j+sp/2);
+					{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
+					iv=dx*exp(LNTOW*(g_array_index((plt->ydata), gdouble, st+j+sp/2)-iv2));
+					{rf[j][0]*=iv; rf[j][1]*=iv;}
+				}
+				for (j=1;j<=sp/2;j++)
+				{
+					iv=g_array_index((plt->ydata), gdouble, st-j+sp/2);
+					iv-=L*g_array_index((plt->xdata), gdouble, st-j+sp/2);
+					{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
+					iv=dx*exp(LNTOW*(g_array_index((plt->ydata), gdouble, st-j+sp/2)-iv2));
+					{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
 				}
 			}
 			else /* +RdB0o+ */
 			{
-				/*dx=g_array_index((plt->xdata), gdouble, sp-1)-g_array_index((plt->xdata), gdouble, st);*/
-				for (j=st;j<sp;j++)
+				dx=((1/g_array_index((plt->xdata), gdouble, st))-(1/g_array_index((plt->xdata), gdouble, st+sp-1)))/(sp-1);
+				L=G_PI_2/dx;
+				dx*=3.0e17;
+				for (j=0;j<(sp+1)/2;j++)
 				{
-					iv=exp(LNTOT*(g_array_index((plt->ydata), gdouble, j)-iv2));
-					g_array_append_val(r, iv);
+					iv=g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2);
+					iv-=L/g_array_index((plt->xdata), gdouble, st-j+(sp-1)/2);
+					{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
+					iv=dx*exp(LNTOW*(g_array_index((plt->ydata), gdouble, st+j+sp/2)-iv2));
+					{rf[j][0]*=iv; rf[j][1]*=iv;}
+				}
+				for (j=1;j<=sp/2;j++)
+				{
+					iv=g_array_index((plt->ydata), gdouble, st+j+(sp-1)/2);
+					iv-=L/g_array_index((plt->xdata), gdouble, st+j+(sp-1)/2);
+					{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
+					iv=dx*exp(LNTOW*(g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2)-iv2));
+					{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
 				}
 			}
 		}
-		else if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(tx))) /* -Tl0o+ and +Tl0o+ */ 
+		else
 		{
 			iv2=gtk_spin_button_get_value(GTK_SPIN_BUTTON(fst));
 			if ((iv2<DZE)&&(iv2>NZE))
@@ -155,62 +266,177 @@ void trs(GtkWidget *wgt, gpointer dta) /* need to incorporate case for inversion
 				gtk_statusbar_push(GTK_STATUSBAR(sbr), gtk_statusbar_get_context_id(GTK_STATUSBAR(sbr), str), str);
 				g_free(str);
 			}
-			else
+			else if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(tx))) 
 			{
-				/*dx=g_array_index((plt->xdata), gdouble, sp-1)-g_array_index((plt->xdata), gdouble, st);*/
-				for (j=st;j<sp;j++)
+				if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(kms)))/* interpolate */
 				{
-					iv=(1-g_array_index((plt->ydata), gdouble, j))/iv2;
-					g_array_append_val(r, iv);
+					dx=MY_C_2PI*(g_array_index((plt->xdata), gdouble, st+sp-1)-g_array_index((plt->xdata), gdouble, st))/(sp-1);
+					L=7.5e9/dx;
+					for (j=0;j<(sp+1)/2;j++)
+					{
+						iv=g_array_index((plt->ydata), gdouble, st+j+sp/2);
+						iv-=L*g_array_index((plt->xdata), gdouble, st+j+sp/2);
+						{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
+						iv=dx*sqrt(1-(g_array_index((plt->ydata), gdouble, st+j+sp/2)/iv2));
+						{rf[j][0]*=iv; rf[j][1]*=iv;}
+					}
+					for (j=1;j<=sp/2;j++)
+					{
+						iv=g_array_index((plt->ydata), gdouble, st-j+sp/2);
+						iv-=L*g_array_index((plt->xdata), gdouble, st-j+sp/2);
+						{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
+						iv=dx*sqrt(1-(g_array_index((plt->ydata), gdouble, st-j+sp/2)/iv2));
+						{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
+					}
+				}
+				else /* -Tl0o+ and +Tl0o+ */
+				{
+					dx=((1/g_array_index((plt->xdata), gdouble, st))-(1/g_array_index((plt->xdata), gdouble, st+sp-1)))/(sp-1);
+					L=G_PI_2/dx;
+					dx*=3.0e17;
+					for (j=0;j<(sp+1)/2;j++)
+					{
+						iv=g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2);
+						iv-=L/g_array_index((plt->xdata), gdouble, st-j+(sp-1)/2);
+						{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
+						iv=dx*sqrt(1-(g_array_index((plt->ydata), gdouble, st+j+sp/2)/iv2));
+						{rf[j][0]*=iv; rf[j][1]*=iv;}
+					}
+					for (j=1;j<=sp/2;j++)
+					{
+						iv=g_array_index((plt->ydata), gdouble, st+j+(sp-1)/2);
+						iv-=L/g_array_index((plt->xdata), gdouble, st+j+(sp-1)/2);
+						{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
+						iv=dx*sqrt(1-(g_array_index((plt->ydata), gdouble, st-j+sp/2)/iv2));
+						{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
+					}
+				}
+			}
+			else if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(kms)))/* interpolate */
+			{
+				dx=MY_C_2PI*(g_array_index((plt->xdata), gdouble, st+sp-1)-g_array_index((plt->xdata), gdouble, st))/(sp-1);
+				L=7.5e9/dx;
+				for (j=0;j<(sp+1)/2;j++)
+				{
+					iv=g_array_index((plt->ydata), gdouble, st+j+sp/2);
+					iv-=L*g_array_index((plt->xdata), gdouble, st+j+sp/2);
+					{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
+					iv=dx*sqrt(g_array_index((plt->ydata), gdouble, st+j+sp/2)/iv2);
+					{rf[j][0]*=iv; rf[j][1]*=iv;}
+				}
+				for (j=1;j<=sp/2;j++)
+				{
+					iv=g_array_index((plt->ydata), gdouble, st-j+sp/2);
+					iv-=L*g_array_index((plt->xdata), gdouble, st-j+sp/2);
+					{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
+					iv=dx*sqrt(g_array_index((plt->ydata), gdouble, st-j+sp/2)/iv2);
+					{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
+				}
+			}
+			else/* -Rl0o+ and +Rl0o+ */
+			{
+				dx=((1/g_array_index((plt->xdata), gdouble, st))-(1/g_array_index((plt->xdata), gdouble, st+sp-1)))/(sp-1);
+				L=G_PI_2/dx;
+				dx*=3.0e17;
+				for (j=0;j<(sp+1)/2;j++)
+				{
+					iv=g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2);
+					iv-=L/g_array_index((plt->xdata), gdouble, st-j+(sp-1)/2);
+					{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
+					iv=dx*sqrt(g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2)/iv2);
+					{rf[j][0]*=iv; rf[j][1]*=iv;}
+				}
+				for (j=1;j<=sp/2;j++)
+				{
+					iv=g_array_index((plt->ydata), gdouble, st+j+(sp-1)/2);
+					iv-=L/g_array_index((plt->xdata), gdouble, st+j+(sp-1)/2);
+					{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
+					iv=dx*sqrt(g_array_index((plt->ydata), gdouble, st+j+sp/2)/iv2);
+					{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
 				}
 			}
 		}
-		else /* -Rl0o+ and +Rl0o+ */ 
-		{
-			iv2=gtk_spin_button_get_value(GTK_SPIN_BUTTON(fst));
-			if ((iv2<DZE)&&(iv2>NZE))
-			{
-				str=g_strdup(_("Offset must be nonzero for linear measurements."));
-				gtk_statusbar_push(GTK_STATUSBAR(sbr), gtk_statusbar_get_context_id(GTK_STATUSBAR(sbr), str), str);
-				g_free(str);
-			}
-			else
-			{
-				/*dx=g_array_index((plt->xdata), gdouble, sp-1)-g_array_index((plt->xdata), gdouble, st);*/
-				for (j=st;j<sp;j++)
-				{
-					iv=g_array_index((plt->ydata), gdouble, j)/iv2;
-					g_array_append_val(r, iv);
-				}
-			}
-		}
-		/*star=fftw_malloc(sizeof(double)*n);
-		p=fftw_plan_many_r2r(1, &zp, jdimx, y, NULL, 1, zp, star, NULL, 1, zp, &type, FFTW_ESTIMATE);
+		ir=(fftw_complex*) fftw_malloc(sizeof(fftw_complex)*zd);
+		p=fftw_plan_dft_1d(zd, rf, ir, FFTW_FORWARD, FFTW_ESTIMATE);/*dw=cdk, dx=cdk/2pi=cdld/ld^2*/
 		fftw_execute(p);
 		fftw_destroy_plan(p);
-		fftw_free(y);*/
-		sp-=st;
-		plt=GTK_PLOT_LINEAR(pt2);
-		ipr=&g_array_index((plt->sizes), gint, 0);
-		{g_array_set_size((plt->xdata), sp); g_array_set_size((plt->ydata),sp);}
-		dpr=&g_array_index((plt->ydata), gdouble, 0);
-		/*yx=*/		
-		*dpr=yx;
-		dpr=&g_array_index((plt->xdata), gdouble, 0);
-		*dpr=0;
-		for (j=1;j<sp;j++)
+		fftw_free(rf);
+		/*have zd ir points only N=zd/2 useful, h=2pi/zd.dw=1/zd.dx L=hN/2=1/4.dx*/
+		{g_array_free(z, TRUE); g_array_free(kp, TRUE); g_array_free(sz2, TRUE); g_array_free(nx2, TRUE);}
+		z=g_array_new(FALSE, FALSE, sizeof(gdouble));
+		kp=g_array_new(FALSE, FALSE, sizeof(gdouble));
+		sz2=g_array_new(FALSE, FALSE, sizeof(gint));
+		nx2=g_array_new(FALSE, FALSE, sizeof(gint));
+		h=1/(dx*(gdouble)zd);
+		{st=0; zd=zd>>1; mny=0;}
+		g_array_append_val(sz2, zd);
+		g_array_append_val(sz2, zd);
+		g_array_append_val(nx2, st);
+		g_array_append_val(nx2, zd);
+		ym=(fftw_complex*) fftw_malloc(sizeof(fftw_complex)*zd);
+		zm=(fftw_complex*) fftw_malloc(sizeof(fftw_complex)*zd);
+		tm=(fftw_complex*) fftw_malloc(sizeof(fftw_complex)*zd);
+		for (j=0;j<zd;j++) {ym[j][0]=0; ym[j][1]=0; zm[j][0]=0; zm[j][1]=0; g_array_append_val(kp, mny); g_array_append_val(kp, mny);}
+		{beta[0]=-ir[0][0]/2; beta[1]=-ir[0][1]/2;}
+		{beta[0]*=h; beta[1]*=h;}
+		cm=1/(1-(beta[0]*beta[0])-(beta[1]*beta[1]));
+		{cue[0]=-cm*(ir[1][0]+ir[0][0]); cue[0]=-cm*(ir[1][1]+ir[0][1]);}
+		dpr=&g_array_index(kp, gdouble, 0);
+		mxy=sqrt((cue[0]*cue[0])+(cue[1]*cue[1]));
+		*dpr=mxy;
+		dpr=&g_array_index(kp, gdouble, zd);
+		iv=atan2(cue[1],cue[0]);
+		*dpr=iv;
+		if (iv>mxy) mxy=iv;
+		else if (iv<mny) mny=iv;
+		{ym[0][0]=cm; zm[0][0]=cm*beta[0]; zm[0][1]=cm*beta[1];}
+		{beta[0]+=(ym[0][1]*ir[1][1])-(ym[0][0]*ir[1][0]); beta[1]-=(ym[0][0]*ir[1][1])+(ym[0][1]*ir[1][0]);}
+		for (m=1;m<zd;m++)
 		{
-			dpr=&g_array_index((plt->ydata), gdouble, j);
-			/*iv=star[j+(k*zp)];
-			iv2=star[((k+1)*zp)-j];*/
-			*dpr=sqrt((iv*iv)+(iv2*iv2));
-			if (yx<(*dpr)) yx=(*dpr);
-			dpr=&g_array_index((plt->xdata), gdouble, j);
-			*dpr=j*dx;
+			{beta[0]*=h; beta[1]*=h;}
+			cm=1/(1-(beta[0]*beta[0])-(beta[1]*beta[1]));
+			for (j=0;j<m;j++)/*propagate ym,zm to ym+1,zm+1 */
+			{
+				{ym[j][0]*=cm; ym[j][1]*=cm; zm[j][0]*=cm; zm[j][1]*=cm;}
+				{tm[j][0]=(zm[j][0]*beta[0])+(zm[j][1]*beta[1]); tm[j][1]=(zm[j][0]*beta[1])-(zm[j][1]*beta[0]);}
+				{zm[j+1][0]+=(ym[m-1-j][0]*beta[0])+(ym[m-1-j][1]*beta[1]); zm[j+1][1]+=(ym[m-1-j][0]*beta[1])-(ym[m-1-j][1]*beta[0]);}
+				{ym[j+1][0]+=tm[m-1-j][0]; ym[j+1][1]+=tm[m-1-j][1];}
+			}
+			{beta[0]=0; beta[1]=0;}/*evaluate bm+1 and qm+1*/
+			for (j=0;j<=m;j++) {beta[0]+=(ym[j][1]*ir[m+1-j][1])-(ym[j][0]*ir[m+1-j][0]); beta[1]-=(ym[j][0]*ir[m+1-j][1])+(ym[j][1]*ir[m+1-j][0]);}
+			{cue[0]=beta[0]; cue[1]=beta[1];}
+			for (j=0;j<=m;j++) {cue[0]+=(ym[j][1]*ir[m-j][1])-(ym[j][0]*ir[m-j][0]); cue[1]-=(ym[j][0]*ir[m-j][1])+(ym[j][1]*ir[m-j][0]);}
+			dpr=&g_array_index(kp, gdouble, m);
+			iv=sqrt((cue[0]*cue[0])+(cue[1]*cue[1]));
+			*dpr=iv;
+			if (iv>mxy) mxy=iv;
+			else if (iv<mny) mny=iv;
+			dpr=&g_array_index(kp, gdouble, zd+m);
+			iv=atan2(cue[1],cue[0]);
+			*dpr=iv;
+			if (iv>mxy) mxy=iv;
+			else if (iv<mny) mny=iv;
 		}
-		gtk_plot_linear_update_scale_pretty(pt2, 0, *dpr, 0, yx);
+		{fftw_free(ir); fftw_free(ym); fftw_free(zm); fftw_free(tm);}
+		iv=(1-zd)*h/2;/*maybe convert from time units to actual distance*/
+		g_array_append_val(z, iv);
+		for (j=1;j<zd;j++)
+		{
+			iv+=h;
+			g_array_append_val(z, iv);
+		}
+		iv=(1-zd)*h/2;
+		g_array_append_val(z, iv);
+		for (j=1;j<zd;j++)
+		{
+			iv+=h;
+			g_array_append_val(z, iv);
+		}
+		plt=GTK_PLOT_LINEAR(pt2);
+		{(plt->sizes)=sz2; (plt->ind)=nx2; (plt->xdata)=z; (plt->ydata)=kp;}
+		gtk_plot_linear_update_scale_pretty(pt2, -iv, iv, mny, mxy);
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(nbk), 1);
-		fgs|=PROC_TRS;
+		fgs|=PROC_ZDT;
 	}
 	else
 	{

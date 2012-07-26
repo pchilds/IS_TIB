@@ -14,3 +14,4 @@ InvScatt_SOURCES=		\
 	disp.c			\
 	disp.h
 InvScatt_LDADD=$(IS_LIBS)
+MAINTAINERCLEANFILES=Makefile.in

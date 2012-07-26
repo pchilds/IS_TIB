@@ -37,14 +37,16 @@
 #include "proc.h"
 #include "util.h"
 
+GArray *l, *R, *z, *kp, *r1, *g1, *b1, *a1, *r2, *g2, *b2, *a2, *sz1, *nx1, *sz2, *nx2;
 gchar *fld=NULL, *flr=NULL;
 gint fgs;
 GSList *grp=NULL;
-GtkWidget *dBs, *fst, *kms, *nbk, *neg, *psp, *pst, *pt1, *pt2, *r0, *ri, *rp, *sbr, *tx, *wdw, *wk, *wsp, *wst;
+GtkWidget *dBs, *fst, *kms, *nbk, *neg, *psp, *pst, *pt1, *pt2, *r0, *ri, *rp, *sbr, *tx, *wdw, *wk, *wsp, *wst, *zpd;
 
 int main(int argc, char *argv[])
 {
 	AtkObject *awg, *all;
+	gdouble td;
 	GtkAccelGroup *acc=NULL;
 	GtkAdjustment *adj;
 	GtkWidget *vbx, *mnb, *mnu, *smn, *mni, *hpn, *tbl, *lbl, *btt;
@@ -116,7 +118,7 @@ int main(int argc, char *argv[])
 	gtk_menu_shell_append(GTK_MENU_SHELL(mnb), mni);
 	mnu=gtk_menu_new();
 	smn=gtk_menu_new();
-	wk=gtk_check_menu_item_new_with_label(_("Wavelength\n(/number)"));
+	wk=gtk_check_menu_item_new_with_label(_("Domain\n(/number)"));
 	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(wk), TRUE);
 	gtk_menu_shell_append(GTK_MENU_SHELL(smn), wk);
 	gtk_widget_show(wk);
@@ -192,7 +194,7 @@ int main(int argc, char *argv[])
 	gtk_widget_show(nbk);
 	tbl=gtk_table_new(5, 2, FALSE);
 	gtk_widget_show(tbl);
-	lbl=gtk_label_new(_("Spectrum Start:"));
+	lbl=gtk_label_new(_("Spectrum Start\n(nm or /cm):"));
 	gtk_table_attach(GTK_TABLE(tbl), lbl, 0, 1, 0, 1, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(lbl);
 	adj=(GtkAdjustment*) gtk_adjustment_new(0, -G_MAXDOUBLE, G_MAXDOUBLE, 1.0, 5.0, 0.0);
@@ -203,7 +205,7 @@ int main(int argc, char *argv[])
 	all=gtk_widget_get_accessible(GTK_WIDGET(lbl));
 	atk_object_add_relationship(all, ATK_RELATION_LABEL_FOR, awg);
 	atk_object_add_relationship(awg, ATK_RELATION_LABELLED_BY, all);
-	lbl=gtk_label_new(_("Spectrum Stop:"));
+	lbl=gtk_label_new(_("Spectrum Stop\n(nm or /cm):"));
 	gtk_table_attach(GTK_TABLE(tbl), lbl, 1, 2, 0, 1, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(lbl);
 	adj=(GtkAdjustment*) gtk_adjustment_new(1, -G_MAXDOUBLE, G_MAXDOUBLE, 1.0, 5.0, 0.0);
@@ -222,6 +224,17 @@ int main(int argc, char *argv[])
 	gtk_table_attach(GTK_TABLE(tbl), fst, 1, 2, 3, 4, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(fst);
 	awg=gtk_widget_get_accessible(fst);
+	all=gtk_widget_get_accessible(GTK_WIDGET(lbl));
+	atk_object_add_relationship(all, ATK_RELATION_LABEL_FOR, awg);
+	atk_object_add_relationship(awg, ATK_RELATION_LABELLED_BY, all);
+	lbl=gtk_label_new(_("Zero Padding 2^:"));
+	gtk_table_attach(GTK_TABLE(tbl), lbl, 0, 1, 2, 3, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
+	gtk_widget_show(lbl);
+	adj=(GtkAdjustment*) gtk_adjustment_new(12, 4, 31, 1.0, 5.0, 0.0);
+	zpd=gtk_spin_button_new(adj, 0, 0);
+	gtk_table_attach(GTK_TABLE(tbl), zpd, 0, 1, 3, 4, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
+	gtk_widget_show(zpd);
+	awg=gtk_widget_get_accessible(zpd);
 	all=gtk_widget_get_accessible(GTK_WIDGET(lbl));
 	atk_object_add_relationship(all, ATK_RELATION_LABEL_FOR, awg);
 	atk_object_add_relationship(awg, ATK_RELATION_LABELLED_BY, all);
@@ -267,7 +280,7 @@ int main(int argc, char *argv[])
 	atk_object_add_relationship(awg, ATK_RELATION_LABELLED_BY, all);
 	btt=gtk_button_new_with_label(_("Solve Direct"));
 	g_signal_connect(G_OBJECT(btt), "clicked", G_CALLBACK(prs), NULL);
-	gtk_table_attach(GTK_TABLE(tbl), btt, 0, 1, 4, 6, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
+	gtk_table_attach(GTK_TABLE(tbl), btt, 1, 1, 2, 6, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(btt);
 	hpn=gtk_hpaned_new();
 	gtk_widget_show(hpn);
@@ -286,7 +299,59 @@ int main(int argc, char *argv[])
 	gtk_widget_show(sbr);
 	{fld=g_strdup("/home"); flr=g_strdup("/home"); fgs=0;}
 	plt=GTK_PLOT_LINEAR(pt1);
-	{g_array_set_size((plt->sizes), 2); g_array_set_size((plt->ind), 2);}
+	r1=g_array_new(FALSE, FALSE, sizeof(gdouble));
+	g1=g_array_new(FALSE, FALSE, sizeof(gdouble));
+	b1=g_array_new(FALSE, FALSE, sizeof(gdouble));
+	a1=g_array_new(FALSE, FALSE, sizeof(gdouble));
+	r2=g_array_new(FALSE, FALSE, sizeof(gdouble));
+	g2=g_array_new(FALSE, FALSE, sizeof(gdouble));
+	b2=g_array_new(FALSE, FALSE, sizeof(gdouble));
+	a2=g_array_new(FALSE, FALSE, sizeof(gdouble));
+	td=0;
+	g_array_append_val(r1, td);
+	g_array_append_val(g1, td);
+	g_array_append_val(g1, td);
+	g_array_append_val(b1, td);
+	g_array_append_val(b1, td);
+	g_array_append_val(r2, td);
+	g_array_append_val(g2, td);
+	g_array_append_val(g2, td);
+	g_array_append_val(b2, td);
+	g_array_append_val(b2, td);
+	td=1;
+	g_array_append_val(r1, td);
+	g_array_append_val(a1, td);
+	g_array_append_val(a1, td);
+	g_array_append_val(r2, td);
+	g_array_append_val(a2, td);
+	g_array_append_val(a2, td);
+	(plt->rd)=r1;
+	(plt->gr)=g1;
+	(plt->bl)=b1;
+	(plt->al)=a1;
+	l=g_array_new(FALSE, FALSE, sizeof(gdouble));
+	R=g_array_new(FALSE, FALSE, sizeof(gdouble));
+	sz1=g_array_new(FALSE, FALSE, sizeof(gint));
+	nx1=g_array_new(FALSE, FALSE, sizeof(gint));
+	g_array_append_val(sz1, fgs);
+	g_array_append_val(sz1, fgs);
+	g_array_append_val(nx1, fgs);
+	g_array_append_val(nx1, fgs);
+	{(plt->sizes)=sz1; (plt->ind)=nx1;}
+	plt=GTK_PLOT_LINEAR(pt2);
+	(plt->rd)=r2;
+	(plt->gr)=g2;
+	(plt->bl)=b2;
+	(plt->al)=a2;
+	z=g_array_new(FALSE, FALSE, sizeof(gdouble));
+	kp=g_array_new(FALSE, FALSE, sizeof(gdouble));
+	sz2=g_array_new(FALSE, FALSE, sizeof(gint));
+	nx2=g_array_new(FALSE, FALSE, sizeof(gint));
+	g_array_append_val(sz2, fgs);
+	g_array_append_val(sz2, fgs);
+	g_array_append_val(nx2, fgs);
+	g_array_append_val(nx2, fgs);
+	{(plt->sizes)=sz2; (plt->ind)=nx2;}
 	gtk_widget_show(wdw);
 	gtk_main();
 	return 0;

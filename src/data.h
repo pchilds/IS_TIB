@@ -26,6 +26,7 @@
 #	define __DATA_H__
 #	include "main.h"
 #	include "util.h"
+	extern GArray *l, *R, *z, *kp, *sz1, *nx1, *sz2, *nx2;
 	extern GtkWidget *dBs, *kms, *nbk, *neg, *pt1, *pt2, *r0, *ri, *rp, *sbr, *tx, *wk, *wsp, *wst;
 	extern GSList *grp;
 	extern gint fgs, lc;

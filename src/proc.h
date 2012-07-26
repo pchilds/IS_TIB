@@ -25,8 +25,10 @@
 #ifndef __PROC_H__
 #	define __PROC_H__
 #	include "main.h"
+#	include <fftw3.h>
 	extern gint fgs;
-	extern GtkWidget *dBs, *fst, *kms, *nbk, *neg, *pt1, *pt2, *sbr, *tx, *wdw, *wsp, *wst;
+	extern GArray *z, *kp, *sz2, *nx2;
+	extern GtkWidget *dBs, *fst, *kms, *nbk, *neg, *pt1, *pt2, *sbr, *tx, *wdw, *wsp, *wst, *zpd;
 	void prs(GtkWidget*, gpointer);
 	void trs(GtkWidget*, gpointer);
 #endif
