@@ -85,18 +85,16 @@ void trs(GtkWidget *wgt, gpointer dta) /* need to incorporate case for inversion
 						L=7.5e9/dx;
 						for (j=0;j<(sp+1)/2;j++)
 						{
-							iv=g_array_index((plt->ydata), gdouble, st+j+sp/2);
-							iv-=L*g_array_index((plt->xdata), gdouble, st+j+sp/2);
+							iv=g_array_index((plt->ydata), gdouble, nx4+st+j+sp/2);
 							{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
-							iv=dx*sqrt(1-exp(LNTOT*(iv2-g_array_index((plt->ydata), gdouble, st+j+sp/2))));
+							iv=sqrt(1-exp(LNTOT*(iv2-g_array_index((plt->ydata), gdouble, st+j+sp/2))));
 							{rf[j][0]*=iv; rf[j][1]*=iv;}
 						}
 						for (j=1;j<=sp/2;j++)
 						{ 
-							iv=g_array_index((plt->ydata), gdouble, st-j+sp/2);
-							iv-=L*g_array_index((plt->xdata), gdouble, st-j+sp/2);
+							iv=g_array_index((plt->ydata), gdouble, nx4+st-j+sp/2);
 							{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
-							iv=dx*sqrt(1-exp(LNTOT*(iv2-g_array_index((plt->ydata), gdouble, st-j+sp/2))));
+							iv=sqrt(1-exp(LNTOT*(iv2-g_array_index((plt->ydata), gdouble, st-j+sp/2))));
 							{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
 						}
 					}
@@ -107,18 +105,16 @@ void trs(GtkWidget *wgt, gpointer dta) /* need to incorporate case for inversion
 						dx*=3.0e17;
 						for (j=0;j<(sp+1)/2;j++)
 						{
-							iv=g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2);
-							iv-=L/g_array_index((plt->xdata), gdouble, st-j+(sp-1)/2);
+							iv=g_array_index((plt->ydata), gdouble, nx4+st-j+(sp-1)/2);
 							{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
-							iv=dx*sqrt(1-exp(LNTOT*(iv2-g_array_index((plt->ydata), gdouble, st+j+sp/2))));
+							iv=sqrt(1-exp(LNTOT*(iv2-g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2))));
 							{rf[j][0]*=iv; rf[j][1]*=iv;}
 						}
 						for (j=1;j<=sp/2;j++)
 						{ 
-							iv=g_array_index((plt->ydata), gdouble, st+j+(sp-1)/2);
-							iv-=L/g_array_index((plt->xdata), gdouble, st+j+(sp-1)/2);
+							iv=g_array_index((plt->ydata), gdouble, nx4+st+j+(sp-1)/2);
 							{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
-							iv=dx*sqrt(1-exp(LNTOT*(iv2-g_array_index((plt->ydata), gdouble, st-j+sp/2))));
+							iv=sqrt(1-exp(LNTOT*(iv2-g_array_index((plt->ydata), gdouble, st+j+(sp-1)/2))));
 							{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
 						}
 					}
@@ -129,18 +125,16 @@ void trs(GtkWidget *wgt, gpointer dta) /* need to incorporate case for inversion
 					L=7.5e9/dx;
 					for (j=0;j<(sp+1)/2;j++)
 					{
-						iv=g_array_index((plt->ydata), gdouble, st+j+sp/2);
-						iv-=L*g_array_index((plt->xdata), gdouble, st+j+sp/2);
+						iv=g_array_index((plt->ydata), gdouble, nx4+st+j+sp/2);
 						{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
-						iv=dx*sqrt(1-exp(LNTOT*(g_array_index((plt->ydata), gdouble, st+j+sp/2)-iv2)));
+						iv=sqrt(1-exp(LNTOT*(g_array_index((plt->ydata), gdouble, st+j+sp/2)-iv2)));
 						{rf[j][0]*=iv; rf[j][1]*=iv;}
 					}
 					for (j=1;j<=sp/2;j++)
 					{
-						iv=g_array_index((plt->ydata), gdouble, st-j+sp/2);
-						iv-=L*g_array_index((plt->xdata), gdouble, st-j+sp/2);
+						iv=g_array_index((plt->ydata), gdouble, nx4+st-j+sp/2);
 						{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
-						iv=dx*sqrt(1-exp(LNTOT*(g_array_index((plt->ydata), gdouble, st-j+sp/2)-iv2)));
+						iv=sqrt(1-exp(LNTOT*(g_array_index((plt->ydata), gdouble, st-j+sp/2)-iv2)));
 						{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
 					}
 				}
@@ -151,18 +145,16 @@ void trs(GtkWidget *wgt, gpointer dta) /* need to incorporate case for inversion
 					dx*=3.0e17;
 					for (j=0;j<(sp+1)/2;j++)
 					{
-						iv=g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2);
-						iv-=L/g_array_index((plt->xdata), gdouble, st-j+(sp-1)/2);
+						iv=g_array_index((plt->ydata), gdouble, nx4+st-j+(sp-1)/2);
 						{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
-						iv=dx*sqrt(1-exp(LNTOT*(g_array_index((plt->ydata), gdouble, st+j+sp/2)-iv2)));
+						iv=sqrt(1-exp(LNTOT*(g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2)-iv2)));
 						{rf[j][0]*=iv; rf[j][1]*=iv;}
 					}
 					for (j=1;j<=sp/2;j++)
 					{
-						iv=g_array_index((plt->ydata), gdouble, st+j+(sp-1)/2);
-						iv-=L/g_array_index((plt->xdata), gdouble, st+j+(sp-1)/2);
+						iv=g_array_index((plt->ydata), gdouble, nx4+st+j+(sp-1)/2);
 						{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
-						iv=dx*sqrt(1-exp(LNTOT*(g_array_index((plt->ydata), gdouble, st-j+sp/2)-iv2)));
+						iv=sqrt(1-exp(LNTOT*(g_array_index((plt->ydata), gdouble, st+j+(sp-1)/2)-iv2)));
 						{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
 					}
 				}
@@ -175,18 +167,16 @@ void trs(GtkWidget *wgt, gpointer dta) /* need to incorporate case for inversion
 					L=7.5e9/dx;
 					for (j=0;j<(sp+1)/2;j++)
 					{
-						iv=g_array_index((plt->ydata), gdouble, st+j+sp/2);
-						iv-=L*g_array_index((plt->xdata), gdouble, st+j+sp/2);
+						iv=g_array_index((plt->ydata), gdouble, nx4+st+j+sp/2);
 						{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
-						iv=dx*exp(LNTOW*(iv2-g_array_index((plt->ydata), gdouble, st+j+sp/2)));
+						iv=exp(LNTOW*(iv2-g_array_index((plt->ydata), gdouble, st+j+sp/2)));
 						{rf[j][0]*=iv; rf[j][1]*=iv;}
 					}
 					for (j=1;j<=sp/2;j++)
 					{
-						iv=g_array_index((plt->ydata), gdouble, st-j+sp/2);
-						iv-=L*g_array_index((plt->xdata), gdouble, st-j+sp/2);
+						iv=g_array_index((plt->ydata), gdouble, nx4+st-j+sp/2);
 						{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
-						iv=dx*exp(LNTOW*(iv2-g_array_index((plt->ydata), gdouble, st-j+sp/2)));
+						iv=exp(LNTOW*(iv2-g_array_index((plt->ydata), gdouble, st-j+sp/2)));
 						{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
 					}
 				}
@@ -197,18 +187,16 @@ void trs(GtkWidget *wgt, gpointer dta) /* need to incorporate case for inversion
 					dx*=3.0e17;
 					for (j=0;j<(sp+1)/2;j++)
 					{
-						iv=g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2);
-						iv-=L/g_array_index((plt->xdata), gdouble, st-j+(sp-1)/2);
+						iv=g_array_index((plt->ydata), gdouble, nx4+st-j+(sp-1)/2);
 						{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
-						iv=dx*exp(LNTOW*(iv2-g_array_index((plt->ydata), gdouble, st+j+sp/2)));
+						iv=exp(LNTOW*(iv2-g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2)));
 						{rf[j][0]*=iv; rf[j][1]*=iv;}
 					}
 					for (j=1;j<=sp/2;j++)
 					{
-						iv=g_array_index((plt->ydata), gdouble, st+j+(sp-1)/2);
-						iv-=L/g_array_index((plt->xdata), gdouble, st+j+(sp-1)/2);
+						iv=g_array_index((plt->ydata), gdouble, nx4+st+j+(sp-1)/2);
 						{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
-						iv=dx*exp(LNTOW*(iv2-g_array_index((plt->ydata), gdouble, st-j+sp/2)));
+						iv=exp(LNTOW*(iv2-g_array_index((plt->ydata), gdouble, st+j+(sp-1)/2)));
 						{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
 					}
 				}
@@ -219,18 +207,16 @@ void trs(GtkWidget *wgt, gpointer dta) /* need to incorporate case for inversion
 				L=7.5e9/dx;
 				for (j=0;j<(sp+1)/2;j++)
 				{
-					iv=g_array_index((plt->ydata), gdouble, st+j+sp/2);
-					iv-=L*g_array_index((plt->xdata), gdouble, st+j+sp/2);
+					iv=g_array_index((plt->ydata), gdouble, nx4+st+j+sp/2);
 					{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
-					iv=dx*exp(LNTOW*(g_array_index((plt->ydata), gdouble, st+j+sp/2)-iv2));
+					iv=exp(LNTOW*(g_array_index((plt->ydata), gdouble, st+j+sp/2)-iv2));
 					{rf[j][0]*=iv; rf[j][1]*=iv;}
 				}
 				for (j=1;j<=sp/2;j++)
 				{
-					iv=g_array_index((plt->ydata), gdouble, st-j+sp/2);
-					iv-=L*g_array_index((plt->xdata), gdouble, st-j+sp/2);
+					iv=g_array_index((plt->ydata), gdouble, nx4+st-j+sp/2);
 					{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
-					iv=dx*exp(LNTOW*(g_array_index((plt->ydata), gdouble, st-j+sp/2)-iv2));
+					iv=exp(LNTOW*(g_array_index((plt->ydata), gdouble, st-j+sp/2)-iv2));
 					{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
 				}
 			}
@@ -241,18 +227,16 @@ void trs(GtkWidget *wgt, gpointer dta) /* need to incorporate case for inversion
 				dx*=3.0e17;
 				for (j=0;j<(sp+1)/2;j++)
 				{
-					iv=g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2);
-					iv-=L/g_array_index((plt->xdata), gdouble, st-j+(sp-1)/2);
+					iv=g_array_index((plt->ydata), gdouble, nx4+st-j+(sp-1)/2);
 					{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
-					iv=dx*exp(LNTOW*(g_array_index((plt->ydata), gdouble, st+j+sp/2)-iv2));
+					iv=exp(LNTOW*(g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2)-iv2));
 					{rf[j][0]*=iv; rf[j][1]*=iv;}
 				}
 				for (j=1;j<=sp/2;j++)
 				{
-					iv=g_array_index((plt->ydata), gdouble, st+j+(sp-1)/2);
-					iv-=L/g_array_index((plt->xdata), gdouble, st+j+(sp-1)/2);
+					iv=g_array_index((plt->ydata), gdouble, nx4+st+j+(sp-1)/2);
 					{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
-					iv=dx*exp(LNTOW*(g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2)-iv2));
+					iv=exp(LNTOW*(g_array_index((plt->ydata), gdouble, st+j+(sp-1)/2)-iv2));
 					{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
 				}
 			}
@@ -274,18 +258,16 @@ void trs(GtkWidget *wgt, gpointer dta) /* need to incorporate case for inversion
 					L=7.5e9/dx;
 					for (j=0;j<(sp+1)/2;j++)
 					{
-						iv=g_array_index((plt->ydata), gdouble, st+j+sp/2);
-						iv-=L*g_array_index((plt->xdata), gdouble, st+j+sp/2);
+						iv=g_array_index((plt->ydata), gdouble, nx4+st+j+sp/2);
 						{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
-						iv=dx*sqrt(1-(g_array_index((plt->ydata), gdouble, st+j+sp/2)/iv2));
+						iv=sqrt(1-(g_array_index((plt->ydata), gdouble, st+j+sp/2)/iv2));
 						{rf[j][0]*=iv; rf[j][1]*=iv;}
 					}
 					for (j=1;j<=sp/2;j++)
 					{
-						iv=g_array_index((plt->ydata), gdouble, st-j+sp/2);
-						iv-=L*g_array_index((plt->xdata), gdouble, st-j+sp/2);
+						iv=g_array_index((plt->ydata), gdouble, nx4+st-j+sp/2);
 						{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
-						iv=dx*sqrt(1-(g_array_index((plt->ydata), gdouble, st-j+sp/2)/iv2));
+						iv=sqrt(1-(g_array_index((plt->ydata), gdouble, st-j+sp/2)/iv2));
 						{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
 					}
 				}
@@ -296,18 +278,16 @@ void trs(GtkWidget *wgt, gpointer dta) /* need to incorporate case for inversion
 					dx*=3.0e17;
 					for (j=0;j<(sp+1)/2;j++)
 					{
-						iv=g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2);
-						iv-=L/g_array_index((plt->xdata), gdouble, st-j+(sp-1)/2);
+						iv=g_array_index((plt->ydata), gdouble, nx4+st-j+(sp-1)/2);
 						{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
-						iv=dx*sqrt(1-(g_array_index((plt->ydata), gdouble, st+j+sp/2)/iv2));
+						iv=sqrt(1-(g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2)/iv2));
 						{rf[j][0]*=iv; rf[j][1]*=iv;}
 					}
 					for (j=1;j<=sp/2;j++)
 					{
-						iv=g_array_index((plt->ydata), gdouble, st+j+(sp-1)/2);
-						iv-=L/g_array_index((plt->xdata), gdouble, st+j+(sp-1)/2);
+						iv=g_array_index((plt->ydata), gdouble, nx4+st+j+(sp-1)/2);
 						{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
-						iv=dx*sqrt(1-(g_array_index((plt->ydata), gdouble, st-j+sp/2)/iv2));
+						iv=sqrt(1-(g_array_index((plt->ydata), gdouble, st+j+(sp-1)/2)/iv2));
 						{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
 					}
 				}
@@ -318,18 +298,16 @@ void trs(GtkWidget *wgt, gpointer dta) /* need to incorporate case for inversion
 				L=7.5e9/dx;
 				for (j=0;j<(sp+1)/2;j++)
 				{
-					iv=g_array_index((plt->ydata), gdouble, st+j+sp/2);
-					iv-=L*g_array_index((plt->xdata), gdouble, st+j+sp/2);
+					iv=g_array_index((plt->ydata), gdouble, nx4+st+j+sp/2);
 					{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
-					iv=dx*sqrt(g_array_index((plt->ydata), gdouble, st+j+sp/2)/iv2);
+					iv=sqrt(g_array_index((plt->ydata), gdouble, st+j+sp/2)/iv2);
 					{rf[j][0]*=iv; rf[j][1]*=iv;}
 				}
 				for (j=1;j<=sp/2;j++)
 				{
-					iv=g_array_index((plt->ydata), gdouble, st-j+sp/2);
-					iv-=L*g_array_index((plt->xdata), gdouble, st-j+sp/2);
+					iv=g_array_index((plt->ydata), gdouble, nx4+st-j+sp/2);
 					{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
-					iv=dx*sqrt(g_array_index((plt->ydata), gdouble, st-j+sp/2)/iv2);
+					iv=sqrt(g_array_index((plt->ydata), gdouble, st-j+sp/2)/iv2);
 					{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
 				}
 			}
@@ -340,18 +318,16 @@ void trs(GtkWidget *wgt, gpointer dta) /* need to incorporate case for inversion
 				dx*=3.0e17;
 				for (j=0;j<(sp+1)/2;j++)
 				{
-					iv=g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2);
-					iv-=L/g_array_index((plt->xdata), gdouble, st-j+(sp-1)/2);
+					iv=g_array_index((plt->ydata), gdouble, nx4+st-j+(sp-1)/2);
 					{rf[j][0]=cos(iv); rf[j][1]=sin(iv);}
-					iv=dx*sqrt(g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2)/iv2);
+					iv=sqrt(g_array_index((plt->ydata), gdouble, st-j+(sp-1)/2)/iv2);
 					{rf[j][0]*=iv; rf[j][1]*=iv;}
 				}
 				for (j=1;j<=sp/2;j++)
 				{
-					iv=g_array_index((plt->ydata), gdouble, st+j+(sp-1)/2);
-					iv-=L/g_array_index((plt->xdata), gdouble, st+j+(sp-1)/2);
+					iv=g_array_index((plt->ydata), gdouble, nx4+st+j+(sp-1)/2);
 					{rf[zd-j][0]=cos(iv); rf[zd-j][1]=sin(iv);}
-					iv=dx*sqrt(g_array_index((plt->ydata), gdouble, st+j+sp/2)/iv2);
+					iv=sqrt(g_array_index((plt->ydata), gdouble, st+j+(sp-1)/2)/iv2);
 					{rf[zd-j][0]*=iv; rf[zd-j][1]*=iv;}
 				}
 			}
@@ -367,22 +343,23 @@ void trs(GtkWidget *wgt, gpointer dta) /* need to incorporate case for inversion
 		kp=g_array_new(FALSE, FALSE, sizeof(gdouble));
 		sz2=g_array_new(FALSE, FALSE, sizeof(gint));
 		nx2=g_array_new(FALSE, FALSE, sizeof(gint));
-		h=1/(dx*(gdouble)zd);
+		h=1/((gdouble)zd);
 		{st=0; zd=zd>>1; mny=0;}
 		g_array_append_val(sz2, zd);
 		g_array_append_val(sz2, zd);
 		g_array_append_val(nx2, st);
 		g_array_append_val(nx2, zd);
-		ym=(fftw_complex*) fftw_malloc(sizeof(fftw_complex)*zd);
-		zm=(fftw_complex*) fftw_malloc(sizeof(fftw_complex)*zd);
+		ym=(fftw_complex*) fftw_malloc(sizeof(fftw_complex)*(zd+1));
+		zm=(fftw_complex*) fftw_malloc(sizeof(fftw_complex)*(zd+1));
 		tm=(fftw_complex*) fftw_malloc(sizeof(fftw_complex)*zd);
 		for (j=0;j<zd;j++) {ym[j][0]=0; ym[j][1]=0; zm[j][0]=0; zm[j][1]=0; g_array_append_val(kp, mny); g_array_append_val(kp, mny);}
+		{ym[zd][0]=0; ym[zd][1]=0; zm[zd][0]=0; zm[zd][1]=0;}
 		{beta[0]=-ir[0][0]/2; beta[1]=-ir[0][1]/2;}
 		{beta[0]*=h; beta[1]*=h;}
 		cm=1/(1-(beta[0]*beta[0])-(beta[1]*beta[1]));
 		{cue[0]=-cm*(ir[1][0]+ir[0][0]); cue[0]=-cm*(ir[1][1]+ir[0][1]);}
 		dpr=&g_array_index(kp, gdouble, 0);
-		mxy=sqrt((cue[0]*cue[0])+(cue[1]*cue[1]));
+		mxy=dx*sqrt((cue[0]*cue[0])+(cue[1]*cue[1]));
 		*dpr=mxy;
 		dpr=&g_array_index(kp, gdouble, zd);
 		iv=atan2(cue[1],cue[0]);
@@ -390,24 +367,24 @@ void trs(GtkWidget *wgt, gpointer dta) /* need to incorporate case for inversion
 		if (iv>mxy) mxy=iv;
 		else if (iv<mny) mny=iv;
 		{ym[0][0]=cm; zm[0][0]=cm*beta[0]; zm[0][1]=cm*beta[1];}
-		{beta[0]+=(ym[0][1]*ir[1][1])-(ym[0][0]*ir[1][0]); beta[1]-=(ym[0][0]*ir[1][1])+(ym[0][1]*ir[1][0]);}
+		{beta[0]=(ym[0][1]*ir[1][1])-(ym[0][0]*ir[1][0]); beta[1]=-(ym[0][0]*ir[1][1])-(ym[0][1]*ir[1][0]);}
 		for (m=1;m<zd;m++)
 		{
 			{beta[0]*=h; beta[1]*=h;}
 			cm=1/(1-(beta[0]*beta[0])-(beta[1]*beta[1]));
-			for (j=0;j<m;j++)/*propagate ym,zm to ym+1,zm+1 */
+			for (j=0;j<m;j++)//propagate ym,zm to ym+1,zm+1
 			{
 				{ym[j][0]*=cm; ym[j][1]*=cm; zm[j][0]*=cm; zm[j][1]*=cm;}
 				{tm[j][0]=(zm[j][0]*beta[0])+(zm[j][1]*beta[1]); tm[j][1]=(zm[j][0]*beta[1])-(zm[j][1]*beta[0]);}
 				{zm[j+1][0]+=(ym[m-1-j][0]*beta[0])+(ym[m-1-j][1]*beta[1]); zm[j+1][1]+=(ym[m-1-j][0]*beta[1])-(ym[m-1-j][1]*beta[0]);}
 				{ym[j+1][0]+=tm[m-1-j][0]; ym[j+1][1]+=tm[m-1-j][1];}
 			}
-			{beta[0]=0; beta[1]=0;}/*evaluate bm+1 and qm+1*/
+			{beta[0]=0; beta[1]=0;}//evaluate bm+1 and qm+1
 			for (j=0;j<=m;j++) {beta[0]+=(ym[j][1]*ir[m+1-j][1])-(ym[j][0]*ir[m+1-j][0]); beta[1]-=(ym[j][0]*ir[m+1-j][1])+(ym[j][1]*ir[m+1-j][0]);}
 			{cue[0]=beta[0]; cue[1]=beta[1];}
 			for (j=0;j<=m;j++) {cue[0]+=(ym[j][1]*ir[m-j][1])-(ym[j][0]*ir[m-j][0]); cue[1]-=(ym[j][0]*ir[m-j][1])+(ym[j][1]*ir[m-j][0]);}
 			dpr=&g_array_index(kp, gdouble, m);
-			iv=sqrt((cue[0]*cue[0])+(cue[1]*cue[1]));
+			iv=dx*sqrt((cue[0]*cue[0])+(cue[1]*cue[1]));
 			*dpr=iv;
 			if (iv>mxy) mxy=iv;
 			else if (iv<mny) mny=iv;
@@ -418,7 +395,8 @@ void trs(GtkWidget *wgt, gpointer dta) /* need to incorporate case for inversion
 			else if (iv<mny) mny=iv;
 		}
 		{fftw_free(ir); fftw_free(ym); fftw_free(zm); fftw_free(tm);}
-		iv=(1-zd)*h/2;/*maybe convert from time units to actual distance*/
+		h*=3e8/dx;
+		iv=(1-zd)*h/2;
 		g_array_append_val(z, iv);
 		for (j=1;j<zd;j++)
 		{
@@ -434,7 +412,7 @@ void trs(GtkWidget *wgt, gpointer dta) /* need to incorporate case for inversion
 		}
 		plt=GTK_PLOT_LINEAR(pt2);
 		{(plt->sizes)=sz2; (plt->ind)=nx2; (plt->xdata)=z; (plt->ydata)=kp;}
-		gtk_plot_linear_update_scale_pretty(pt2, -iv, iv, mny, mxy);
+		gtk_plot_linear_update_scale_pretty(pt2, -iv, iv, mny, mxy);//stack smashes as mxy is too big for the axes
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(nbk), 1);
 		fgs|=PROC_ZDT;
 	}

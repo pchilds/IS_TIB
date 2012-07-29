@@ -280,7 +280,7 @@ int main(int argc, char *argv[])
 	atk_object_add_relationship(awg, ATK_RELATION_LABELLED_BY, all);
 	btt=gtk_button_new_with_label(_("Solve Direct"));
 	g_signal_connect(G_OBJECT(btt), "clicked", G_CALLBACK(prs), NULL);
-	gtk_table_attach(GTK_TABLE(tbl), btt, 1, 1, 2, 6, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
+	gtk_table_attach(GTK_TABLE(tbl), btt, 0, 2, 2, 6, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(btt);
 	hpn=gtk_hpaned_new();
 	gtk_widget_show(hpn);
@@ -352,6 +352,8 @@ int main(int argc, char *argv[])
 	g_array_append_val(nx2, fgs);
 	g_array_append_val(nx2, fgs);
 	{(plt->sizes)=sz2; (plt->ind)=nx2;}
+	(plt->xlab)=g_strdup("Optical distance (m)");
+	(plt->ylab)=g_strdup("Coupling constant (/m)");
 	gtk_widget_show(wdw);
 	gtk_main();
 	return 0;

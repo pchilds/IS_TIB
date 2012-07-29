@@ -55,10 +55,10 @@ void opd(GtkWidget *wgt, gpointer dta)
 		{
 			sta=g_strsplit_set(cts, "\r\n", 0);
 			sal=g_strv_length(sta);
-			lc=0;
+			{lc=0; k=0;}
 			o1=g_array_new(FALSE, FALSE, sizeof(gdouble));
 			o2=g_array_new(FALSE, FALSE, sizeof(gdouble));
-			o2=g_array_new(FALSE, FALSE, sizeof(gdouble));
+			o3=g_array_new(FALSE, FALSE, sizeof(gdouble));
 			if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(wk)))
 			{
 				if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(r0)))
@@ -70,7 +70,7 @@ void opd(GtkWidget *wgt, gpointer dta)
 						if (!g_strcmp0("", sta[k])) {k++; continue;}
 						if (!(g_ascii_isdigit(sta[k][0])|(g_str_has_prefix(sta[k],"-")))) {k++; continue;}
 						if (lc<0) {lc++; k++; continue;}
-						sat=g_strsplit_set(sta[k], "\t", 0);
+						sat=g_strsplit_set(sta[k], ",\t", 0);
 						xf=g_ascii_strtod(g_strstrip(sat[1]), NULL);
 						g_array_append_val(o2, xf);
 						xf=0;
@@ -78,7 +78,7 @@ void opd(GtkWidget *wgt, gpointer dta)
 						xf=g_ascii_strtod(g_strstrip(sat[0]), NULL);
 						g_array_append_val(o1, xf);
 						g_strfreev(sat);
-						k++;
+						{k++; lc++;}
 					}
 				}
 				else if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(ri)))
@@ -90,7 +90,7 @@ void opd(GtkWidget *wgt, gpointer dta)
 						if (!g_strcmp0("", sta[k])) {k++; continue;}
 						if (!(g_ascii_isdigit(sta[k][0])|(g_str_has_prefix(sta[k],"-")))) {k++; continue;}
 						if (lc<0) {lc++; k++; continue;}
-						sat=g_strsplit_set(sta[k], "\t", 0);
+						sat=g_strsplit_set(sta[k], ",\t", 0);
 						xi=g_ascii_strtod(g_strstrip(sat[1]), NULL);
 						xf=g_ascii_strtod(g_strstrip(sat[2]), NULL);
 						lcl=sqrt((xi*xi)+(xf*xf));
@@ -100,7 +100,7 @@ void opd(GtkWidget *wgt, gpointer dta)
 						xf=g_ascii_strtod(g_strstrip(sat[0]), NULL);
 						g_array_append_val(o1, xf);
 						g_strfreev(sat);
-						k++;
+						{k++; lc++;}
 					}
 				}
 				else
@@ -112,7 +112,7 @@ void opd(GtkWidget *wgt, gpointer dta)
 						if (!g_strcmp0("", sta[k])) {k++; continue;}
 						if (!(g_ascii_isdigit(sta[k][0])|(g_str_has_prefix(sta[k],"-")))) {k++; continue;}
 						if (lc<0) {lc++; k++; continue;}
-						sat=g_strsplit_set(sta[k], "\t", 0);
+						sat=g_strsplit_set(sta[k], ",\t", 0);
 						xf=g_ascii_strtod(g_strstrip(sat[1]), NULL);
 						g_array_append_val(o2, xf);
 						xf=g_ascii_strtod(g_strstrip(sat[2]), NULL);
@@ -120,7 +120,7 @@ void opd(GtkWidget *wgt, gpointer dta)
 						xf=g_ascii_strtod(g_strstrip(sat[0]), NULL);
 						g_array_append_val(o1, xf);
 						g_strfreev(sat);
-						k++;
+						{k++; lc++;}
 					}
 				}
 				xi=g_array_index(o1, gdouble, 0);
@@ -136,7 +136,7 @@ void opd(GtkWidget *wgt, gpointer dta)
 						if (!g_strcmp0("", sta[k])) {k++; continue;}
 						if (!(g_ascii_isdigit(sta[k][0])|(g_str_has_prefix(sta[k],"-")))) {k++; continue;}
 						if (lc<0) {lc++; k++; continue;}
-						sat=g_strsplit_set(sta[k], "\t", 0);
+						sat=g_strsplit_set(sta[k], ",\t", 0);
 						xf=g_ascii_strtod(g_strstrip(sat[0]), NULL);
 						g_array_append_val(o2, xf);
 						xf=0;
@@ -154,7 +154,7 @@ void opd(GtkWidget *wgt, gpointer dta)
 						if (!g_strcmp0("", sta[k])) {k++; continue;}
 						if (!(g_ascii_isdigit(sta[k][0])|(g_str_has_prefix(sta[k],"-")))) {k++; continue;}
 						if (lc<0) {lc++; k++; continue;}
-						sat=g_strsplit_set(sta[k], "\t", 0);
+						sat=g_strsplit_set(sta[k], ",\t", 0);
 						xi=g_ascii_strtod(g_strstrip(sat[0]), NULL);
 						xf=g_ascii_strtod(g_strstrip(sat[1]), NULL);
 						lcl=sqrt((xi*xi)+(xf*xf));
@@ -174,7 +174,7 @@ void opd(GtkWidget *wgt, gpointer dta)
 						if (!g_strcmp0("", sta[k])) {k++; continue;}
 						if (!(g_ascii_isdigit(sta[k][0])|(g_str_has_prefix(sta[k],"-")))) {k++; continue;}
 						if (lc<0) {lc++; k++; continue;}
-						sat=g_strsplit_set(sta[k], "\t", 0);
+						sat=g_strsplit_set(sta[k], ",\t", 0);
 						xf=g_ascii_strtod(g_strstrip(sat[0]), NULL);
 						g_array_append_val(o2, xf);
 						xf=g_ascii_strtod(g_strstrip(sat[1]), NULL);
@@ -208,7 +208,7 @@ void opd(GtkWidget *wgt, gpointer dta)
 				k=0;
 				g_array_append_val(sz2, lc);
 				g_array_append_val(sz2, lc);
-				g_array_append_val(sz2, k);
+				g_array_append_val(nx2, k);
 				g_array_append_val(nx2, lc);
 				g_array_append_val(z, xi);
 				mny=g_array_index(o2, gdouble, 0);
@@ -233,6 +233,8 @@ void opd(GtkWidget *wgt, gpointer dta)
 					else if (lcl<mny) mny=lcl;
 				}
 				fgs|=PROC_ZDT;
+				plt=GTK_PLOT_LINEAR(pt2);
+				{(plt->sizes)=sz2; (plt->ind)=nx2; (plt->xdata)=z; (plt->ydata)=kp;}
 				gtk_plot_linear_update_scale_pretty(pt2, xi, xf, mny, mxy);
 				break;
 				default:
@@ -244,7 +246,7 @@ void opd(GtkWidget *wgt, gpointer dta)
 				k=0;
 				g_array_append_val(sz1, lc);
 				g_array_append_val(sz1, lc);
-				g_array_append_val(sz1, k);
+				g_array_append_val(nx1, k);
 				g_array_append_val(nx1, lc);
 				g_array_append_val(l, xi);
 				mny=g_array_index(o2, gdouble, 0);
@@ -269,6 +271,8 @@ void opd(GtkWidget *wgt, gpointer dta)
 					else if (lcl<mny) mny=lcl;
 				}
 				fgs|=PROC_LDT;
+				plt=GTK_PLOT_LINEAR(pt1);
+				{(plt->sizes)=sz1; (plt->ind)=nx1; (plt->xdata)=l; (plt->ydata)=R;}
 				gtk_plot_linear_update_scale_pretty(pt1, xi, xf, mny, mxy);
 				break;
 			}
