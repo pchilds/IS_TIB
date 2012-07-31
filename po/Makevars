@@ -6,7 +6,7 @@ top_builddir = ..
 # These options get passed to xgettext.
 XGETTEXT_OPTIONS = --keyword=_ --keyword=N_
 
-COPYRIGHT_HOLDER = Paul Childs.
+COPYRIGHT_HOLDER = Paul Childs
 MSGID_BUGS_ADDRESS = pchilds@physics.org
 
 # This is the list of locale categories, beyond LC_MESSAGES, for which the

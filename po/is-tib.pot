@@ -1,0 +1,402 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Paul Childs
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: is-tib 0.1.0\n"
+"Report-Msgid-Bugs-To: pchilds@physics.org\n"
+"POT-Creation-Date: 2012-07-30 18:58+1000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Name of the program
+#: src/main.c:60
+msgid "Toplitz Inner Bordering inverse solver"
+msgstr ""
+
+#. Save a data set (this is a submenu of save).
+#: src/main.c:77
+msgid "Data"
+msgstr ""
+
+#. Save a graph (this is a submenu of save).
+#: src/main.c:82
+msgid "Graph"
+msgstr ""
+
+#. Menu option to load a previous state of the program.
+#: src/main.c:99
+msgid "Restore Session"
+msgstr ""
+
+#. Menu option to save the current state of the program.
+#: src/main.c:103
+msgid "Save Session"
+msgstr ""
+
+#. The "_" here precedes whichever letter the user is to press with alt as
+#. a shortcut. Menu heading for various file related menu options.
+#: src/main.c:115
+msgid "_File"
+msgstr ""
+
+#. Menu option to check if the first column is the domain variable (e.g.
+#. wavelength).
+#: src/main.c:121
+msgid ""
+"Domain\n"
+"(/number)"
+msgstr ""
+
+#. Menu option for loading data where both magnitude and phase components
+#. are available.
+#: src/main.c:128 src/data.c:556 src/data.c:636
+msgid "Magnitude/Phase"
+msgstr ""
+
+#. Menu option for loading data where data is in real and imaginary component
+#. columns.
+#: src/main.c:133 src/data.c:556 src/data.c:636
+msgid "Real/Imaginary"
+msgstr ""
+
+#. Menu option for loading data where only the magnitude component is
+#. available.
+#: src/main.c:137
+msgid "Magnitude only"
+msgstr ""
+
+#. Menu option to select what format the data files are in.
+#: src/main.c:141
+msgid "Data Format:"
+msgstr ""
+
+#. Select this if the measurement was performed in transmission (as opposed
+#. to reflection)
+#: src/main.c:148
+msgid ""
+"Transmission\n"
+"Measurement?"
+msgstr ""
+
+#. Select this if the measurements are in dBs (or dBs with respect to some
+#. unit, e.g. dBm).
+#: src/main.c:152
+msgid "Spectrum in dBs?"
+msgstr ""
+
+#. Select this if you want to multiply the data by -1 before transforming.
+#: src/main.c:156
+msgid "Negate?"
+msgstr ""
+
+#. Select this if the measurements are over wavenumber (as opposed to wavelength).
+#: src/main.c:160
+msgid "Spectrum over k?"
+msgstr ""
+
+#. Menu option to bring up a window to change the way the plots are displayed.
+#: src/main.c:167
+msgid "Display Properties:"
+msgstr ""
+
+#. The "_" here precedes whichever letter the user is to press with alt as
+#. a shortcut. Menu heading for various options governing how the data is
+#. to be handled and displayed.
+#: src/main.c:172
+msgid "_Properties"
+msgstr ""
+
+#. Menu option to bring up documentation.
+#: src/main.c:177
+msgid "Instructions"
+msgstr ""
+
+#. The "_" here precedes whichever letter the user is to press with alt as
+#. a shortcut. Menu heading for help and documentation related menu options.
+#: src/main.c:186
+msgid "_Help"
+msgstr ""
+
+#. Initial value of the spectral domain to select a windowed region of the data
+#. from.
+#: src/main.c:197
+msgid ""
+"Spectrum Start\n"
+"(nm or /cm):"
+msgstr ""
+
+#. Final value of the spectral domain to select a windowed region of the data
+#. from.
+#: src/main.c:208
+msgid ""
+"Spectrum Stop\n"
+"(nm or /cm):"
+msgstr ""
+
+#. 100% transmission/reflection reference level to take for the spectrum
+#: src/main.c:219
+msgid "Offset:"
+msgstr ""
+
+#. The windows are put into an array of length 2 to the power of this value.
+#. The extra data points needed to fill it out are zero valued, hence zero
+#. padding.
+#: src/main.c:230
+msgid "Zero Padding 2^:"
+msgstr ""
+
+#. Limits process with the TIB method to a subset of the above outside of which
+#. there can not be any contribution.
+#: src/main.c:241
+msgid "Spatial Points 2^:"
+msgstr ""
+
+#. Process the spectrum to determine the spatial structure that would create
+#. such a spectrum.
+#: src/main.c:252
+msgid "Solve Inverse"
+msgstr ""
+
+#. Title for the tab referring to the spectral profile.
+#: src/main.c:266 src/disp.c:224
+msgid "Spectrum"
+msgstr ""
+
+#. Initial value of the spatial domain to select a windowed region of the data
+#. from.
+#: src/main.c:270
+msgid "Start Position:"
+msgstr ""
+
+#. Final value of the spatial domain to select a windowed region of the data
+#. from.
+#: src/main.c:281
+msgid "Stop Position:"
+msgstr ""
+
+#. Button to press to force the spatial profile to have a slope less that the value specified.
+#: src/main.c:299
+msgid ""
+"Apply Differential\n"
+"Coercion of (Mag.,Phase):"
+msgstr ""
+
+#. Button to press to smear (or unsmear) the profile but a given beam width.
+#: src/main.c:314
+msgid ""
+"Apply Beam Size\n"
+"Convolution by:"
+msgstr ""
+
+#. Process the spatial profile to determine its reflection spectrum (magnitude
+#. and phase).
+#: src/main.c:322
+msgid "Solve Direct"
+msgstr ""
+
+#. Title for the tab referring to the spatial profile.
+#: src/main.c:336 src/disp.c:308
+msgid "Spatial Structure"
+msgstr ""
+
+#. A spatial profile does not exist. It thus cannot be modified.
+#: src/proc.c:43 src/proc.c:64
+msgid "No spatial profile for modification exists yet."
+msgstr ""
+
+#. A spatial profile does not exist. It thus cannot be transformed
+#. into a spectral one.
+#: src/proc.c:85
+msgid "No spatial profile for transformation exists yet."
+msgstr ""
+
+#. The user has given an offset of zero which gives divide by
+#. zero errors when the data is in a linear scale (e.g. not in dBs)p
+#: src/proc.c:280
+msgid "Offset must be nonzero for linear measurements."
+msgstr ""
+
+#. A spectral profile does not exist. It thus cannot be transformed
+#. into a spatial one.
+#: src/proc.c:445
+msgid "No spectrum for inverse transformation exists yet."
+msgstr ""
+
+#. Asks the user to name a data file to save results to.
+#: src/data.c:42 src/data.c:547 src/data.c:627
+msgid "Select Data File"
+msgstr ""
+
+#. %s refers to the filename. Please leave as "%s", but move within the
+#. sentence as needed.
+#: src/data.c:197
+#, c-format
+msgid "File: %s successfully loaded."
+msgstr ""
+
+#. %s refers to the filename. Please leave as "%s", but move within the
+#. sentence as needed
+#: src/data.c:282 src/data.c:733
+#, c-format
+msgid "Loading failed for file: %s, Error: %s."
+msgstr ""
+
+#. No plots exist to save.
+#: src/data.c:316 src/data.c:497
+msgid "No available image."
+msgstr ""
+
+#. Asks the user to name a file to save an image of the plot.
+#: src/data.c:332 src/data.c:414
+msgid "Select Image File"
+msgstr ""
+
+#. %s refers to the error. Please leave as "%s", but move within the
+#. sentence as needed.
+#: src/data.c:521
+#, c-format
+msgid "An error occured while printing: %s."
+msgstr ""
+
+#. Title for window asking for the format of data to save.
+#: src/data.c:556 src/data.c:636
+msgid "Parameter selection"
+msgstr ""
+
+#. asks the user what of the results they want to save (see below).
+#: src/data.c:557 src/data.c:637
+msgid "Select Parameter to save:"
+msgstr ""
+
+#. Column headings in the save file. The format must be three sets of
+#. exactly nine (2 byte) characters seperated by "\t"'s (take care as
+#. some languages, e.g. Chinese, will have "characters" that are
+#. represented by more than 2 bytes). Give an understandable shorthand
+#. and use space to pad out to the required 9.
+#. The longhand is: Spectral Domain\tReal Value\tImaginary Value
+#: src/data.c:562 src/data.c:643
+msgid "SPECTRL_D\tREAL_VAL \tIMAG_VAL "
+msgstr ""
+
+#. Column headings in the save file. The format must be three sets of
+#. exactly nine (2 byte) characters seperated by "\t"'s (take care as
+#. some languages, e.g. Chinese, will have "characters" that are
+#. represented by more than 2 bytes). Give an understandable shorthand
+#. and use space to pad out to the required 9.
+#. The longhand is: Spatial Domain\tReal Value\tImaginary Value
+#: src/data.c:563 src/data.c:642
+msgid "SPATIAL_D\tREAL_VAL \tIMAG_VAL "
+msgstr ""
+
+#. %s refers to the error. Please leave as "%s", but move within the
+#. sentence as needed.
+#: src/data.c:585 src/data.c:612 src/data.c:665 src/data.c:692 src/data.c:805
+#, c-format
+msgid "Error Saving file: %s."
+msgstr ""
+
+#. Column headings in the save file. The format must be three sets of
+#. exactly nine (2 byte) characters seperated by "\t"'s (take care as
+#. some languages, e.g. Chinese, will have "characters" that are
+#. represented by more than 2 bytes). Give an understandable shorthand
+#. and use space to pad out to the required 9.
+#. The longhand is: Spectral Domain\tMagnitude\tPhase
+#: src/data.c:593 src/data.c:674
+msgid "SPECTRL_D\tMAGNITUDE\tPHASE    "
+msgstr ""
+
+#. Column headings in the save file. The format must be three sets of
+#. exactly nine (2 byte) characters seperated by "\t"'s (take care as
+#. some languages, e.g. Chinese, will have "characters" that are
+#. represented by more than 2 bytes). Give an understandable shorthand
+#. and use space to pad out to the required 9.
+#. The longhand is: Spatial Domain\tMagnitude\tPhase
+#: src/data.c:594 src/data.c:673
+msgid "SPATIAL_D\tMAGNITUDE\tPHASE    "
+msgstr ""
+
+#. There is not any data available to save.
+#: src/data.c:708
+msgid "No available data."
+msgstr ""
+
+#. Asks the user to select a file storing the information of a previous
+#. state of the program.
+#: src/data.c:720 src/data.c:752
+msgid "Select Session File"
+msgstr ""
+
+#. Title for a window that allows the user to change the way the
+#. plots are displayed
+#: src/disp.c:127
+msgid "Display Properties"
+msgstr ""
+
+#. label for a button that allows the user to change the font/size/
+#. style of the labels for the axes.
+#: src/disp.c:142 src/disp.c:229
+msgid "Axis label font:"
+msgstr ""
+
+#. Title for window that pops up when changing the font/size/style
+#. of the labels for the axes.
+#: src/disp.c:152 src/disp.c:239
+msgid "Font Selection for Axis Labels"
+msgstr ""
+
+#. label for a button that allows the user to change the font/size/
+#. style of the numbers along the axes.
+#: src/disp.c:159 src/disp.c:246
+msgid "Tick label font:"
+msgstr ""
+
+#. Title for window that pops up when changing the font/size/style
+#. of the numbers along the axes.
+#: src/disp.c:169 src/disp.c:256
+msgid "Font Selection for Tick Mark Labels"
+msgstr ""
+
+#. Label that will be displayed along the horizontal axis.
+#: src/disp.c:176 src/disp.c:263
+msgid "X axis text:"
+msgstr ""
+
+#. Label that will be displayed along the vertical axis.
+#: src/disp.c:189 src/disp.c:276
+msgid "Y axis text:"
+msgstr ""
+
+#. the program is unable to load the help documentation
+#: src/util.c:38
+msgid "Could not load help files."
+msgstr ""
+
+#. short blurb about the program (displayed when the user hovers over the
+#. icon)
+#: src/util.c:53
+msgid ""
+"ISTIB is a program for performing inverse scattering for 1D optical media "
+"using the Toplitz Inner Bordering method."
+msgstr ""
+
+#. put your name here and be famous.
+#: src/util.c:54
+msgid "translator-credits"
+msgstr ""
+
+#. "x" and "y" are the standard variables representing the horizontal and
+#. vertical axes. %f refers to their values for the current point on the
+#. plot. Please leave as "%f", but move around as needed (though the "x"
+#. %f must be first).
+#: src/util.c:63
+#, c-format
+msgid "x: %f, y: %f"
+msgstr ""
