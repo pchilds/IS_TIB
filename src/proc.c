@@ -114,7 +114,7 @@ void trs(GtkWidget *wgt, gpointer dta)
 		sp=j-st;
 		zd=1<<gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(zpd));
 		zd2=1<<gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(nz));
-		if (zd<(2*zd2)) zd2=zd>>1;
+		if (zd<(2*zd2)) zd2=zd/2;
 		rf=(fftw_complex*) fftw_malloc(sizeof(fftw_complex)*zd);
 		for (j=0;j<zd;j++) {rf[j][0]=0; rf[j][1]=0;}
 		if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(dBs)))
@@ -404,10 +404,9 @@ void trs(GtkWidget *wgt, gpointer dta)
 		tm=(fftw_complex*) fftw_malloc(sizeof(fftw_complex)*zd2);
 		for (j=0;j<zd2;j++) {ym[j][0]=0; ym[j][1]=0; zm[j][0]=0; zm[j][1]=0; g_array_append_val(kp, mny); g_array_append_val(kp, mny);}
 		{ym[zd2][0]=0; ym[zd2][1]=0; zm[zd2][0]=0; zm[zd2][1]=0;}
-		{beta[0]=-ir[0][0]/2; beta[1]=-ir[0][1]/2;}
-		{beta[0]*=h; beta[1]*=h;}
+		{beta[0]=-h*ir[0][0]/2; beta[1]=-h*ir[0][1]/2;}
 		cm=1/(1-(beta[0]*beta[0])-(beta[1]*beta[1]));
-		{cue[0]=-cm*(ir[1][0]+ir[0][0]); cue[0]=-cm*(ir[1][1]+ir[0][1]);}
+		{cue[0]=-cm*(ir[1][0]+ir[0][0]); cue[1]=-cm*(ir[1][1]+ir[0][1]);}
 		dpr=&g_array_index(kp, gdouble, 0);
 		mxy=dx*sqrt((cue[0]*cue[0])+(cue[1]*cue[1]));
 		*dpr=mxy;
@@ -426,9 +425,9 @@ void trs(GtkWidget *wgt, gpointer dta)
 			{
 				{ym[j][0]*=cm; ym[j][1]*=cm; zm[j][0]*=cm; zm[j][1]*=cm;}
 				{tm[j][0]=(zm[j][0]*beta[0])+(zm[j][1]*beta[1]); tm[j][1]=(zm[j][0]*beta[1])-(zm[j][1]*beta[0]);}
-				{zm[j+1][0]+=(ym[m-1-j][0]*beta[0])+(ym[m-1-j][1]*beta[1]); zm[j+1][1]+=(ym[m-1-j][0]*beta[1])-(ym[m-1-j][1]*beta[0]);}
-				{ym[j+1][0]+=tm[m-1-j][0]; ym[j+1][1]+=tm[m-1-j][1];}
 			}
+			for (j=1;j<=m;j++) {zm[j][0]+=(ym[m-j][0]*beta[0])+(ym[m-j][1]*beta[1]); zm[j][1]+=(ym[m-j][0]*beta[1])-(ym[m-j][1]*beta[0]);}
+			for (j=1;j<=m;j++) {ym[j][0]+=tm[m-j][0]; ym[j][1]+=tm[m-j][1];}
 			{beta[0]=0; beta[1]=0;}//evaluate bm+1 and qm+1
 			for (j=0;j<=m;j++) {beta[0]+=(ym[j][1]*ir[m+1-j][1])-(ym[j][0]*ir[m+1-j][0]); beta[1]-=(ym[j][0]*ir[m+1-j][1])+(ym[j][1]*ir[m+1-j][0]);}
 			{cue[0]=beta[0]; cue[1]=beta[1];}
