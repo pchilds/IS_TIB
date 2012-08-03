@@ -27,8 +27,8 @@
 #	include "main.h"
 #	include <fftw3.h>
 	extern gint fgs;
-	extern GArray *z, *kp, *sz2, *nx2;
-	extern GtkWidget *crm, *crp, *dBs, *fst, *kms, *nbk, *neg, *nz, *pt1, *pt2, *sbr, *tx, *wdw, *wsp, *wst, *zpd;
+	extern GArray *z, *kp, *sz2, *nx2, *l, *R, *sz1, *nx1;
+	extern GtkWidget *cl, *crm, *crp, *dBs, *dl, *fst, *kms, *nbk, *neg, *nl, *nz, *pst, *psp, *pt1, *pt2, *sbr, *tx, *wdw, *wsp, *wst, *zpd;
 	void coe(GtkWidget*, gpointer);
 	void con(GtkWidget*, gpointer);
 	void prs(GtkWidget*, gpointer);

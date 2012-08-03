@@ -69,15 +69,143 @@ void con(GtkWidget *wgt, gpointer dta)
 
 void prs(GtkWidget *wgt, gpointer dta)
 {
+	fftw_complex A, B, C;
+	gdouble *cb, *ch, *csh, *dpr, *sb, *ssh;
 	GtkPlotLinear *plt;
-	gint sz4;
+	gdouble del, dlm, iv, l0, mny, mxy;
+	gint j, k, nx4, st, sp, sz4, zd2;
 	gchar *str;
 
 	if ((fgs&PROC_ZDT)!=0)
 	{
 		plt=GTK_PLOT_LINEAR(pt2);
 		sz4=g_array_index((plt->sizes), gint, 0);
-		//fgs|=PROC_LDT;
+		nx4=g_array_index((plt->ind), gint, 1);
+		iv=gtk_spin_button_get_value(GTK_SPIN_BUTTON(pst));
+		j=0;
+		while ((j<sz4)&&(iv>g_array_index((plt->xdata), gdouble, j))) j++;
+		st=j;
+		iv=gtk_spin_button_get_value(GTK_SPIN_BUTTON(psp));
+		while ((j<sz4)&&(iv>=g_array_index((plt->xdata), gdouble, j))) j++;
+		sp=j-st;
+		zd2=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(nl));
+		del=(g_array_index((plt->xdata), gdouble, st+sp-1)-g_array_index((plt->xdata), gdouble, st))/(sp-1);
+		dlm=gtk_spin_button_get_value(GTK_SPIN_BUTTON(dl));
+		iv=dlm/((gdouble) zd2-1);
+		dlm=dlm/2;
+		l0=gtk_spin_button_get_value(GTK_SPIN_BUTTON(cl))-dlm;
+		{g_array_free(l, TRUE); g_array_free(R, TRUE); g_array_free(sz1, TRUE); g_array_free(nx1, TRUE);}
+		l=g_array_new(FALSE, FALSE, sizeof(gdouble));
+		R=g_array_new(FALSE, FALSE, sizeof(gdouble));
+		sz1=g_array_new(FALSE, FALSE, sizeof(gint));
+		nx1=g_array_new(FALSE, FALSE, sizeof(gint));
+		{k=0; mny=0; mxy=0;}
+		g_array_append_val(sz1, zd2);
+		g_array_append_val(sz1, zd2);
+		g_array_append_val(nx1, k);
+		g_array_append_val(nx1, zd2);
+		{g_array_append_val(l, l0); g_array_append_val(R, k);}
+		for (j=1;j<zd2;j++)
+		{
+			l0+=iv;
+			g_array_append_val(l, l0);
+			g_array_append_val(R, k);
+		}
+		l0-=2*dlm;
+		{g_array_append_val(l, l0); g_array_append_val(R, k);}
+		for (j=1;j<zd2;j++)
+		{
+			l0+=iv;
+			g_array_append_val(l, l0);
+			g_array_append_val(R, k);
+		}
+		l0-=dlm;
+		{cb=(gdouble*) g_malloc(sizeof(gdouble)*zd2); sb=(gdouble*) g_malloc(sizeof(gdouble)*zd2); ch=(gdouble*) g_malloc(sizeof(gdouble)*sp); csh=(gdouble*) g_malloc(sizeof(gdouble)*sp); ssh=(gdouble*) g_malloc(sizeof(gdouble)*sp);}
+		for (k=0;k<sp;k++)//set up q arrays
+		{
+			ch[k]=cosh(del*g_array_index((plt->ydata), gdouble, st+k));
+			ssh[k]=sinh(del*g_array_index((plt->ydata), gdouble, st+k));
+			csh[k]=ssh[k]*cos(g_array_index((plt->ydata), gdouble, nx4+st+k));
+			ssh[k]*=sin(g_array_index((plt->ydata), gdouble, nx4+st+k));
+		}
+		if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(kms)))//set up 
+		{
+			for (j=0;j<zd2;j++)
+			{
+				cb[j]=100*del*dlm*(1-(2*j/((gdouble) zd2-1)));
+				sb[j]=sin(cb[j]);
+				cb[j]=cos(cb[j]);
+			}
+		}
+		else
+		{
+			for (j=0;j<zd2;j++)
+			{
+				cb[j]=1.0e9*MY_2PI*del*((1/l0)-(1/(l0+(dlm*((2*j/((gdouble) zd2-1))-1)))));
+				sb[j]=sin(cb[j]);
+				cb[j]=cos(cb[j]);
+			}
+		}
+		for (j=0;j<zd2;j++)//run T matrix
+		{
+			{A[0]=1; A[1]=0; B[0]=0; B[1]=0;}
+			for (k=0;k<sp;k++)
+			{
+				{C[0]=(A[0]*csh[k])+(A[1]*ssh[k]); C[1]=(A[0]*ssh[k])-(A[1]*csh[k]);}
+				{A[0]*=ch[k]; A[1]*=ch[k];}
+				{A[0]+=(B[0]*csh[k])+(B[1]*ssh[k]); A[1]+=(B[0]*ssh[k])-(B[1]*csh[k]);}
+				{B[0]*=ch[k]; B[1]*=ch[k];}
+				{B[0]+=C[0]; B[1]+=C[1];}
+				{C[0]=A[0]*cb[j]-A[1]*sb[j]; C[1]=B[0]*cb[j]-B[1]*sb[j];}
+				{A[1]=A[1]*cb[j]+A[0]*sb[j]; B[1]=B[1]*cb[j]+B[0]*sb[j];}
+				{A[0]=C[0]; B[0]=C[1];}
+			}
+			dpr=&g_array_index(R, gdouble, j);
+			iv=sqrt(((B[0]*B[0])+(B[1]*B[1]))/((A[0]*A[0])+(A[1]*A[1])));
+			*dpr=iv;
+			if (iv>mxy) mxy=iv;
+			dpr=&g_array_index(R, gdouble, zd2+j);
+			iv=G_PI+atan2(B[1],B[0])-atan2(A[1],A[0]);
+			if (iv>G_PI) iv-=MY_2PI;
+			*dpr=iv;
+			if (iv>mxy) mxy=iv;
+			else if (iv<mny) mny=iv;
+		}
+		if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(tx)))
+		{
+			for (j=0;j<zd2;j++)
+			{
+				dpr=&g_array_index(R, gdouble, j);
+				*dpr=1-*dpr;
+			}
+			if (mxy<1) mxy=1;
+		}
+		if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(dBs)))
+		{
+			if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(neg)))
+			{
+				for (j=0;j<zd2;j++)
+				{
+					dpr=&g_array_index(R, gdouble, j);
+					*dpr=-10*log10(*dpr);
+				}
+				mxy=50;
+			}
+			else
+			{
+				for (j=0;j<zd2;j++)
+				{
+					dpr=&g_array_index(R, gdouble, j);
+					*dpr=10*log10(*dpr);
+				}
+				mny=-50;
+			}
+		}
+		{g_free((gpointer) cb); g_free((gpointer) sb); g_free((gpointer) csh); g_free((gpointer) ssh); g_free((gpointer) ch);}
+		plt=GTK_PLOT_LINEAR(pt1);
+		{(plt->sizes)=sz1; (plt->ind)=nx1; (plt->xdata)=l; (plt->ydata)=R;}
+		gtk_plot_linear_update_scale_pretty(pt1, l0-dlm, l0+dlm, mny, mxy);
+		fgs|=PROC_LDT;
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(nbk), 0);
 	}
 	else
@@ -436,7 +564,6 @@ void trs(GtkWidget *wgt, gpointer dta)
 			iv=dx*sqrt((cue[0]*cue[0])+(cue[1]*cue[1]));
 			*dpr=iv;
 			if (iv>mxy) mxy=iv;
-			else if (iv<mny) mny=iv;
 			dpr=&g_array_index(kp, gdouble, zd2+m);
 			iv=atan2(cue[1],cue[0]);
 			*dpr=iv;

@@ -41,7 +41,7 @@ GArray *l, *R, *z, *kp, *r1, *g1, *b1, *a1, *r2, *g2, *b2, *a2, *sz1, *nx1, *sz2
 gchar *fld=NULL, *flr=NULL;
 gint fgs;
 GSList *grp=NULL;
-GtkWidget *cnv, *crm, *crp, *dBs, *fst, *kms, *nbk, *neg, *nz, *psp, *pst, *pt1, *pt2, *r0, *ri, *rp, *sbr, *tx, *wdw, *wk, *wsp, *wst, *zpd;
+GtkWidget *cl, *cnv, *crm, *crp, *dBs, *dl, *fst, *kms, *nbk, *neg, *nl, *nz, *psp, *pst, *pt1, *pt2, *r0, *ri, *rp, *sbr, *tx, *wdw, *wk, *wsp, *wst, *zpd;
 
 int main(int argc, char *argv[])
 {
@@ -146,11 +146,11 @@ int main(int argc, char *argv[])
 	gtk_menu_shell_append(GTK_MENU_SHELL(mnu), mni);
 	gtk_widget_show(mni);
 	tx=gtk_check_menu_item_new_with_label(_("Transmission\nMeasurement?"));
-	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(tx), TRUE);
+	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(tx), FALSE);
 	gtk_menu_shell_append(GTK_MENU_SHELL(mnu), tx);
 	gtk_widget_show(tx);
 	dBs=gtk_check_menu_item_new_with_label(_("Spectrum in dBs?"));
-	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(dBs), TRUE);
+	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(dBs), FALSE);
 	gtk_menu_shell_append(GTK_MENU_SHELL(mnu), dBs);
 	gtk_widget_show(dBs);
 	neg=gtk_check_menu_item_new_with_label(_("Negate?"));
@@ -197,7 +197,7 @@ int main(int argc, char *argv[])
 	lbl=gtk_label_new(_("Spectrum Start\n(nm or /cm):"));
 	gtk_table_attach(GTK_TABLE(tbl), lbl, 0, 1, 0, 1, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(lbl);
-	adj=(GtkAdjustment*) gtk_adjustment_new(0, -G_MAXDOUBLE, G_MAXDOUBLE, 1.0, 5.0, 0.0);
+	adj=(GtkAdjustment*) gtk_adjustment_new(1545, -G_MAXDOUBLE, G_MAXDOUBLE, 1.0, 5.0, 0.0);
 	wst=gtk_spin_button_new(adj, 0.5, 3);
 	gtk_table_attach(GTK_TABLE(tbl), wst, 0, 1, 1, 2, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(wst);
@@ -208,7 +208,7 @@ int main(int argc, char *argv[])
 	lbl=gtk_label_new(_("Spectrum Stop\n(nm or /cm):"));
 	gtk_table_attach(GTK_TABLE(tbl), lbl, 1, 2, 0, 1, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(lbl);
-	adj=(GtkAdjustment*) gtk_adjustment_new(1, -G_MAXDOUBLE, G_MAXDOUBLE, 1.0, 5.0, 0.0);
+	adj=(GtkAdjustment*) gtk_adjustment_new(1555, -G_MAXDOUBLE, G_MAXDOUBLE, 1.0, 5.0, 0.0);
 	wsp=gtk_spin_button_new(adj, 0.5, 3);
 	gtk_table_attach(GTK_TABLE(tbl), wsp, 1, 2, 1, 2, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(wsp);
@@ -230,7 +230,7 @@ int main(int argc, char *argv[])
 	lbl=gtk_label_new(_("Zero Padding 2^:"));
 	gtk_table_attach(GTK_TABLE(tbl), lbl, 1, 2, 2, 3, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(lbl);
-	adj=(GtkAdjustment*) gtk_adjustment_new(12, 6, 31, 1.0, 5.0, 0.0);
+	adj=(GtkAdjustment*) gtk_adjustment_new(12, 6, 30, 1.0, 5.0, 0.0);
 	zpd=gtk_spin_button_new(adj, 0, 0);
 	gtk_table_attach(GTK_TABLE(tbl), zpd, 1, 2, 3, 4, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(zpd);
@@ -241,7 +241,7 @@ int main(int argc, char *argv[])
 	lbl=gtk_label_new(_("Spatial Points 2^:"));
 	gtk_table_attach(GTK_TABLE(tbl), lbl, 1, 2, 4, 5, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(lbl);
-	adj=(GtkAdjustment*) gtk_adjustment_new(12, 4, 31, 1.0, 5.0, 0.0);
+	adj=(GtkAdjustment*) gtk_adjustment_new(9, 4, 29, 1.0, 5.0, 0.0);
 	nz=gtk_spin_button_new(adj, 0, 0);
 	gtk_table_attach(GTK_TABLE(tbl), nz, 1, 2, 5, 6, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(nz);
@@ -256,7 +256,7 @@ int main(int argc, char *argv[])
 	hpn=gtk_hpaned_new();
 	gtk_widget_show(hpn);
 	gtk_paned_add1(GTK_PANED(hpn), tbl);
-	tbl=gtk_table_new(1, 1, FALSE);
+	tbl=gtk_table_new(7, 3, FALSE);
 	gtk_widget_show(tbl);
 	pt1=gtk_plot_linear_new();
 	g_signal_connect(pt1, "moved", G_CALLBACK(pmv), NULL);
@@ -270,7 +270,7 @@ int main(int argc, char *argv[])
 	lbl=gtk_label_new(_("Start Position:"));
 	gtk_table_attach(GTK_TABLE(tbl), lbl, 0, 2, 0, 1, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(lbl);
-	adj=(GtkAdjustment*) gtk_adjustment_new(1, -G_MAXDOUBLE, G_MAXDOUBLE, 1.0, 5.0, 0.0);
+	adj=(GtkAdjustment*) gtk_adjustment_new(-0.1, -G_MAXDOUBLE, G_MAXDOUBLE, 1.0, 5.0, 0.0);
 	pst=gtk_spin_button_new(adj, 0.5, 3);
 	gtk_table_attach(GTK_TABLE(tbl), pst, 0, 2, 1, 2, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(pst);
@@ -281,7 +281,7 @@ int main(int argc, char *argv[])
 	lbl=gtk_label_new(_("Stop Position:"));
 	gtk_table_attach(GTK_TABLE(tbl), lbl, 2, 3, 0, 1, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(lbl);
-	adj=(GtkAdjustment*) gtk_adjustment_new(3, -G_MAXDOUBLE, G_MAXDOUBLE, 1.0, 5.0, 0.0);
+	adj=(GtkAdjustment*) gtk_adjustment_new(0.1, -G_MAXDOUBLE, G_MAXDOUBLE, 1.0, 5.0, 0.0);
 	psp=gtk_spin_button_new(adj, 0.5, 3);
 	gtk_table_attach(GTK_TABLE(tbl), psp, 2, 3, 1, 2, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(psp);
@@ -319,9 +319,42 @@ int main(int argc, char *argv[])
 	all=gtk_widget_get_accessible(GTK_WIDGET(btt));
 	atk_object_add_relationship(all, ATK_RELATION_LABEL_FOR, awg);
 	atk_object_add_relationship(awg, ATK_RELATION_LABELLED_BY, all);
+	lbl=gtk_label_new(_("Centre\nResonance:"));
+	gtk_table_attach(GTK_TABLE(tbl), lbl, 0, 1, 4, 5, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
+	gtk_widget_show(lbl);
+	adj=(GtkAdjustment*) gtk_adjustment_new(1550, -G_MAXDOUBLE, G_MAXDOUBLE, 1.0, 5.0, 0.0);
+	cl=gtk_spin_button_new(adj, 0.5, 3);
+	gtk_table_attach(GTK_TABLE(tbl), cl, 0, 1, 5, 6, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
+	gtk_widget_show(cl);
+	awg=gtk_widget_get_accessible(cl);
+	all=gtk_widget_get_accessible(GTK_WIDGET(lbl));
+	atk_object_add_relationship(all, ATK_RELATION_LABEL_FOR, awg);
+	atk_object_add_relationship(awg, ATK_RELATION_LABELLED_BY, all);
+	lbl=gtk_label_new(_("Range:"));
+	gtk_table_attach(GTK_TABLE(tbl), lbl, 1, 2, 4, 5, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
+	gtk_widget_show(lbl);
+	adj=(GtkAdjustment*) gtk_adjustment_new(2.0, 0, G_MAXDOUBLE, 1.0, 5.0, 0.0);
+	dl=gtk_spin_button_new(adj, 0.5, 3);
+	gtk_table_attach(GTK_TABLE(tbl), dl, 1, 2, 5, 6, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
+	gtk_widget_show(dl);
+	awg=gtk_widget_get_accessible(dl);
+	all=gtk_widget_get_accessible(GTK_WIDGET(lbl));
+	atk_object_add_relationship(all, ATK_RELATION_LABEL_FOR, awg);
+	atk_object_add_relationship(awg, ATK_RELATION_LABELLED_BY, all);
+	lbl=gtk_label_new(_("Spectral Points:"));
+	gtk_table_attach(GTK_TABLE(tbl), lbl, 2, 3, 4, 5, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
+	gtk_widget_show(lbl);
+	adj=(GtkAdjustment*) gtk_adjustment_new(1000, 20, 64000, 1.0, 5.0, 0.0);
+	nl=gtk_spin_button_new(adj, 0, 0);
+	gtk_table_attach(GTK_TABLE(tbl), nl, 2, 3, 5, 6, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
+	gtk_widget_show(nl);
+	awg=gtk_widget_get_accessible(nl);
+	all=gtk_widget_get_accessible(GTK_WIDGET(lbl));
+	atk_object_add_relationship(all, ATK_RELATION_LABEL_FOR, awg);
+	atk_object_add_relationship(awg, ATK_RELATION_LABELLED_BY, all);
 	btt=gtk_button_new_with_label(_("Solve Direct"));
 	g_signal_connect(G_OBJECT(btt), "clicked", G_CALLBACK(prs), NULL);
-	gtk_table_attach(GTK_TABLE(tbl), btt, 0, 3, 4, 5, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
+	gtk_table_attach(GTK_TABLE(tbl), btt, 0, 3, 6, 7, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
 	gtk_widget_show(btt);
 	hpn=gtk_hpaned_new();
 	gtk_widget_show(hpn);
