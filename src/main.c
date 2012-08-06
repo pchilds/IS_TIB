@@ -7,6 +7,7 @@
  *  Features:
  *            Multiple data format input
  *            Graphical display of data and transformed result
+ *            Reprocessing with Transfer Matrix method
  *            Publication ready graphs of results in multiple formats
  *
  *  Thu Oct  6 19:02:14 2011
@@ -17,7 +18,7 @@
 /*
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * This program is distributed in the hope that it will be useful,

@@ -9,7 +9,7 @@ Motivation; Technology; License
 ---------------------------------------------
 InvScatt uses the PlotLinear widget to visualise data. Transformation of the data is carried out using the toeplitz inner bordering method developed by Oleg Belai et. al. [1].
 The code is designed for gtk+2, though an update to gtk3 is in the making.
-Harmonic is released under the GNU GPL version 2 or (at your option) any later versions. See the accompanying COPYING file for details.
+Harmonic is released under the GNU GPL version 3 or (at your option) any later versions. See the accompanying COPYING file for details.
 
 Usage
 -----
