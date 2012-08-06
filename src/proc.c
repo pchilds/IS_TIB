@@ -128,7 +128,7 @@ void prs(GtkWidget *wgt, gpointer dta)
 			csh[k]=ssh[k]*cos(g_array_index((plt->ydata), gdouble, nx4+st+k));
 			ssh[k]*=sin(g_array_index((plt->ydata), gdouble, nx4+st+k));
 		}
-		if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(kms)))//set up 
+		if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(kms)))
 		{
 			for (j=0;j<zd2;j++)
 			{
@@ -536,7 +536,7 @@ void trs(GtkWidget *wgt, gpointer dta)
 		cm=1/(1-(beta[0]*beta[0])-(beta[1]*beta[1]));
 		{cue[0]=-cm*(ir[1][0]+ir[0][0]); cue[1]=-cm*(ir[1][1]+ir[0][1]);}
 		dpr=&g_array_index(kp, gdouble, 0);
-		mxy=dx*sqrt((cue[0]*cue[0])+(cue[1]*cue[1]));
+		mxy=dx*sqrt((cue[0]*cue[0])+(cue[1]*cue[1]))/2;
 		*dpr=mxy;
 		dpr=&g_array_index(kp, gdouble, zd2);
 		iv=atan2(cue[1],cue[0]);
@@ -561,7 +561,7 @@ void trs(GtkWidget *wgt, gpointer dta)
 			{cue[0]=beta[0]; cue[1]=beta[1];}
 			for (j=0;j<=m;j++) {cue[0]+=(ym[j][1]*ir[m-j][1])-(ym[j][0]*ir[m-j][0]); cue[1]-=(ym[j][0]*ir[m-j][1])+(ym[j][1]*ir[m-j][0]);}
 			dpr=&g_array_index(kp, gdouble, m);
-			iv=dx*sqrt((cue[0]*cue[0])+(cue[1]*cue[1]));
+			iv=dx*sqrt((cue[0]*cue[0])+(cue[1]*cue[1]))/2;
 			*dpr=iv;
 			if (iv>mxy) mxy=iv;
 			dpr=&g_array_index(kp, gdouble, zd2+m);
