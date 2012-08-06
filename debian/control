@@ -1,0 +1,21 @@
+Source: istib
+Section: science
+Priority: optional
+Maintainer: Paul Childs <pchilds@physics.org>
+Build-Depends: debhelper (>= 7), autotools-dev, dh-autoreconf, pkg-config, libgtk2-dev
+Standards-Version: 3.8.3
+Homepage: <https://github.com/pchilds/IS_TIB>
+
+Package: istib
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Provides a Toeplitz Inner border inverse scattering solver for optical media
+ istib provides a GUI for displaying reflection spectra and
+ transforming them into the required spatial refractive index
+ modulation profiles. The method used is the Toeplitz Inner
+ bordering method developed by Belai et. al. which performs
+ Inverse scattering quickly, O(N^2), and accurately (the
+ Gel'fand-Levitan-Marchenko Equations are solved exactly.
+ A direct scattering (transfer matrix based) method is also
+ included to allow system constraints to be included and
+ modelled as well as for adaptively altering profiles.
