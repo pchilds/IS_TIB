@@ -1,0 +1,5 @@
+     ../src/main.c \
+     ../src/proc.c \
+     ../src/data.c \
+     ../src/disp.c \
+     ../src/util.c
