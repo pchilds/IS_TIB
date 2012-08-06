@@ -1,6 +1,5 @@
 ## Process this file with automake to produce Makefile.in
 AM_CFLAGS=$(IS_CFLAGS)
-MAINTAINERCLEANFILES=Makefile.in
 AM_CPPFLAGS= -DLOCALEDIR=\"$(localedir)\" -DPACKAGE=\"$(PACKAGE)\"
 bin_PROGRAMS=InvScatt
 InvScatt_SOURCES=		\
