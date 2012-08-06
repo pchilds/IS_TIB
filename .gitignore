@@ -1,0 +1,15 @@
+autom4te.cache
+src/.deps
+src/.libs
+config.h
+config.log
+config.status
+Makefile
+stamp*
+*.o
+*~
+debian/istib/*
+debian/autoreconf*
+debian/files
+debian/*debhelper*
+debian/istib.substvars
