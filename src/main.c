@@ -38,7 +38,6 @@
 #include "proc.h"
 #include "util.h"
 
-GArray *l, *R, *z, *kp, *r1, *g1, *b1, *a1, *r2, *g2, *b2, *a2, *sz1, *nx1, *sz2, *nx2;
 gchar *fld=NULL, *flr=NULL;
 gint fgs;
 GSList *grp=NULL;
@@ -47,18 +46,20 @@ GtkWidget *cl, *cnv, *crm, *crp, *dBs, *dl, *fst, *kms, *nbk, *neg, *nl, *nz, *p
 int main(int argc, char *argv[])
 {
 	AtkObject *awg, *all;
+	GArray *r1, *g1, *b1, *a1, *r2, *g2, *b2, *a2;
+	gchar *str, *str2;
 	gdouble td;
 	GtkAccelGroup *acc=NULL;
 	GtkAdjustment *adj;
-	GtkWidget *vbx, *mnb, *mnu, *smn, *mni, *hpn, *tbl, *lbl, *btt;
 	GtkPlotLinear *plt;
+	GtkWidget *vbx, *mnb, *mnu, *smn, *mni, *hpn, *tbl, *lbl, *btt;
 
 	bindtextdomain(PACKAGE, LOCALEDIR);
 	bind_textdomain_codeset(PACKAGE, "UTF-8");
 	textdomain(PACKAGE);
 	gtk_init(&argc, &argv);
 	wdw=gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_title(GTK_WINDOW(wdw), _("Toplitz Inner Bordering inverse solver"));
+	gtk_window_set_title(GTK_WINDOW(wdw), _("Toeplitz Inner Bordering inverse solver"));
 	g_signal_connect_swapped(G_OBJECT(wdw), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 	acc=gtk_accel_group_new();
 	gtk_window_add_accel_group(GTK_WINDOW(wdw), acc);
@@ -373,7 +374,6 @@ int main(int argc, char *argv[])
 	gtk_box_pack_start(GTK_BOX(vbx), sbr, FALSE, FALSE, 2);
 	gtk_widget_show(sbr);
 	{fld=g_strdup("/home"); flr=g_strdup("/home"); fgs=0;}
-	plt=GTK_PLOT_LINEAR(pt1);
 	r1=g_array_new(FALSE, FALSE, sizeof(gdouble));
 	g1=g_array_new(FALSE, FALSE, sizeof(gdouble));
 	b1=g_array_new(FALSE, FALSE, sizeof(gdouble));
@@ -400,35 +400,16 @@ int main(int argc, char *argv[])
 	g_array_append_val(r2, td);
 	g_array_append_val(a2, td);
 	g_array_append_val(a2, td);
-	(plt->rd)=r1;
-	(plt->gr)=g1;
-	(plt->bl)=b1;
-	(plt->al)=a1;
-	l=g_array_new(FALSE, FALSE, sizeof(gdouble));
-	R=g_array_new(FALSE, FALSE, sizeof(gdouble));
-	sz1=g_array_new(FALSE, FALSE, sizeof(gint));
-	nx1=g_array_new(FALSE, FALSE, sizeof(gint));
-	g_array_append_val(sz1, fgs);
-	g_array_append_val(sz1, fgs);
-	g_array_append_val(nx1, fgs);
-	g_array_append_val(nx1, fgs);
-	{(plt->sizes)=sz1; (plt->ind)=nx1;}
+	plt=GTK_PLOT_LINEAR(pt1);
+	gtk_plot_linear_set_colour(plt, r1, g1, b1, a1);
+	{g_array_unref(r1); g_array_unref(g1); g_array_unref(b1); g_array_unref(a1);}
 	plt=GTK_PLOT_LINEAR(pt2);
-	(plt->rd)=r2;
-	(plt->gr)=g2;
-	(plt->bl)=b2;
-	(plt->al)=a2;
-	z=g_array_new(FALSE, FALSE, sizeof(gdouble));
-	kp=g_array_new(FALSE, FALSE, sizeof(gdouble));
-	sz2=g_array_new(FALSE, FALSE, sizeof(gint));
-	nx2=g_array_new(FALSE, FALSE, sizeof(gint));
-	g_array_append_val(sz2, fgs);
-	g_array_append_val(sz2, fgs);
-	g_array_append_val(nx2, fgs);
-	g_array_append_val(nx2, fgs);
-	{(plt->sizes)=sz2; (plt->ind)=nx2;}
-	(plt->xlab)=g_strdup("Optical distance (m)");
-	(plt->ylab)=g_strdup("Coupling constant (/m)");
+	gtk_plot_linear_set_colour(plt, r2, g2, b2, a2);
+	{g_array_unref(r2); g_array_unref(g2); g_array_unref(b2); g_array_unref(a2);}
+	str=g_strdup("Optical distance (m)");
+	str2=g_strdup("Coupling constant (/m)");
+	gtk_plot_linear_set_label(plt, str, str2);
+	{g_free(str); g_free(str2);}
 	gtk_widget_show(wdw);
 	gtk_main();
 	return 0;

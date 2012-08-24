@@ -28,7 +28,7 @@ GtkPrintSettings *pst=NULL;
 
 void opd(GtkWidget *wgt, gpointer dta)
 {
-	GArray *o1, *o2, *o3;
+	GArray *o1, *o2, *o3, *x, *y, *nx, *sz;
 	gchar *cts=NULL, *fin=NULL, *str;
 	gchar **sat=NULL, **sta=NULL;
 	gdouble xi, xf, mny, mxy, lcl;
@@ -197,85 +197,53 @@ void opd(GtkWidget *wgt, gpointer dta)
 			str=g_strdup_printf(_("File: %s successfully loaded."), fin);
 			gtk_statusbar_push(GTK_STATUSBAR(sbr), gtk_statusbar_get_context_id(GTK_STATUSBAR(sbr), str), str);
 			g_free(str);
+			x=g_array_new(FALSE, FALSE, sizeof(gdouble));
+			y=g_array_new(FALSE, FALSE, sizeof(gdouble));
+			sz=g_array_new(FALSE, FALSE, sizeof(gint));
+			nx=g_array_new(FALSE, FALSE, sizeof(gint));
+			k=0;
+			g_array_append_val(sz, lc);
+			g_array_append_val(sz, lc);
+			g_array_append_val(nx, k);
+			g_array_append_val(nx, lc);
+			g_array_append_val(x, xi);
+			mny=g_array_index(o2, gdouble, 0);
+			g_array_append_val(y, mny);
+			mxy=mny;
+			for (k=1;k<lc;k++)
+			{
+				lcl=g_array_index(o1, gdouble, k);
+				g_array_append_val(x, lcl);
+				lcl=g_array_index(o2, gdouble, k);
+				g_array_append_val(y, lcl);
+				if (lcl>mxy) mxy=lcl;
+				else if (lcl<mny) mny=lcl;
+			}
+			for (k=0;k<lc;k++)
+			{
+				lcl=g_array_index(o1, gdouble, k);
+				g_array_append_val(x, lcl);
+				lcl=g_array_index(o3, gdouble, k);
+				g_array_append_val(y, lcl);
+				if (lcl>mxy) mxy=lcl;
+				else if (lcl<mny) mny=lcl;
+			}
 			switch (gtk_notebook_get_current_page(GTK_NOTEBOOK(nbk)))
 			{
 				case 1:
-				{g_array_free(z, TRUE); g_array_free(kp, TRUE); g_array_free(sz2, TRUE); g_array_free(nx2, TRUE);}
-				z=g_array_new(FALSE, FALSE, sizeof(gdouble));
-				kp=g_array_new(FALSE, FALSE, sizeof(gdouble));
-				sz2=g_array_new(FALSE, FALSE, sizeof(gint));
-				nx2=g_array_new(FALSE, FALSE, sizeof(gint));
-				k=0;
-				g_array_append_val(sz2, lc);
-				g_array_append_val(sz2, lc);
-				g_array_append_val(nx2, k);
-				g_array_append_val(nx2, lc);
-				g_array_append_val(z, xi);
-				mny=g_array_index(o2, gdouble, 0);
-				g_array_append_val(kp, mny);
-				mxy=mny;
-				for (k=1;k<lc;k++)
-				{
-					lcl=g_array_index(o1, gdouble, k);
-					g_array_append_val(z, lcl);
-					lcl=g_array_index(o2, gdouble, k);
-					g_array_append_val(kp, lcl);
-					if (lcl>mxy) mxy=lcl;
-					else if (lcl<mny) mny=lcl;
-				}
-				for (k=0;k<lc;k++)
-				{
-					lcl=g_array_index(o1, gdouble, k);
-					g_array_append_val(z, lcl);
-					lcl=g_array_index(o3, gdouble, k);
-					g_array_append_val(kp, lcl);
-					if (lcl>mxy) mxy=lcl;
-					else if (lcl<mny) mny=lcl;
-				}
 				fgs|=PROC_ZDT;
 				plt=GTK_PLOT_LINEAR(pt2);
-				{(plt->sizes)=sz2; (plt->ind)=nx2; (plt->xdata)=z; (plt->ydata)=kp;}
+				gtk_plot_linear_set_data(plt, x, y, nx, sz);
 				gtk_plot_linear_update_scale_pretty(pt2, xi, xf, mny, mxy);
 				break;
 				default:
-				{g_array_free(l, TRUE); g_array_free(R, TRUE); g_array_free(sz1, TRUE); g_array_free(nx1, TRUE);}
-				l=g_array_new(FALSE, FALSE, sizeof(gdouble));
-				R=g_array_new(FALSE, FALSE, sizeof(gdouble));
-				sz1=g_array_new(FALSE, FALSE, sizeof(gint));
-				nx1=g_array_new(FALSE, FALSE, sizeof(gint));
-				k=0;
-				g_array_append_val(sz1, lc);
-				g_array_append_val(sz1, lc);
-				g_array_append_val(nx1, k);
-				g_array_append_val(nx1, lc);
-				g_array_append_val(l, xi);
-				mny=g_array_index(o2, gdouble, 0);
-				g_array_append_val(R, mny);
-				mxy=mny;
-				for (k=1;k<lc;k++)
-				{
-					lcl=g_array_index(o1, gdouble, k);
-					g_array_append_val(l, lcl);
-					lcl=g_array_index(o2, gdouble, k);
-					g_array_append_val(R, lcl);
-					if (lcl>mxy) mxy=lcl;
-					else if (lcl<mny) mny=lcl;
-				}
-				for (k=0;k<lc;k++)
-				{
-					lcl=g_array_index(o1, gdouble, k);
-					g_array_append_val(l, lcl);
-					lcl=g_array_index(o3, gdouble, k);
-					g_array_append_val(R, lcl);
-					if (lcl>mxy) mxy=lcl;
-					else if (lcl<mny) mny=lcl;
-				}
 				fgs|=PROC_LDT;
 				plt=GTK_PLOT_LINEAR(pt1);
-				{(plt->sizes)=sz1; (plt->ind)=nx1; (plt->xdata)=l; (plt->ydata)=R;}
+				gtk_plot_linear_set_data(plt, x, y, nx, sz);
 				gtk_plot_linear_update_scale_pretty(pt1, xi, xf, mny, mxy);
 				break;
 			}
+			{g_array_unref(x); g_array_unref(y); g_array_unref(nx); g_array_unref(sz);}
 		}
 		else
 		{

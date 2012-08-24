@@ -25,7 +25,6 @@
 #ifndef __DISP_H__
 #	define __DISP_H__
 #	include "main.h"
-	extern GArray *r1, *g1, *b1, *a1, *r2, *g2, *b2, *a2;
 	extern GtkWidget *nbk, *pt1, *pt2;
 	void dpa(GtkWidget*, gpointer);
 	void dpr(GtkWidget*, gpointer);

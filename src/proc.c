@@ -70,6 +70,7 @@ void con(GtkWidget *wgt, gpointer dta)
 void prs(GtkWidget *wgt, gpointer dta)
 {
 	fftw_complex A, B, C;
+	GArray *l, *R, *sz1, *nx1;
 	gdouble *cb, *ch, *csh, *dpr, *sb, *ssh;
 	GtkPlotLinear *plt;
 	gdouble del, dlm, iv, l0, mny, mxy;
@@ -94,7 +95,6 @@ void prs(GtkWidget *wgt, gpointer dta)
 		iv=dlm/((gdouble) zd2-1);
 		dlm=dlm/2;
 		l0=gtk_spin_button_get_value(GTK_SPIN_BUTTON(cl))-dlm;
-		{g_array_free(l, TRUE); g_array_free(R, TRUE); g_array_free(sz1, TRUE); g_array_free(nx1, TRUE);}
 		l=g_array_new(FALSE, FALSE, sizeof(gdouble));
 		R=g_array_new(FALSE, FALSE, sizeof(gdouble));
 		sz1=g_array_new(FALSE, FALSE, sizeof(gint));
@@ -203,7 +203,8 @@ void prs(GtkWidget *wgt, gpointer dta)
 		}
 		{g_free((gpointer) cb); g_free((gpointer) sb); g_free((gpointer) csh); g_free((gpointer) ssh); g_free((gpointer) ch);}
 		plt=GTK_PLOT_LINEAR(pt1);
-		{(plt->sizes)=sz1; (plt->ind)=nx1; (plt->xdata)=l; (plt->ydata)=R;}
+		gtk_plot_linear_set_data(plt, l, R, nx1, sz1);
+		{g_array_unref(l); g_array_unref(R); g_array_unref(nx1); g_array_unref(sz1);}
 		gtk_plot_linear_update_scale_pretty(pt1, l0-dlm, l0+dlm, mny, mxy);
 		fgs|=PROC_LDT;
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(nbk), 0);
@@ -221,6 +222,7 @@ void trs(GtkWidget *wgt, gpointer dta)
 	fftw_complex *ir, *rf, *ym, *zm, *tm;
 	fftw_complex beta, cue;
 	fftw_plan p;
+	GArray *z, *kp, *sz2, *nx2;
 	gchar *str;
 	gdouble h, dx, iv, iv2, cm, mxy, mny;
 	gdouble *dpr;
@@ -516,7 +518,6 @@ void trs(GtkWidget *wgt, gpointer dta)
 		fftw_execute(p);
 		fftw_destroy_plan(p);
 		fftw_free(rf);
-		{g_array_free(z, TRUE); g_array_free(kp, TRUE); g_array_free(sz2, TRUE); g_array_free(nx2, TRUE);}
 		z=g_array_new(FALSE, FALSE, sizeof(gdouble));
 		kp=g_array_new(FALSE, FALSE, sizeof(gdouble));
 		sz2=g_array_new(FALSE, FALSE, sizeof(gint));
@@ -571,7 +572,7 @@ void trs(GtkWidget *wgt, gpointer dta)
 			else if (iv<mny) mny=iv;
 		}
 		{fftw_free(ir); fftw_free(ym); fftw_free(zm); fftw_free(tm);}
-		h*=1/dx;
+		h*=1/(2*dx);
 		iv=(1-zd2)*h/2;
 		g_array_append_val(z, iv);
 		for (j=1;j<zd2;j++)
@@ -587,7 +588,8 @@ void trs(GtkWidget *wgt, gpointer dta)
 			g_array_append_val(z, iv);
 		}
 		plt=GTK_PLOT_LINEAR(pt2);
-		{(plt->sizes)=sz2; (plt->ind)=nx2; (plt->xdata)=z; (plt->ydata)=kp;}
+		gtk_plot_linear_set_data(plt, z, kp, nx2, sz2);
+		{g_array_unref(z); g_array_unref(kp); g_array_unref(nx2); g_array_unref(sz2);}
 		gtk_plot_linear_update_scale_pretty(pt2, -iv, iv, mny, mxy);
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(nbk), 1);
 		fgs|=PROC_ZDT;
