@@ -19,3 +19,18 @@ Description: Provides a Toeplitz Inner border inverse scattering solver for opti
  A direct scattering (transfer matrix based) method is also
  included to allow system constraints to be included and
  modelled as well as for adaptively altering profiles.
+
+Package: istib-dbg
+Section: debug
+Architecture: any
+Depends: istib (= ${binary:Version})
+Description: Provides debug symbols for the istib package
+ istib provides a GUI for displaying reflection spectra and
+ transforming them into the required spatial refractive index
+ modulation profiles. The method used is the Toeplitz Inner
+ bordering method developed by Belai et. al. which performs
+ Inverse scattering quickly, O(N^2), and accurately (the
+ Gel'fand-Levitan-Marchenko Equations are solved exactly.
+ A direct scattering (transfer matrix based) method is also
+ included to allow system constraints to be included and
+ modelled as well as for adaptively altering profiles.
