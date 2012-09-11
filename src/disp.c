@@ -34,6 +34,7 @@ void dpa(GtkWidget *wgt, gpointer dta)
 	GdkColor clr;
 	gdouble mny, mxy, xi, xf;
 	gdouble *dpr;
+	GtkPlot *pt;
 	GtkPlotLinear *plt;
 	guint16 alp;
 	PangoFontDescription *ds1, *ds2;
@@ -42,13 +43,14 @@ void dpa(GtkWidget *wgt, gpointer dta)
 	{
 		case 1:
 		plt=GTK_PLOT_LINEAR(pt2);
+		pt=GTK_PLOT(pt2);
 		{str=g_strdup(gtk_entry_get_text(GTK_ENTRY(en3))); str2=g_strdup(gtk_entry_get_text(GTK_ENTRY(en4)));}
 		gtk_plot_linear_set_label(plt, str, str2);
 		{g_free(str); g_free(str2);}
 		ds1=pango_font_description_from_string(gtk_font_button_get_font_name(GTK_FONT_BUTTON(bt3)));
 		ds2=pango_font_description_from_string(gtk_font_button_get_font_name(GTK_FONT_BUTTON(bt4)));
-		gtk_plot_linear_set_font(plt, ds1, ds2);
-		pango_font_description_free(ds1); pango_font_description_free(ds2);
+		gtk_plot_set_font(pt, ds1, ds2);
+		{pango_font_description_free(ds1); pango_font_description_free(ds2);}
 		car=g_array_sized_new(FALSE, FALSE, sizeof(gdouble), 2);
 		cag=g_array_sized_new(FALSE, FALSE, sizeof(gdouble), 2);
 		cab=g_array_sized_new(FALSE, FALSE, sizeof(gdouble), 2);
@@ -93,19 +95,20 @@ void dpa(GtkWidget *wgt, gpointer dta)
 			g_array_append_val(caa, xi);
 			g_array_append_val(caa, xf);
 		}
-		gtk_plot_linear_set_colour(plt, car, cag, cab, caa);
+		gtk_plot_set_colour(pt, car, cag, cab, caa);
 		{g_array_unref(car); g_array_unref(cag); g_array_unref(cab); g_array_unref(caa);}
 		g_object_get(G_OBJECT(pt2), "xmin", &xi, "xmax", &xf, "ymin", &mny, "ymax", &mxy, NULL);
 		gtk_plot_linear_update_scale(pt2, xi, xf, mny, mxy);
 		break;
 		default:
 		plt=GTK_PLOT_LINEAR(pt1);
+		pt=GTK_PLOT(pt1);
 		{str=g_strdup(gtk_entry_get_text(GTK_ENTRY(en1))); str2=g_strdup(gtk_entry_get_text(GTK_ENTRY(en2)));}
 		gtk_plot_linear_set_label(plt, str, str2);
 		{g_free(str); g_free(str2);}
 		ds1=pango_font_description_from_string(gtk_font_button_get_font_name(GTK_FONT_BUTTON(bt1)));
 		ds2=pango_font_description_from_string(gtk_font_button_get_font_name(GTK_FONT_BUTTON(bt2)));
-		gtk_plot_linear_set_font(plt, ds1, ds2);
+		gtk_plot_set_font(pt, ds1, ds2);
 		pango_font_description_free(ds1); pango_font_description_free(ds2);
 		car=g_array_sized_new(FALSE, FALSE, sizeof(gdouble), 2);
 		cag=g_array_sized_new(FALSE, FALSE, sizeof(gdouble), 2);
@@ -151,7 +154,7 @@ void dpa(GtkWidget *wgt, gpointer dta)
 			g_array_append_val(caa, xi);
 			g_array_append_val(caa, xf);
 		}
-		gtk_plot_linear_set_colour(plt, car, cag, cab, caa);
+		gtk_plot_set_colour(pt, car, cag, cab, caa);
 		{g_array_unref(car); g_array_unref(cag); g_array_unref(cab); g_array_unref(caa);}
 		g_object_get(G_OBJECT(pt1), "xmin", &xi, "xmax", &xf, "ymin", &mny, "ymax", &mxy, NULL);
 		gtk_plot_linear_update_scale(pt1, xi, xf, mny, mxy);
@@ -163,22 +166,22 @@ void upj(GtkWidget *wgt, gpointer dta)
 {
 	GdkColor cl1;
 	guint16 alp;
-	GtkPlotLinear *plt;
+	GtkPlot *pt;
 
-	plt=GTK_PLOT_LINEAR(pt1);
+	pt=GTK_PLOT(pt1);
 	if (gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(wgt)))
 	{
-		(cl1.red)=(guint16) (65535*g_array_index((plt->rd), gdouble, 1));
-		(cl1.green)=(guint16) (65535*g_array_index((plt->gr), gdouble, 1));
-		(cl1.blue)=(guint16) (65535*g_array_index((plt->bl), gdouble, 1));
-		alp=(guint16) (65535*g_array_index((plt->al), gdouble, 1));
+		(cl1.red)=(guint16) (65535*g_array_index((pt->rd), gdouble, 1));
+		(cl1.green)=(guint16) (65535*g_array_index((pt->gr), gdouble, 1));
+		(cl1.blue)=(guint16) (65535*g_array_index((pt->bl), gdouble, 1));
+		alp=(guint16) (65535*g_array_index((pt->al), gdouble, 1));
 	}
 	else
 	{
-		(cl1.red)=(guint16) (65535*g_array_index((plt->rd), gdouble, 0));
-		(cl1.green)=(guint16) (65535*g_array_index((plt->gr), gdouble, 0));
-		(cl1.blue)=(guint16) (65535*g_array_index((plt->bl), gdouble, 0));
-		alp=(guint16) (65535*g_array_index((plt->al), gdouble, 0));
+		(cl1.red)=(guint16) (65535*g_array_index((pt->rd), gdouble, 0));
+		(cl1.green)=(guint16) (65535*g_array_index((pt->gr), gdouble, 0));
+		(cl1.blue)=(guint16) (65535*g_array_index((pt->bl), gdouble, 0));
+		alp=(guint16) (65535*g_array_index((pt->al), gdouble, 0));
 	}
 	gdk_colormap_alloc_color(cmp, &cl1, FALSE, TRUE);
 	gtk_color_selection_set_current_color(GTK_COLOR_SELECTION(cs1), &cl1);
@@ -189,22 +192,22 @@ void upj2(GtkWidget *wgt, gpointer dta)
 {
 	GdkColor cl1;
 	guint16 alp;
-	GtkPlotLinear *plt;
+	GtkPlot *plt;
 
-	plt=GTK_PLOT_LINEAR(pt2);
+	pt=GTK_PLOT(pt2);
 	if (gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(wgt)))
 	{
-		(cl1.red)=(guint16) (65535*g_array_index((plt->rd), gdouble, 1));
-		(cl1.green)=(guint16) (65535*g_array_index((plt->gr), gdouble, 1));
-		(cl1.blue)=(guint16) (65535*g_array_index((plt->bl), gdouble, 1));
-		alp=(guint16) (65535*g_array_index((plt->al), gdouble, 1));
+		(cl1.red)=(guint16) (65535*g_array_index((pt->rd), gdouble, 1));
+		(cl1.green)=(guint16) (65535*g_array_index((pt->gr), gdouble, 1));
+		(cl1.blue)=(guint16) (65535*g_array_index((pt->bl), gdouble, 1));
+		alp=(guint16) (65535*g_array_index((pt->al), gdouble, 1));
 	}
 	else
 	{
-		(cl1.red)=(guint16) (65535*g_array_index((plt->rd), gdouble, 0));
-		(cl1.green)=(guint16) (65535*g_array_index((plt->gr), gdouble, 0));
-		(cl1.blue)=(guint16) (65535*g_array_index((plt->bl), gdouble, 0));
-		alp=(guint16) (65535*g_array_index((plt->al), gdouble, 0));
+		(cl1.red)=(guint16) (65535*g_array_index((pt->rd), gdouble, 0));
+		(cl1.green)=(guint16) (65535*g_array_index((pt->gr), gdouble, 0));
+		(cl1.blue)=(guint16) (65535*g_array_index((pt->bl), gdouble, 0));
+		alp=(guint16) (65535*g_array_index((pt->al), gdouble, 0));
 	}
 	gdk_colormap_alloc_color(cmp, &cl1, FALSE, TRUE);
 	gtk_color_selection_set_current_color(GTK_COLOR_SELECTION(cs2), &cl1);
@@ -219,9 +222,10 @@ void dpr(GtkWidget *wgt, gpointer dta)
 	gdouble iv;
 	gint val;
 	GtkAdjustment *adj;
+	GtkPlot *pt;
+	GtkPlotLinear *plt;
 	GtkWidget *btt, *hbx, *hwn, *lbl, *spr, *tbl, *vbx;
 	guint16 alp, alp2;
-	GtkPlotLinear *plt;
 
 	hwn=gtk_dialog_new_with_buttons(_("Display Properties"), GTK_WINDOW(dta), GTK_DIALOG_DESTROY_WITH_PARENT, NULL);
 	g_signal_connect_swapped(G_OBJECT(hwn), "destroy", G_CALLBACK(gtk_widget_destroy), G_OBJECT(hwn));
@@ -238,10 +242,11 @@ void dpr(GtkWidget *wgt, gpointer dta)
 	tbl=gtk_table_new(4, 2, FALSE);
 	gtk_widget_show(tbl);
 	plt=GTK_PLOT_LINEAR(pt1);
+	pt=GTK_PLOT(pt1);
 	lbl=gtk_label_new(_("Axis label font:"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(tbl), lbl, 1, 2, 0, 1, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-	str=pango_font_description_to_string(plt->lfont);
+	str=pango_font_description_to_string(pt->lfont);
 	bt1=gtk_font_button_new_with_font(str);
 	g_free(str);
 	gtk_font_button_set_show_style(GTK_FONT_BUTTON(bt1), TRUE);
@@ -258,7 +263,7 @@ void dpr(GtkWidget *wgt, gpointer dta)
 	lbl=gtk_label_new(_("Tick label font:"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(tbl), lbl, 1, 2, 2, 3, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-	str=pango_font_description_to_string(plt->afont);
+	str=pango_font_description_to_string(pt->afont);
 	bt2=gtk_font_button_new_with_font(str);
 	g_free(str);
 	gtk_font_button_set_show_style(GTK_FONT_BUTTON(bt2), TRUE);
@@ -316,10 +321,10 @@ void dpr(GtkWidget *wgt, gpointer dta)
 	spr=gtk_vseparator_new();
 	gtk_widget_show(spr);
 	cmp=gdk_colormap_get_system();
-	(cl1.red)=(guint16) (65535*g_array_index((plt->rd), gdouble, 0));
-	(cl1.green)=(guint16) (65535*g_array_index((plt->gr), gdouble, 0));
-	(cl1.blue)=(guint16) (65535*g_array_index((plt->bl), gdouble, 0));
-	alp=(guint16) (65535*g_array_index((plt->al), gdouble, 0));
+	(cl1.red)=(guint16) (65535*g_array_index((pt->rd), gdouble, 0));
+	(cl1.green)=(guint16) (65535*g_array_index((pt->gr), gdouble, 0));
+	(cl1.blue)=(guint16) (65535*g_array_index((pt->bl), gdouble, 0));
+	alp=(guint16) (65535*g_array_index((pt->al), gdouble, 0));
 	gdk_colormap_alloc_color(cmp, &cl1, FALSE, TRUE);
 	cs1=gtk_color_selection_new();
 	gtk_color_selection_set_has_opacity_control(GTK_COLOR_SELECTION(cs1), TRUE);
@@ -340,7 +345,7 @@ void dpr(GtkWidget *wgt, gpointer dta)
 	lbl=gtk_label_new(_("Axis label font:"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(tbl), lbl, 1, 2, 0, 1, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-	str=pango_font_description_to_string(plt->lfont);
+	str=pango_font_description_to_string(pt->lfont);
 	bt3=gtk_font_button_new_with_font(str);
 	g_free(str);
 	gtk_font_button_set_show_style(GTK_FONT_BUTTON(bt3), TRUE);
@@ -357,7 +362,7 @@ void dpr(GtkWidget *wgt, gpointer dta)
 	lbl=gtk_label_new(_("Tick label font:"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(tbl), lbl, 1, 2, 2, 3, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
-	str=pango_font_description_to_string(plt->afont);
+	str=pango_font_description_to_string(pt->afont);
 	bt4=gtk_font_button_new_with_font(str);
 	g_free(str);
 	gtk_font_button_set_show_style(GTK_FONT_BUTTON(bt4), TRUE);
@@ -415,10 +420,10 @@ void dpr(GtkWidget *wgt, gpointer dta)
 	spr=gtk_vseparator_new();
 	gtk_widget_show(spr);
 	cs2=gtk_color_selection_new();
-	(cl2.red)=(guint16) (65535*g_array_index((plt->rd), gdouble, 0));
-	(cl2.green)=(guint16) (65535*g_array_index((plt->gr), gdouble, 0));
-	(cl2.blue)=(guint16) (65535*g_array_index((plt->bl), gdouble, 0));
-	alp2=(guint16) (65535*g_array_index((plt->al), gdouble, 0));
+	(cl2.red)=(guint16) (65535*g_array_index((pt->rd), gdouble, 0));
+	(cl2.green)=(guint16) (65535*g_array_index((pt->gr), gdouble, 0));
+	(cl2.blue)=(guint16) (65535*g_array_index((pt->bl), gdouble, 0));
+	alp2=(guint16) (65535*g_array_index((pt->al), gdouble, 0));
 	gdk_colormap_alloc_color(cmp, &cl2, FALSE, TRUE);
 	gtk_color_selection_set_has_opacity_control(GTK_COLOR_SELECTION(cs2), TRUE);
 	gtk_color_selection_set_current_color(GTK_COLOR_SELECTION(cs2), &cl2);
