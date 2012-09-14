@@ -28,6 +28,7 @@
 #	include <glib/gi18n.h>
 #	include <math.h>
 #	include <gtkplot-2.0/gtkplotlinear.h>
+#	include "config.h"
 	G_BEGIN_DECLS
 #	define DZE 0.00001 /* divide by zero threshold */
 #	define NZE -0.00001 /* negative of this */
@@ -38,11 +39,6 @@
 #	define NMY_PI -3.1415926535897932384626433832795028841971693993751
 #	define LNTOT 0.23025850929940456840179914546843642076011014886288 /* (ln10)/10 */
 #	define LNTOW 0.11512925464970228420089957273421821038005507443144 /* (ln10)/20 */
-#	ifdef G_OS_WIN32
-#		define DLMT "\r\n"
-#	else
-#		define DLMT "\n"
-#	endif
 	typedef enum
 	{
 		PROC_LDT=1<<0,

@@ -59,19 +59,19 @@ void dpa(GtkWidget *wgt, gpointer dta)
 		alp=gtk_color_selection_get_current_alpha(GTK_COLOR_SELECTION(cs2));
 		if (gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(jix2)))
 		{
-			xi=g_array_index((plt->rd), gdouble, 0);
+			xi=g_array_index((pt->rd), gdouble, 0);
 			g_array_append_val(car, xi);
 			xi=((gdouble) (clr.red))/65535;
 			g_array_append_val(car, xi);
-			xi=g_array_index((plt->gr), gdouble, 0);
+			xi=g_array_index((pt->gr), gdouble, 0);
 			g_array_append_val(cag, xi);
 			xi=((gdouble) (clr.green))/65535;
 			g_array_append_val(cag, xi);
-			xi=g_array_index((plt->bl), gdouble, 0);
+			xi=g_array_index((pt->bl), gdouble, 0);
 			g_array_append_val(cab, xi);
 			xi=((gdouble) (clr.blue))/65535;
 			g_array_append_val(cab, xi);
-			xi=g_array_index((plt->al), gdouble, 0);
+			xi=g_array_index((pt->al), gdouble, 0);
 			g_array_append_val(caa, xi);
 			xi=((gdouble) alp)/65535;
 			g_array_append_val(caa, xi);
@@ -79,19 +79,19 @@ void dpa(GtkWidget *wgt, gpointer dta)
 		else
 		{
 			xi=((gdouble) (clr.red))/65535;
-			xf=g_array_index((plt->rd), gdouble, 1);
+			xf=g_array_index((pt->rd), gdouble, 1);
 			g_array_append_val(car, xi);
 			g_array_append_val(car, xf);
 			xi=((gdouble) (clr.green))/65535;
-			xf=g_array_index((plt->gr), gdouble, 1);
+			xf=g_array_index((pt->gr), gdouble, 1);
 			g_array_append_val(cag, xi);
 			g_array_append_val(cag, xf);
 			xi=((gdouble) (clr.blue))/65535;
-			xf=g_array_index((plt->bl), gdouble, 1);
+			xf=g_array_index((pt->bl), gdouble, 1);
 			g_array_append_val(cab, xi);
 			g_array_append_val(cab, xf);
 			xi=((gdouble) alp)/65535;
-			xf=g_array_index((plt->al), gdouble, 1);
+			xf=g_array_index((pt->al), gdouble, 1);
 			g_array_append_val(caa, xi);
 			g_array_append_val(caa, xf);
 		}
@@ -118,19 +118,19 @@ void dpa(GtkWidget *wgt, gpointer dta)
 		alp=gtk_color_selection_get_current_alpha(GTK_COLOR_SELECTION(cs1));
 		if (gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(jix)))
 		{
-			xi=g_array_index((plt->rd), gdouble, 0);
+			xi=g_array_index((pt->rd), gdouble, 0);
 			g_array_append_val(car, xi);
 			xi=((gdouble) (clr.red))/65535;
 			g_array_append_val(car, xi);
-			xi=g_array_index((plt->gr), gdouble, 0);
+			xi=g_array_index((pt->gr), gdouble, 0);
 			g_array_append_val(cag, xi);
 			xi=((gdouble) (clr.green))/65535;
 			g_array_append_val(cag, xi);
-			xi=g_array_index((plt->bl), gdouble, 0);
+			xi=g_array_index((pt->bl), gdouble, 0);
 			g_array_append_val(cab, xi);
 			xi=((gdouble) (clr.blue))/65535;
 			g_array_append_val(cab, xi);
-			xi=g_array_index((plt->al), gdouble, 0);
+			xi=g_array_index((pt->al), gdouble, 0);
 			g_array_append_val(caa, xi);
 			xi=((gdouble) alp)/65535;
 			g_array_append_val(caa, xi);
@@ -138,19 +138,19 @@ void dpa(GtkWidget *wgt, gpointer dta)
 		else
 		{
 			xi=((gdouble) (clr.red))/65535;
-			xf=g_array_index((plt->rd), gdouble, 1);
+			xf=g_array_index((pt->rd), gdouble, 1);
 			g_array_append_val(car, xi);
 			g_array_append_val(car, xf);
 			xi=((gdouble) (clr.green))/65535;
-			xf=g_array_index((plt->gr), gdouble, 1);
+			xf=g_array_index((pt->gr), gdouble, 1);
 			g_array_append_val(cag, xi);
 			g_array_append_val(cag, xf);
 			xi=((gdouble) (clr.blue))/65535;
-			xf=g_array_index((plt->bl), gdouble, 1);
+			xf=g_array_index((pt->bl), gdouble, 1);
 			g_array_append_val(cab, xi);
 			g_array_append_val(cab, xf);
 			xi=((gdouble) alp)/65535;
-			xf=g_array_index((plt->al), gdouble, 1);
+			xf=g_array_index((pt->al), gdouble, 1);
 			g_array_append_val(caa, xi);
 			g_array_append_val(caa, xf);
 		}
@@ -192,7 +192,7 @@ void upj2(GtkWidget *wgt, gpointer dta)
 {
 	GdkColor cl1;
 	guint16 alp;
-	GtkPlot *plt;
+	GtkPlot *pt;
 
 	pt=GTK_PLOT(pt2);
 	if (gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(wgt)))
