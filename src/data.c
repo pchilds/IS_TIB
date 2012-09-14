@@ -247,13 +247,11 @@ void opd(GtkWidget *wgt, gpointer dta)
 		}
 		else
 		{
-			str=g_strdup_printf(_("Loading failed for file: %s, Error: %s."), fin, (gchar*) Err);
+			str=g_strdup_printf(_("Loading failed for file: %s, Error: %s."), fin, Err->message);
 			gtk_statusbar_push(GTK_STATUSBAR(sbr), gtk_statusbar_get_context_id(GTK_STATUSBAR(sbr), str), str);
-			g_free(str);
-			g_error_free(Err);
+			{g_free(str); g_error_free(Err);}
 		}
-		g_free(cts);
-		g_free(fin);
+		{g_free(cts); g_free(fin);}
 	}
 	gtk_widget_destroy(wfl);
 }
@@ -579,8 +577,7 @@ void sav(GtkWidget *wgt, gpointer dta)
 				{
 					str=g_strdup_printf(_("Error Saving file: %s."), (Err->message));
 					gtk_statusbar_push(GTK_STATUSBAR(sbr), gtk_statusbar_get_context_id(GTK_STATUSBAR(sbr), str), str);
-					g_free(str);
-					g_error_free(Err);
+					{g_free(str); g_error_free(Err);}
 				}
 				g_free(fot);
 				break;
@@ -659,8 +656,7 @@ void sav(GtkWidget *wgt, gpointer dta)
 				{
 					str=g_strdup_printf(_("Error Saving file: %s."), (Err->message));
 					gtk_statusbar_push(GTK_STATUSBAR(sbr), gtk_statusbar_get_context_id(GTK_STATUSBAR(sbr), str), str);
-					g_free(str);
-					g_error_free(Err);
+					{g_free(str); g_error_free(Err);}
 				}
 				g_free(fot);
 				break;
@@ -818,8 +814,7 @@ void ssr(GtkWidget *wgt, gpointer dta)
 	{
 		str=g_strdup_printf(_("Loading failed for file: %s, Error: %s."), CONFFILE, (Err->message));
 		gtk_statusbar_push(GTK_STATUSBAR(sbr), gtk_statusbar_get_context_id(GTK_STATUSBAR(sbr), str), str);
-		g_free(str);
-		g_error_free(Err);
+		{g_free(str); g_error_free(Err);}
 	}
 }
 
@@ -875,6 +870,7 @@ void sss(GtkWidget *wgt, gpointer dta)
 	g_free(str);
 	plt=GTK_PLOT_LINEAR(pt2);
 	pt=GTK_PLOT(pt2);
+	str=g_strdup(plt->xlab);
 	g_key_file_set_string(key, "Plot", "SpatialTextX", str);
 	g_free(str);
 	str=g_strdup(plt->ylab);
@@ -893,7 +889,6 @@ void sss(GtkWidget *wgt, gpointer dta)
 	{
 		str=g_strdup_printf(_("Error Saving file: %s."), (Err->message));
 		gtk_statusbar_push(GTK_STATUSBAR(sbr), gtk_statusbar_get_context_id(GTK_STATUSBAR(sbr), str), str);
-		g_free(str);
-		g_error_free(Err);
+		{g_free(str); g_error_free(Err);}
 	}
 }

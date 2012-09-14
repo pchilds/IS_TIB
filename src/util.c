@@ -35,10 +35,9 @@ void hlp(GtkWidget *wgt, gpointer dta)
 	g_free(uri);
 	if (Err)
 	{
-		str=g_strdup(_("Could not load help files."));
+		str=g_strdup_printf(_("Could not load help files: %s"), (Err->message));
 		gtk_statusbar_push(GTK_STATUSBAR(sbr), gtk_statusbar_get_context_id(GTK_STATUSBAR(sbr), str), str);
-		g_free(str);
-		g_error_free(Err);
+		{g_free(str); g_error_free(Err);}
 	}
 }
 
