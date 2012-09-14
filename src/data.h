@@ -26,7 +26,7 @@
 #	define __DATA_H__
 #	include "main.h"
 #	include "util.h"
-	extern GtkWidget *dBs, *dl, *fst, *kms, *nbk, *neg, *nl, *nz, *psp, *pst, *pt1, *pt2, *r0, *ri, *rp, *sbr, *tx, *wk, *wsp, *wst, *zpd;
+	extern GtkWidget *cl, *cnv, *crm, *crp, *dBs, *dl, *fst, *kms, *nbk, *neg, *nl, *nz, *psp, *pst, *pt1, *pt2, *r0, *ri, *rp, *sbr, *tx, *wk, *wsp, *wst, *zpd;
 	extern GSList *grp;
 	extern gint fgs, lc;
 	extern gchar *fld, *flr;
