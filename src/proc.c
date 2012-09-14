@@ -26,15 +26,15 @@
 
 void coe(GtkWidget *wgt, gpointer dta)
 {
-	GtkPlotLinear *plt;
+	GtkPlot *pt;
 	gdouble iv;
 	gint sz4;
 	gchar *str;
 
 	if ((fgs&PROC_ZDT)!=0)
 	{
-		plt=GTK_PLOT_LINEAR(pt2);
-		sz4=g_array_index((plt->sizes), gint, 0);
+		pt=GTK_PLOT(pt2);
+		sz4=g_array_index((pt->sizes), gint, 0);
 		iv=gtk_spin_button_get_value(GTK_SPIN_BUTTON(crm));
 		iv=gtk_spin_button_get_value(GTK_SPIN_BUTTON(crp));
 	}
@@ -48,7 +48,7 @@ void coe(GtkWidget *wgt, gpointer dta)
 
 void con(GtkWidget *wgt, gpointer dta)
 {
-	GtkPlotLinear *plt;
+	GtkPlot *pt;
 	gdouble iv;
 	gint sz4;
 	gchar *str;
@@ -56,8 +56,8 @@ void con(GtkWidget *wgt, gpointer dta)
 	if ((fgs&PROC_ZDT)!=0)
 	{
 		iv=gtk_spin_button_get_value(GTK_SPIN_BUTTON(dta));
-		plt=GTK_PLOT_LINEAR(pt2);
-		sz4=g_array_index((plt->sizes), gint, 0);
+		pt=GTK_PLOT(pt2);
+		sz4=g_array_index((pt->sizes), gint, 0);
 	}
 	else
 	{
@@ -72,6 +72,7 @@ void prs(GtkWidget *wgt, gpointer dta)
 	fftw_complex A, B, C;
 	GArray *l, *R, *sz1, *nx1;
 	gdouble *cb, *ch, *csh, *dpr, *sb, *ssh;
+	GtkPlot *pt;
 	GtkPlotLinear *plt;
 	gdouble del, dlm, iv, l0, mny, mxy;
 	gint j, k, nx4, st, sp, sz4, zd2;
@@ -80,8 +81,9 @@ void prs(GtkWidget *wgt, gpointer dta)
 	if ((fgs&PROC_ZDT)!=0)
 	{
 		plt=GTK_PLOT_LINEAR(pt2);
-		sz4=g_array_index((plt->sizes), gint, 0);
-		nx4=g_array_index((plt->ind), gint, 1);
+		pt=GTK_PLOT_(pt2);
+		sz4=g_array_index((pt->sizes), gint, 0);
+		nx4=g_array_index((pt->ind), gint, 1);
 		iv=gtk_spin_button_get_value(GTK_SPIN_BUTTON(pst));
 		j=0;
 		while ((j<sz4)&&(iv>g_array_index((plt->xdata), gdouble, j))) j++;
@@ -228,13 +230,15 @@ void trs(GtkWidget *wgt, gpointer dta)
 	gdouble *dpr;
 	gint j, m, sz4, nx4, sp, st, zd, zd2;
 	gint *ipr;
+	GtkPlot *pt;
 	GtkPlotLinear *plt;
 
 	if ((fgs&PROC_LDT)!=0)
 	{
 		plt=GTK_PLOT_LINEAR(pt1);
-		sz4=g_array_index((plt->sizes), gint, 0);
-		nx4=g_array_index((plt->ind), gint, 1);
+		pt=GTK_PLOT(pt1);
+		sz4=g_array_index((pt->sizes), gint, 0);
+		nx4=g_array_index((pt->ind), gint, 1);
 		iv=gtk_spin_button_get_value(GTK_SPIN_BUTTON(wst));
 		j=0;
 		while ((j<sz4)&&(iv>g_array_index((plt->xdata), gdouble, j))) j++;
