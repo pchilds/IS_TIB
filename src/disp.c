@@ -342,6 +342,7 @@ void dpr(GtkWidget *wgt, gpointer dta)
 	tbl=gtk_table_new(4, 2, FALSE);
 	gtk_widget_show(tbl);
 	plt=GTK_PLOT_LINEAR(pt2);
+	pt=GTK_PLOT(pt2);
 	lbl=gtk_label_new(_("Axis label font:"));
 	gtk_widget_show(lbl);
 	gtk_table_attach(GTK_TABLE(tbl), lbl, 1, 2, 0, 1, GTK_FILL|GTK_SHRINK|GTK_EXPAND, GTK_FILL|GTK_SHRINK|GTK_EXPAND, 2, 2);
