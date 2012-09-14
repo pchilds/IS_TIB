@@ -796,56 +796,56 @@ void ssr(GtkWidget *wgt, gpointer dta)
 		if (g_key_file_has_key(key, "Plot", "SpectralMagnitudeRed", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectralMagnitudeRed", &Err);
 		else
 		{
-			xi=g_array_index((pt->rd), gdouble, 0));
+			xi=g_array_index((pt->rd), gdouble, 0);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(car, xi);
 		if (g_key_file_has_key(key, "Plot", "SpectralPhaseRed", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectralPhaseRed", &Err);
 		else
 		{
-			xi=g_array_index((pt->rd), gdouble, 1));
+			xi=g_array_index((pt->rd), gdouble, 1);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(car, xi);
 		if (g_key_file_has_key(key, "Plot", "SpectralMagnitudeGreen", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectralMagnitudeGreen", &Err);
 		else
 		{
-			xi=g_array_index((pt->gr), gdouble, 0));
+			xi=g_array_index((pt->gr), gdouble, 0);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(cag, xi);
 		if (g_key_file_has_key(key, "Plot", "SpectralPhaseGreen", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectralPhaseGreen", &Err);
 		else
 		{
-			xi=g_array_index((pt->gr), gdouble, 1));
+			xi=g_array_index((pt->gr), gdouble, 1);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(cag, xi);
 		if (g_key_file_has_key(key, "Plot", "SpectralMagnitudeBlue", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectralMagnitudeBlue", &Err);
 		else
 		{
-			xi=g_array_index((pt->bl), gdouble, 0));
+			xi=g_array_index((pt->bl), gdouble, 0);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(cab, xi);
 		if (g_key_file_has_key(key, "Plot", "SpectralPhaseBlue", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectralPhaseBlue", &Err);
 		else
 		{
-			xi=g_array_index((pt->bl), gdouble, 1));
+			xi=g_array_index((pt->bl), gdouble, 1);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(cab, xi);
 		if (g_key_file_has_key(key, "Plot", "SpectralMagnitudeAlpha", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectralMagnitudeAlpha", &Err);
 		else
 		{
-			xi=g_array_index((pt->al), gdouble, 0));
+			xi=g_array_index((pt->al), gdouble, 0);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(caa, xi);
 		if (g_key_file_has_key(key, "Plot", "SpectralPhaseAlpha", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectralPhaseAlpha", &Err);
 		else
 		{
-			xi=g_array_index((pt->al), gdouble, 1));
+			xi=g_array_index((pt->al), gdouble, 1);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(caa, xi);
@@ -890,56 +890,56 @@ void ssr(GtkWidget *wgt, gpointer dta)
 		if (g_key_file_has_key(key, "Plot", "SpatialMagnitudeRed", &Err)) xi=g_key_file_get_double(key, "Plot", "SpatialMagnitudeRed", &Err);
 		else
 		{
-			xi=g_array_index((pt->rd), gdouble, 0));
+			xi=g_array_index((pt->rd), gdouble, 0);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(car, xi);
 		if (g_key_file_has_key(key, "Plot", "SpatialPhaseRed", &Err)) xi=g_key_file_get_double(key, "Plot", "SpatialPhaseRed", &Err);
 		else
 		{
-			xi=g_array_index((pt->rd), gdouble, 1));
+			xi=g_array_index((pt->rd), gdouble, 1);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(car, xi);
 		if (g_key_file_has_key(key, "Plot", "SpatialMagnitudeGreen", &Err)) xi=g_key_file_get_double(key, "Plot", "SpatialMagnitudeGreen", &Err);
 		else
 		{
-			xi=g_array_index((pt->gr), gdouble, 0));
+			xi=g_array_index((pt->gr), gdouble, 0);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(cag, xi);
 		if (g_key_file_has_key(key, "Plot", "SpatialPhaseGreen", &Err)) xi=g_key_file_get_double(key, "Plot", "SpatialPhaseGreen", &Err);
 		else
 		{
-			xi=g_array_index((pt->gr), gdouble, 1));
+			xi=g_array_index((pt->gr), gdouble, 1);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(cag, xi);
 		if (g_key_file_has_key(key, "Plot", "SpatialMagnitudeBlue", &Err)) xi=g_key_file_get_double(key, "Plot", "SpatialMagnitudeBlue", &Err);
 		else
 		{
-			xi=g_array_index((pt->bl), gdouble, 0));
+			xi=g_array_index((pt->bl), gdouble, 0);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(cab, xi);
 		if (g_key_file_has_key(key, "Plot", "SpatialPhaseBlue", &Err)) xi=g_key_file_get_double(key, "Plot", "SpatialPhaseBlue", &Err);
 		else
 		{
-			xi=g_array_index((pt->bl), gdouble, 1));
+			xi=g_array_index((pt->bl), gdouble, 1);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(cab, xi);
 		if (g_key_file_has_key(key, "Plot", "SpatialMagnitudeAlpha", &Err)) xi=g_key_file_get_double(key, "Plot", "SpatialMagnitudeAlpha", &Err);
 		else
 		{
-			xi=g_array_index((pt->al), gdouble, 0));
+			xi=g_array_index((pt->al), gdouble, 0);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(caa, xi);
 		if (g_key_file_has_key(key, "Plot", "SpatialPhaseAlpha", &Err)) xi=g_key_file_get_double(key, "Plot", "SpatialPhaseAlpha", &Err);
 		else
 		{
-			xi=g_array_index((pt->al), gdouble, 1));
+			xi=g_array_index((pt->al), gdouble, 1);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(caa, xi);
