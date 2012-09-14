@@ -24,7 +24,7 @@
 
 #include "data.h"
 
-GtkPrintSettings *pst=NULL;
+GtkPrintSettings *gps=NULL;
 
 void opd(GtkWidget *wgt, gpointer dta)
 {
@@ -477,7 +477,7 @@ void prt(GtkWidget *wgt, gpointer dta)
 	gchar *str;
 
 	pto=gtk_print_operation_new();
-	if (pst!=NULL) gtk_print_operation_set_print_settings(pto, pst);
+	if (gps!=NULL) gtk_print_operation_set_print_settings(pto, gps);
 	/*pps=gtk_print_operation_get_default_page_setup(pto);
 	gtk_page_setup_set_orientation(pps, GTK_PAGE_ORIENTATION_LANDSCAPE);
 	gtk_print_operation_set_default_page_setup(pto, pps);*/
@@ -493,8 +493,8 @@ void prt(GtkWidget *wgt, gpointer dta)
 	}
 	else if (res==GTK_PRINT_OPERATION_RESULT_APPLY)
 	{
-		if (pst!=NULL) g_object_unref(pst);
-		pst=g_object_ref(gtk_print_operation_get_print_settings(pto));
+		if (gps!=NULL) g_object_unref(gps);
+		gps=g_object_ref(gtk_print_operation_get_print_settings(pto));
 	}
 	g_object_unref(pto);
 }
@@ -681,103 +681,219 @@ void sav(GtkWidget *wgt, gpointer dta)
 
 void ssr(GtkWidget *wgt, gpointer dta)
 {
-	GtkWidget *wfl;
-	gchar *cts, *str, *fin=NULL;
+	gchar *str, *str2;
 	GError *Err=NULL;
+	GKeyFile *key;
+	GSList *lst;
+	GtkPlot *pt;
+	GtkPlotLinear *plt;
+	PangoFontDescription *ds1, *ds2;
 
-	wfl=gtk_file_chooser_dialog_new(_("Select Session File"), GTK_WINDOW(dta), GTK_FILE_CHOOSER_ACTION_OPEN, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL);
-	g_signal_connect(G_OBJECT(wfl), "destroy", G_CALLBACK(gtk_widget_destroy), G_OBJECT(wfl));
-	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(wfl), flr);
-	if (gtk_dialog_run(GTK_DIALOG(wfl))==GTK_RESPONSE_ACCEPT)
+	key=g_key_file_new();
+	if (g_key_file_load_from_file(key, CONFFILE, G_KEY_FILE_KEEP_COMMENTS|G_KEY_FILE_KEEP_TRANSLATIONS, &Err))
 	{
-		g_free(flr);
-		flr=gtk_file_chooser_get_current_folder(GTK_FILE_CHOOSER(wfl));
-		fin=gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(wfl));
-		if (g_file_get_contents(fin, &cts, NULL, &Err))
+		if (g_key_file_has_key(key, "MenuItems", "DomainFirst", &Err)) gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(wk), g_key_file_get_boolean(key, "MenuItems", "DomainFirst", &Err));
+		else if (Err) g_error_free(Err);
+		if (g_key_file_has_key(key, "MenuItems", "Complex", &Err))
 		{
+			str=g_key_file_get_string(key, "MenuItems", "Complex", &Err);
+			lst=grp;
+			if (!g_strcmp0(str, "MagnitudeOnly"))
+			{
+				gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(lst->data), TRUE);
+				goto bottomofcheck1b;
+			}
+			else lst=lst->next;
+			if (!g_strcmp0(str, "RealImaginary")) gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(lst->data), TRUE);
+			else if (!g_strcmp0(str, "MagnitudePhase"))
+			{
+				lst=lst->next;
+				gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(lst->data), TRUE);
+			}
+			bottomofcheck1b:
+			g_free(str);
 		}
+		else if (Err) g_error_free(Err);
+		if (g_key_file_has_key(key, "MenuItems", "Transmission", &Err)) gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(tx), g_key_file_get_boolean(key, "MenuItems", "Transmission", &Err));
+		else if (Err) g_error_free(Err);
+		if (g_key_file_has_key(key, "MenuItems", "Negated", &Err)) gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(neg), g_key_file_get_boolean(key, "MenuItems", "Negated", &Err));
+		else if (Err) g_error_free(Err);
+		if (g_key_file_has_key(key, "MenuItems", "dBs", &Err)) gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(dBs), g_key_file_get_boolean(key, "MenuItems", "dBs", &Err));
+		else if (Err) g_error_free(Err);
+		if (g_key_file_has_key(key, "MenuItems", "Wavenumber", &Err)) gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(kms), g_key_file_get_boolean(key, "MenuItems", "Wavenumber", &Err));
+		else if (Err) g_error_free(Err);
+		if (g_key_file_has_key(key, "Params", "SpectrumStart", &Err)) gtk_spin_button_set_value(GTK_SPIN_BUTTON(wst), g_key_file_get_double(key, "Params", "SpectrumStart", &Err));
+		else if (Err) g_error_free(Err);
+		if (g_key_file_has_key(key, "Params", "SpectrumStop", &Err)) gtk_spin_button_set_value(GTK_SPIN_BUTTON(wsp), g_key_file_get_double(key, "Params", "SpectrumStop", &Err));
+		else if (Err) g_error_free(Err);
+		if (g_key_file_has_key(key, "Params", "Offset", &Err)) gtk_spin_button_set_value(GTK_SPIN_BUTTON(fst), g_key_file_get_double(key, "Params", "Offset", &Err));
+		else if (Err) g_error_free(Err);
+		if (g_key_file_has_key(key, "Params", "ZeroPadding", &Err)) gtk_spin_button_set_value(GTK_SPIN_BUTTON(zpd), g_key_file_get_integer(key, "Params", "ZeroPadding", &Err));
+		else if (Err) g_error_free(Err);
+		if (g_key_file_has_key(key, "Params", "SpatialPoints", &Err)) gtk_spin_button_set_value(GTK_SPIN_BUTTON(nz), g_key_file_get_integer(key, "Params", "SpatialPoints", &Err));
+		else if (Err) g_error_free(Err);
+		if (g_key_file_has_key(key, "Params", "StartPosition", &Err)) gtk_spin_button_set_value(GTK_SPIN_BUTTON(pst), g_key_file_get_double(key, "Params", "StartPosition", &Err));
+		else if (Err) g_error_free(Err);
+		if (g_key_file_has_key(key, "Params", "StopPosition", &Err)) gtk_spin_button_set_value(GTK_SPIN_BUTTON(psp), g_key_file_get_double(key, "Params", "StopPosition", &Err));
+		else if (Err) g_error_free(Err);
+		if (g_key_file_has_key(key, "Params", "Range", &Err)) gtk_spin_button_set_value(GTK_SPIN_BUTTON(dl), g_key_file_get_double(key, "Params", "Range", &Err));
+		else if (Err) g_error_free(Err);
+		if (g_key_file_has_key(key, "Params", "SpectralPoints", &Err)) gtk_spin_button_set_value(GTK_SPIN_BUTTON(nl), g_key_file_get_integer(key, "Params", "SpectralPoints", &Err));
+		else if (Err) g_error_free(Err);
+		if (g_key_file_has_key(key, "Params", "DataFolder", &Err))
+		{
+			g_free(fld);
+			fld=g_strdup(g_key_file_get_string(key, "Params", "DataFolder", &Err));
+		}
+		else if (Err) g_error_free(Err);
+		if (g_key_file_has_key(key, "Params", "ResultsFolder", &Err))
+		{
+			g_free(flr);
+			flr=g_strdup(g_key_file_get_string(key, "Params", "ResultsFolder", &Err));
+		}
+		else if (Err) g_error_free(Err);
+		plt=GTK_PLOT_LINEAR(pt1);
+		pt=GTK_PLOT(pt1);
+		if (g_key_file_has_key(key, "Plot", "SpectrumTextX", &Err)) str=g_key_file_get_string(key, "Plot", "SpectrumTextX", &Err);
 		else
 		{
-			str=g_strdup_printf(_("Loading failed for file: %s, Error: %s."), fin, (Err->message));
-			gtk_statusbar_push(GTK_STATUSBAR(sbr), gtk_statusbar_get_context_id(GTK_STATUSBAR(sbr), str), str);
-			g_free(str);
-			g_error_free(Err);
+			str=g_strdup(plt->xlab);
+			if (Err) g_error_free(Err);
 		}
-		g_free(cts);
-		g_free(fin);
+		if (g_key_file_has_key(key, "Plot", "SpectrumTextY", &Err)) str2=g_key_file_get_string(key, "Plot", "SpectrumTextY", &Err);
+		else
+		{
+			str2=g_strdup(plt->ylab);
+			if (Err) g_error_free(Err);
+		}
+		gtk_plot_linear_set_label(plt, str, str2);
+		{g_free(str); g_free(str2);}
+		if (g_key_file_has_key(key, "Plot", "SpectrumLabel", &Err)) ds1=pango_font_description_from_string(g_key_file_get_string(key, "Plot", "SpectrumLabel", &Err));
+		else
+		{
+			ds1=pango_font_description_copy(pt->lfont);
+			if (Err) g_error_free(Err);
+		}
+		if (g_key_file_has_key(key, "Plot", "SpectrumAxis", &Err)) ds2=pango_font_description_from_string(g_key_file_get_string(key, "Plot", "SpectrumAxis", &Err));
+		else
+		{
+			ds2=pango_font_description_copy(pt->afont);
+			if (Err) g_error_free(Err);
+		}
+		gtk_plot_set_font(pt, ds1, ds2);
+		{pango_font_description_free(ds1); pango_font_description_free(ds2);}
+		plt=GTK_PLOT_LINEAR(pt2);
+		pt=GTK_PLOT(pt2);
+		if (g_key_file_has_key(key, "Plot", "SpatialTextX", &Err)) str=g_key_file_get_string(key, "Plot", "SpatialTextX", &Err);
+		else
+		{
+			str=g_strdup(plt->xlab);
+			if (Err) g_error_free(Err);
+		}
+		if (g_key_file_has_key(key, "Plot", "SpatialTextY", &Err)) str2=g_key_file_get_string(key, "Plot", "SpatialTextY", &Err);
+		else
+		{
+			str2=g_strdup(plt->ylab);
+			if (Err) g_error_free(Err);
+		}
+		gtk_plot_linear_set_label(plt, str, str2);
+		{g_free(str); g_free(str2);}
+		if (g_key_file_has_key(key, "Plot", "SpatialLabel", &Err)) ds1=pango_font_description_from_string(g_key_file_get_string(key, "Plot", "SpatialLabel", &Err));
+		else
+		{
+			ds1=pango_font_description_copy(pt->lfont);
+			if (Err) g_error_free(Err);
+		}
+		if (g_key_file_has_key(key, "Plot", "SpatialAxis", &Err)) ds2=pango_font_description_from_string(g_key_file_get_string(key, "Plot", "SpatialAxis", &Err));
+		else
+		{
+			ds2=pango_font_description_copy(pt->afont);
+			if (Err) g_error_free(Err);
+		}
+		gtk_plot_set_font(pt, ds1, ds2);
+		{pango_font_description_free(ds1); pango_font_description_free(ds2);}
+		g_key_file_free(key);
 	}
-	gtk_widget_destroy(wfl);
+	else
+	{
+		str=g_strdup_printf(_("Loading failed for file: %s, Error: %s."), CONFFILE, (Err->message));
+		gtk_statusbar_push(GTK_STATUSBAR(sbr), gtk_statusbar_get_context_id(GTK_STATUSBAR(sbr), str), str);
+		g_free(str);
+		g_error_free(Err);
+	}
 }
 
 void sss(GtkWidget *wgt, gpointer dta)
 {
-	GtkWidget *wfl;
-	GSList *lst;
-	gchar *cts, *ct2, *str, *fot=NULL;
-	guint16 fv, fv2;
+	gchar *str;
 	GError *Err=NULL;
+	GKeyFile *key;
+	gsize size;
+	GSList *lst;
+	GtkPlot *pt;
+	GtkPlotLinear *plt;
 
-	wfl=gtk_file_chooser_dialog_new(_("Select Session File"), GTK_WINDOW(dta), GTK_FILE_CHOOSER_ACTION_SAVE, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL);
-	g_signal_connect(G_OBJECT(wfl), "destroy", G_CALLBACK(gtk_widget_destroy), G_OBJECT(wfl));
-	gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(wfl), flr);
-	gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(wfl), TRUE);
-	if (gtk_dialog_run(GTK_DIALOG(wfl))==GTK_RESPONSE_ACCEPT)
+	key=g_key_file_new();
+	g_key_file_set_boolean(key, "MenuItems", "DomainFirst", gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(wk)));
+	lst=grp;
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(lst->data)))
 	{
-		g_free(flr);
-		flr=gtk_file_chooser_get_current_folder(GTK_FILE_CHOOSER(wfl));
-		str=g_strdup("#menuitems");
-		{fv=0; /*lst=group4;*/}/*need to ensure fv values don't conflict with DLMT, \t \0 etc */
-		/*while (lst)
-		{
-			if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(lst->data))) break;
-			{lst=(lst->next); fv++;}
-		}*/
-		{fv<<=2; /*lst=group5;*/}
-		/*while (lst)
-		{
-			if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(lst->data))) break;
-			{lst=(lst->next); fv++;}
-		}*/
-		{fv<<=2; /*lst=group3;*/}
-		/*while (lst)
-		{
-			if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(lst->data))) break;
-			{lst=(lst->next); fv++;}
-		}*/
-		if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(tx))) fv|=256;
-		if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(neg))) fv|=512;
-		if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(dBs))) fv|=1024;
-		if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(kms))) fv|=2048;
-		{fv2=0; /*lst=group2;*/}
-		/*while (lst)
-		{
-			if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(lst->data))) break;
-			{lst=(lst->next); fv2++;}
-		}*/
-		{fv2<<=8; lst=grp;}
-		while (lst)
-		{
-			if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(lst->data))) break;
-			{lst=(lst->next); fv2++;}
-		}
-		str=g_strjoin("\t", str, (gchar) fv, (gchar) fv2, NULL);
-		ct2=g_strdup(cts);
-		g_free(cts);
-		cts=g_strjoin(DLMT, ct2, str, NULL);
-		g_free(str);
-		fot=gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(wfl));
-		g_file_set_contents(fot, cts, -1, &Err);
-		g_free(cts);
-		if (Err)
-		{
-			str=g_strdup_printf(_("Error Saving file: %s."), (Err->message));
-			gtk_statusbar_push(GTK_STATUSBAR(sbr), gtk_statusbar_get_context_id(GTK_STATUSBAR(sbr), str), str);
-			g_free(str);
-			g_error_free(Err);
-		}
-		g_free(cts);
-		g_free(fot);
+		g_key_file_set_string(key, "MenuItems", "Complex", "MagnitudeOnly");
+		goto bottomofcheck1b;
 	}
-	gtk_widget_destroy(wfl);
+	lst=(lst->next);
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(lst->data))) g_key_file_set_string(key, "MenuItems", "Complex", "RealImaginary");
+	else g_key_file_set_string(key, "MenuItems", "Complex", "MagnitudePhase");
+	bottomofcheck1b:
+	g_key_file_set_boolean(key, "MenuItems", "Transmission", gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(tx)));
+	g_key_file_set_boolean(key, "MenuItems", "Negated", gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(neg)));
+	g_key_file_set_boolean(key, "MenuItems", "dBs", gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(dBs)));
+	g_key_file_set_boolean(key, "MenuItems", "Wavenumber", gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(kms)));
+	g_key_file_set_double(key, "Params", "SpectrumStart", gtk_spin_button_get_value(GTK_SPIN_BUTTON(wst)));
+	g_key_file_set_double(key, "Params", "SpectrumStop", gtk_spin_button_get_value(GTK_SPIN_BUTTON(wsp)));
+	g_key_file_set_integer(key, "Params", "ZeroPadding", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(zpd)));
+	g_key_file_set_integer(key, "Params", "SpatialPoints", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(nz)));
+	g_key_file_set_double(key, "Params", "StartPosition", gtk_spin_button_get_value(GTK_SPIN_BUTTON(pst)));
+	g_key_file_set_double(key, "Params", "StopPosition", gtk_spin_button_get_value(GTK_SPIN_BUTTON(psp)));
+	g_key_file_set_double(key, "Params", "Range", gtk_spin_button_get_value(GTK_SPIN_BUTTON(dl)));
+	g_key_file_set_integer(key, "Params", "SpectralPoints", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(nl)));
+	g_key_file_set_string(key, "Params", "DataFolder", fld);
+	g_key_file_set_string(key, "Params", "ResultsFolder", flr);
+	plt=GTK_PLOT_LINEAR(pt1);
+	pt=GTK_PLOT(pt1);
+	str=g_strdup(plt->xlab);
+	g_key_file_set_string(key, "Plot", "SpectrumTextX", str);
+	g_free(str);
+	str=g_strdup(plt->ylab);
+	g_key_file_set_string(key, "Plot", "SpectrumTextX", str);
+	g_free(str);
+	str=pango_font_description_to_string(pt->lfont);
+	g_key_file_set_string(key, "Plot", "SpectrumLabel", str);
+	g_free(str);
+	str=pango_font_description_to_string(pt->afont);
+	g_key_file_set_string(key, "Plot", "SpectrumAxis", str);
+	g_free(str);
+	plt=GTK_PLOT_LINEAR(pt2);
+	pt=GTK_PLOT(pt2);
+	g_key_file_set_string(key, "Plot", "SpatialTextX", str);
+	g_free(str);
+	str=g_strdup(plt->ylab);
+	g_key_file_set_string(key, "Plot", "SpatialTextX", str);
+	g_free(str);
+	str=pango_font_description_to_string(pt->lfont);
+	g_key_file_set_string(key, "Plot", "SpatialLabel", str);
+	g_free(str);
+	str=pango_font_description_to_string(pt->afont);
+	g_key_file_set_string(key, "Plot", "SpatialAxis", str);
+	g_free(str);
+	str=g_key_file_to_data(key, &size, NULL);
+	g_file_set_contents(CONFFILE, str, size, &Err);
+	{g_key_file_free(key); g_free(str);}
+	if (Err)
+	{
+		str=g_strdup_printf(_("Error Saving file: %s."), (Err->message));
+		gtk_statusbar_push(GTK_STATUSBAR(sbr), gtk_statusbar_get_context_id(GTK_STATUSBAR(sbr), str), str);
+		g_free(str);
+		g_error_free(Err);
+	}
 }
-
