@@ -1,8 +1,16 @@
 [Desktop Entry]
-Name=InvScatt
+Name=Inverse Scattering
+Name[el]=Αντίστροφη Σκέδαση
+Name[it]=Scattering Inverso
+Name[ru]=Обратной задачи рассеяния
+Name[zh_CN]=逆散射
 Comment=A GUI to using the Toeplitz Inner Bordering method for performing Inverse Scattering.
+Comment[el]=Μια γραφική διεπαφή χρήστη για τη χρήση της μεθόδου Toeplitz Inner Bordering για την εκτέλεση αντίστροφης σκέδασης.
+Comment[it]=Un'interfaccia grafica con il metodo per l'esecuzione di Toeplitz Inner bordering scattering inverso.
+Comment[ru]=Графический интерфейс пользователя для использования Теплица Внутренняя Граничащие способ выполнения обратной задачи рассеяния.
+Comment[zh_CN]=一个图形用户界面使用的 Toeplitz Inner Bordering 方法进行逆散射。
 Exec=InvScatt
-Icon=
+Icon=triple
 Terminal=0
 Type=Application
 Categories=Education;Science;Math;NumericalAnalysis;

@@ -3,7 +3,7 @@ SUBDIRS= doc po src
 Applicationsdir=$(datadir)/applications
 Applications_DATA=is_tib.desktop
 pixmapdir=$(datadir)/pixmaps
-pixmap_DATA=
+pixmap_DATA=pixmaps/triple.png
 EXTRA_DIST=confsupp/gnome-doc-utils.make \
 	ABOUT-NLS confsupp/config.rpath m4/ChangeLog \
 	AUTHORS ChangeLog COPYING COPYING-DOCS INSTALL NEWS README TODO \
