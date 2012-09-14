@@ -677,7 +677,8 @@ void sav(GtkWidget *wgt, gpointer dta)
 
 void ssr(GtkWidget *wgt, gpointer dta)
 {
-	gchar *str, *str2;
+	gchar *str, *str2, *fout;
+	gdouble mny, mxy, xf, xi; 
 	GError *Err=NULL;
 	GKeyFile *key;
 	GSList *lst;
@@ -686,7 +687,8 @@ void ssr(GtkWidget *wgt, gpointer dta)
 	PangoFontDescription *ds1, *ds2;
 
 	key=g_key_file_new();
-	if (g_key_file_load_from_file(key, CONFFILE, G_KEY_FILE_KEEP_COMMENTS|G_KEY_FILE_KEEP_TRANSLATIONS, &Err))
+	fout=g_build_filename(g_get_user_config_dir(), PACKAGE, "session.conf", NULL);
+	if (g_key_file_load_from_file(key, fout, G_KEY_FILE_KEEP_COMMENTS|G_KEY_FILE_KEEP_TRANSLATIONS, &Err))
 	{
 		if (g_key_file_has_key(key, "MenuItems", "DomainFirst", &Err)) gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(wk), g_key_file_get_boolean(key, "MenuItems", "DomainFirst", &Err));
 		else if (Err) g_error_free(Err);
@@ -778,6 +780,8 @@ void ssr(GtkWidget *wgt, gpointer dta)
 		}
 		gtk_plot_set_font(pt, ds1, ds2);
 		{pango_font_description_free(ds1); pango_font_description_free(ds2);}
+		g_object_get(G_OBJECT(pt1), "xmin", &xi, "xmax", &xf, "ymin", &mny, "ymax", &mxy, NULL);
+		gtk_plot_linear_update_scale(plt, xi, xf, mny, mxy);
 		plt=GTK_PLOT_LINEAR(pt2);
 		pt=GTK_PLOT(pt2);
 		if (g_key_file_has_key(key, "Plot", "SpatialTextX", &Err)) str=g_key_file_get_string(key, "Plot", "SpatialTextX", &Err);
@@ -808,19 +812,22 @@ void ssr(GtkWidget *wgt, gpointer dta)
 		}
 		gtk_plot_set_font(pt, ds1, ds2);
 		{pango_font_description_free(ds1); pango_font_description_free(ds2);}
+		g_object_get(G_OBJECT(pt2), "xmin", &xi, "xmax", &xf, "ymin", &mny, "ymax", &mxy, NULL);
+		gtk_plot_linear_update_scale(plt, xi, xf, mny, mxy);
 		g_key_file_free(key);
 	}
 	else
 	{
-		str=g_strdup_printf(_("Loading failed for file: %s, Error: %s."), CONFFILE, (Err->message));
+		str=g_strdup_printf(_("Loading failed for file: %s, Error: %s."), fout, (Err->message));
 		gtk_statusbar_push(GTK_STATUSBAR(sbr), gtk_statusbar_get_context_id(GTK_STATUSBAR(sbr), str), str);
 		{g_free(str); g_error_free(Err);}
 	}
+	g_free(fout);
 }
 
 void sss(GtkWidget *wgt, gpointer dta)
 {
-	gchar *str;
+	gchar *fout, *pdr, *str;
 	GError *Err=NULL;
 	GKeyFile *key;
 	gsize size;
@@ -860,7 +867,7 @@ void sss(GtkWidget *wgt, gpointer dta)
 	g_key_file_set_string(key, "Plot", "SpectrumTextX", str);
 	g_free(str);
 	str=g_strdup(plt->ylab);
-	g_key_file_set_string(key, "Plot", "SpectrumTextX", str);
+	g_key_file_set_string(key, "Plot", "SpectrumTextY", str);
 	g_free(str);
 	str=pango_font_description_to_string(pt->lfont);
 	g_key_file_set_string(key, "Plot", "SpectrumLabel", str);
@@ -874,7 +881,7 @@ void sss(GtkWidget *wgt, gpointer dta)
 	g_key_file_set_string(key, "Plot", "SpatialTextX", str);
 	g_free(str);
 	str=g_strdup(plt->ylab);
-	g_key_file_set_string(key, "Plot", "SpatialTextX", str);
+	g_key_file_set_string(key, "Plot", "SpatialTextY", str);
 	g_free(str);
 	str=pango_font_description_to_string(pt->lfont);
 	g_key_file_set_string(key, "Plot", "SpatialLabel", str);
@@ -882,13 +889,25 @@ void sss(GtkWidget *wgt, gpointer dta)
 	str=pango_font_description_to_string(pt->afont);
 	g_key_file_set_string(key, "Plot", "SpatialAxis", str);
 	g_free(str);
-	str=g_key_file_to_data(key, &size, NULL);
-	g_file_set_contents(CONFFILE, str, size, &Err);
-	{g_key_file_free(key); g_free(str);}
-	if (Err)
+	pdr=g_build_filename(g_get_user_config_dir(), PACKAGE, NULL);
+	if (g_mkdir_with_parents (pdr, 0700) == 0)
 	{
-		str=g_strdup_printf(_("Error Saving file: %s."), (Err->message));
-		gtk_statusbar_push(GTK_STATUSBAR(sbr), gtk_statusbar_get_context_id(GTK_STATUSBAR(sbr), str), str);
-		{g_free(str); g_error_free(Err);}
+		str=g_key_file_to_data(key, &size, NULL);
+		fout=g_build_filename(pdr, "session.conf", NULL);
+		g_file_set_contents(fout, str, size, &Err);
+		{g_free(str); g_free(fout);}
+		if (Err)
+		{
+			str=g_strdup_printf(_("Error Saving file: %s."), (Err->message));
+			gtk_statusbar_push(GTK_STATUSBAR(sbr), gtk_statusbar_get_context_id(GTK_STATUSBAR(sbr), str), str);
+			{g_free(str); g_error_free(Err);}
+		}
 	}
+	else
+	{
+		str=g_strdup(_("Error Creating config directory."));
+		gtk_statusbar_push(GTK_STATUSBAR(sbr), gtk_statusbar_get_context_id(GTK_STATUSBAR(sbr), str), str);
+		g_free(str);
+	}
+	{g_free(pdr); g_key_file_free(key);}
 }
