@@ -81,7 +81,7 @@ void prs(GtkWidget *wgt, gpointer dta)
 	if ((fgs&PROC_ZDT)!=0)
 	{
 		plt=GTK_PLOT_LINEAR(pt2);
-		pt=GTK_PLOT_(pt2);
+		pt=GTK_PLOT(pt2);
 		sz4=g_array_index((pt->sizes), gint, 0);
 		nx4=g_array_index((pt->ind), gint, 1);
 		iv=gtk_spin_button_get_value(GTK_SPIN_BUTTON(pst));
