@@ -793,56 +793,56 @@ void ssr(GtkWidget *wgt, gpointer dta)
 		cag=g_array_sized_new(FALSE, FALSE, sizeof(gdouble), 2);
 		cab=g_array_sized_new(FALSE, FALSE, sizeof(gdouble), 2);
 		caa=g_array_sized_new(FALSE, FALSE, sizeof(gdouble), 2);
-		if (g_key_file_has_key(key, "Plot", "SpectralMagnitudeRed", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectralMagnitudeRed", &Err);
+		if (g_key_file_has_key(key, "Plot", "SpectrumMagnitudeRed", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectrumMagnitudeRed", &Err);
 		else
 		{
 			xi=g_array_index((pt->rd), gdouble, 0);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(car, xi);
-		if (g_key_file_has_key(key, "Plot", "SpectralPhaseRed", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectralPhaseRed", &Err);
+		if (g_key_file_has_key(key, "Plot", "SpectrumPhaseRed", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectrumPhaseRed", &Err);
 		else
 		{
 			xi=g_array_index((pt->rd), gdouble, 1);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(car, xi);
-		if (g_key_file_has_key(key, "Plot", "SpectralMagnitudeGreen", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectralMagnitudeGreen", &Err);
+		if (g_key_file_has_key(key, "Plot", "SpectrumMagnitudeGreen", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectrumMagnitudeGreen", &Err);
 		else
 		{
 			xi=g_array_index((pt->gr), gdouble, 0);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(cag, xi);
-		if (g_key_file_has_key(key, "Plot", "SpectralPhaseGreen", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectralPhaseGreen", &Err);
+		if (g_key_file_has_key(key, "Plot", "SpectrumPhaseGreen", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectrumPhaseGreen", &Err);
 		else
 		{
 			xi=g_array_index((pt->gr), gdouble, 1);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(cag, xi);
-		if (g_key_file_has_key(key, "Plot", "SpectralMagnitudeBlue", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectralMagnitudeBlue", &Err);
+		if (g_key_file_has_key(key, "Plot", "SpectrumMagnitudeBlue", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectrumMagnitudeBlue", &Err);
 		else
 		{
 			xi=g_array_index((pt->bl), gdouble, 0);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(cab, xi);
-		if (g_key_file_has_key(key, "Plot", "SpectralPhaseBlue", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectralPhaseBlue", &Err);
+		if (g_key_file_has_key(key, "Plot", "SpectrumPhaseBlue", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectrumPhaseBlue", &Err);
 		else
 		{
 			xi=g_array_index((pt->bl), gdouble, 1);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(cab, xi);
-		if (g_key_file_has_key(key, "Plot", "SpectralMagnitudeAlpha", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectralMagnitudeAlpha", &Err);
+		if (g_key_file_has_key(key, "Plot", "SpectrumMagnitudeAlpha", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectrumMagnitudeAlpha", &Err);
 		else
 		{
 			xi=g_array_index((pt->al), gdouble, 0);
 			if (Err) g_error_free(Err);
 		}
 		g_array_append_val(caa, xi);
-		if (g_key_file_has_key(key, "Plot", "SpectralPhaseAlpha", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectralPhaseAlpha", &Err);
+		if (g_key_file_has_key(key, "Plot", "SpectrumPhaseAlpha", &Err)) xi=g_key_file_get_double(key, "Plot", "SpectrumPhaseAlpha", &Err);
 		else
 		{
 			xi=g_array_index((pt->al), gdouble, 1);
