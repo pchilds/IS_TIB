@@ -500,6 +500,7 @@ void prt(GtkWidget *wgt, gpointer dta)
 void sav(GtkWidget *wgt, gpointer dta)
 {
 	GtkWidget *wfl, *dlg, *cnt, *lbl;
+	GtkPlot *pt;
 	GtkPlotLinear *plt;
 	gchar *cts, *str, *st2, *fot=NULL;
 	gchar s1[10], s2[10], s3[10], s4[10];
@@ -525,10 +526,10 @@ void sav(GtkWidget *wgt, gpointer dta)
 			switch (gtk_dialog_run(GTK_DIALOG(dlg)))
 			{
 				case 1:
-				if (fg==1) {plt=GTK_PLOT_LINEAR(pt1); cts=g_strdup(_("SPECTRL_D\tREAL_VAL \tIMAG_VAL "));}
-				else {plt=GTK_PLOT_LINEAR(pt2); cts=g_strdup(_("SPATIAL_D\tREAL_VAL \tIMAG_VAL "));}
-				sz4=g_array_index((plt->sizes), gint, 0);
-				nx4=g_array_index((plt->ind), gint, 1);
+				if (fg==1) {plt=GTK_PLOT_LINEAR(pt1); pt=GTK_PLOT(pt1); cts=g_strdup(_("SPECTRL_D\tREAL_VAL \tIMAG_VAL "));}
+				else {plt=GTK_PLOT_LINEAR(pt2); pt=GTK_PLOT(pt2); cts=g_strdup(_("SPATIAL_D\tREAL_VAL \tIMAG_VAL "));}
+				sz4=g_array_index((pt->sizes), gint, 0);
+				nx4=g_array_index((pt->ind), gint, 1);
 				for (j=0; j<sz4; j++)
 				{
 					g_snprintf(s1, 10, "%f", g_array_index((plt->xdata), gdouble, j));
@@ -556,10 +557,10 @@ void sav(GtkWidget *wgt, gpointer dta)
 				g_free(fot);
 				break;
 				case 2:
-				if (fg==1) {plt=GTK_PLOT_LINEAR(pt1); cts=g_strdup(_("SPECTRL_D\tMAGNITUDE\tPHASE    "));}
-				else {plt=GTK_PLOT_LINEAR(pt2); cts=g_strdup(_("SPATIAL_D\tMAGNITUDE\tPHASE    "));}
-				sz4=g_array_index((plt->sizes), gint, 0);
-				nx4=g_array_index((plt->ind), gint, 1);
+				if (fg==1) {plt=GTK_PLOT_LINEAR(pt1); pt=GTK_PLOT(pt1); cts=g_strdup(_("SPECTRL_D\tMAGNITUDE\tPHASE    "));}
+				else {plt=GTK_PLOT_LINEAR(pt2); pt=GTK_PLOT(pt2); cts=g_strdup(_("SPATIAL_D\tMAGNITUDE\tPHASE    "));}
+				sz4=g_array_index((pt->sizes), gint, 0);
+				nx4=g_array_index((pt->ind), gint, 1);
 				for (j=0; j<sz4; j++)
 				{
 					g_snprintf(s1, 10, "%f", g_array_index((plt->xdata), gdouble, j));
@@ -604,10 +605,10 @@ void sav(GtkWidget *wgt, gpointer dta)
 			switch (gtk_dialog_run(GTK_DIALOG(dlg)))
 			{
 				case 1:
-				if (fg==1) {plt=GTK_PLOT_LINEAR(pt2); cts=g_strdup(_("SPATIAL_D\tREAL_VAL \tIMAG_VAL "));}
-				else {plt=GTK_PLOT_LINEAR(pt1); cts=g_strdup(_("SPECTRL_D\tREAL_VAL \tIMAG_VAL "));}
-				sz4=g_array_index((plt->sizes), gint, 0);
-				nx4=g_array_index((plt->ind), gint, 1);
+				if (fg==1) {plt=GTK_PLOT_LINEAR(pt2); pt=GTK_PLOT(pt2); cts=g_strdup(_("SPATIAL_D\tREAL_VAL \tIMAG_VAL "));}
+				else {plt=GTK_PLOT_LINEAR(pt1); pt=GTK_PLOT(pt1); cts=g_strdup(_("SPECTRL_D\tREAL_VAL \tIMAG_VAL "));}
+				sz4=g_array_index((pt->sizes), gint, 0);
+				nx4=g_array_index((pt->ind), gint, 1);
 				for (j=0; j<sz4; j++)
 				{
 					g_snprintf(s1, 10, "%f", g_array_index((plt->xdata), gdouble, j));
@@ -635,10 +636,10 @@ void sav(GtkWidget *wgt, gpointer dta)
 				g_free(fot);
 				break;
 				case 2:
-				if (fg==1) {plt=GTK_PLOT_LINEAR(pt2); cts=g_strdup(_("SPATIAL_D\tMAGNITUDE\tPHASE    "));}
-				else {plt=GTK_PLOT_LINEAR(pt1); cts=g_strdup(_("SPECTRL_D\tMAGNITUDE\tPHASE    "));}
-				sz4=g_array_index((plt->sizes), gint, 0);
-				nx4=g_array_index((plt->ind), gint, 1);
+				if (fg==1) {plt=GTK_PLOT_LINEAR(pt2); pt=GTK_PLOT(pt2); cts=g_strdup(_("SPATIAL_D\tMAGNITUDE\tPHASE    "));}
+				else {plt=GTK_PLOT_LINEAR(pt1); pt=GTK_PLOT(pt1); cts=g_strdup(_("SPECTRL_D\tMAGNITUDE\tPHASE    "));}
+				sz4=g_array_index((pt->sizes), gint, 0);
+				nx4=g_array_index((pt->ind), gint, 1);
 				for (j=0; j<sz4; j++)
 				{
 					g_snprintf(s1, 10, "%f", g_array_index((plt->xdata), gdouble, j));

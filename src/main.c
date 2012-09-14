@@ -51,8 +51,6 @@ int main(int argc, char *argv[])
 	gdouble td;
 	GtkAccelGroup *acc=NULL;
 	GtkAdjustment *adj;
-	GtkPlot *pt;
-	GtkPlotLinear *plt;
 	GtkWidget *vbx, *mnb, *mnu, *smn, *mni, *hpn, *tbl, *lbl, *btt;
 
 	bindtextdomain(PACKAGE, LOCALEDIR);
@@ -401,16 +399,13 @@ int main(int argc, char *argv[])
 	g_array_append_val(r2, td);
 	g_array_append_val(a2, td);
 	g_array_append_val(a2, td);
-	pt=GTK_PLOT(pt1);
-	gtk_plot_set_colour(pt, r1, g1, b1, a1);
+	gtk_plot_set_colour(GTK_PLOT(pt1), r1, g1, b1, a1);
 	{g_array_unref(r1); g_array_unref(g1); g_array_unref(b1); g_array_unref(a1);}
-	plt=GTK_PLOT_LINEAR(pt2);
-	pt=GTK_PLOT(pt2);
-	gtk_plot_set_colour(pt, r2, g2, b2, a2);
+	gtk_plot_set_colour(GTK_PLOT(pt2), r2, g2, b2, a2);
 	{g_array_unref(r2); g_array_unref(g2); g_array_unref(b2); g_array_unref(a2);}
 	str=g_strdup("Optical distance (m)");
 	str2=g_strdup("Coupling constant (/m)");
-	gtk_plot_linear_set_label(plt, str, str2);
+	gtk_plot_linear_set_label(GTK_PLOT_LINEAR(pt2), str, str2);
 	{g_free(str); g_free(str2);}
 	gtk_widget_show(wdw);
 	gtk_main();
