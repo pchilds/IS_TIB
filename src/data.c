@@ -28,7 +28,7 @@ GtkPrintSettings *gps=NULL;
 
 void opd(GtkWidget *wgt, gpointer dta)
 {
-	GArray *o1, *o2, *o3, *x, *y, *nx, *sz;
+	GArray *nx, *o1, *o2, *o3, *st, *sz, *x, *y;
 	gchar *cts=NULL, *fin=NULL, *str;
 	gchar **sat=NULL, **sta=NULL;
 	gdouble xi, xf, mny, mxy, lcl;
@@ -199,13 +199,17 @@ void opd(GtkWidget *wgt, gpointer dta)
 			g_free(str);
 			x=g_array_new(FALSE, FALSE, sizeof(gdouble));
 			y=g_array_new(FALSE, FALSE, sizeof(gdouble));
-			sz=g_array_new(FALSE, FALSE, sizeof(gint));
-			nx=g_array_new(FALSE, FALSE, sizeof(gint));
+			st=g_array_sized_new(FALSE, FALSE, sizeof(gint), 2);
+			sz=g_array_sized_new(FALSE, FALSE, sizeof(gint), 2);
+			nx=g_array_sized_new(FALSE, FALSE, sizeof(gint), 2);
+			k=1;
+			g_array_append_val(st, k);
+			g_array_append_val(st, k);
 			k=0;
-			g_array_append_val(sz, lc);
-			g_array_append_val(sz, lc);
 			g_array_append_val(nx, k);
 			g_array_append_val(nx, lc);
+			g_array_append_val(sz, lc);
+			g_array_append_val(sz, lc);
 			g_array_append_val(x, xi);
 			mny=g_array_index(o2, gdouble, 0);
 			g_array_append_val(y, mny);
@@ -233,13 +237,13 @@ void opd(GtkWidget *wgt, gpointer dta)
 				case 1:
 				fgs|=PROC_ZDT;
 				plt=GTK_PLOT_LINEAR(pt2);
-				gtk_plot_linear_set_data(plt, x, y, nx, sz);
+				gtk_plot_linear_set_data(plt, x, y, nx, sz, st);
 				gtk_plot_linear_update_scale_pretty(pt2, xi, xf, mny, mxy);
 				break;
 				default:
 				fgs|=PROC_LDT;
 				plt=GTK_PLOT_LINEAR(pt1);
-				gtk_plot_linear_set_data(plt, x, y, nx, sz);
+				gtk_plot_linear_set_data(plt, x, y, nx, sz, st);
 				gtk_plot_linear_update_scale_pretty(pt1, xi, xf, mny, mxy);
 				break;
 			}
