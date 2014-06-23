@@ -33,7 +33,6 @@ void dpa(GtkWidget *wgt, gpointer dta)
 	gchar *str, *str2;
 	GdkColor clr;
 	gdouble mny, mxy, xi, xf;
-	gdouble *dpr;
 	GtkPlot *pt;
 	GtkPlotLinear *plt;
 	guint16 alp;
@@ -219,7 +218,6 @@ void dpr(GtkWidget *wgt, gpointer dta)
 	AtkObject *awg, *all;
 	gchar *str;
 	GdkColor cl1, cl2;
-	gdouble iv;
 	gint val;
 	GtkAdjustment *adj;
 	GtkPlot *pt;

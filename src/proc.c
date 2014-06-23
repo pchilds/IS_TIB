@@ -233,7 +233,6 @@ void trs(GtkWidget *wgt, gpointer dta)
 	gdouble cm, dx, h, iv, iv2, mxy, mny;
 	gdouble *dpr;
 	gint j, m, sz4, nx4, sp, st, zd, zd2;
-	gint *ipr;
 	GtkPlot *pt;
 	GtkPlotLinear *plt;
 
@@ -436,6 +435,10 @@ void trs(GtkWidget *wgt, gpointer dta)
 				str=g_strdup(_("Offset must be nonzero for linear measurements."));
 				gtk_statusbar_push(GTK_STATUSBAR(sbr), gtk_statusbar_get_context_id(GTK_STATUSBAR(sbr), str), str);
 				g_free(str);
+				g_array_free(sz4, FALSE);
+				g_array_free(nx4, FALSE);
+				fftw_free(rf);
+				return;
 			}
 			else if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(tx))) 
 			{
