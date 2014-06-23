@@ -32,10 +32,8 @@ void opd(GtkWidget *wgt, gpointer dta)
 	gchar *cts=NULL, *fin=NULL, *str;
 	gchar **sat=NULL, **sta=NULL;
 	gdouble xi, xf, mny, mxy, lcl;
-	gdouble *dpr;
 	GError *Err=NULL;
 	gint k, lc, sal;
-	gint *ipr;
 	GtkWidget *wfl;
 	GtkPlotLinear *plt;
 
@@ -473,7 +471,7 @@ void prg(GtkWidget *wgt, gpointer dta)
 void prt(GtkWidget *wgt, gpointer dta)
 {
 	GtkPrintOperation *pto;
-	GtkPageSetup *pps;
+	/*GtkPageSetup *pps;*/
 	GtkPrintOperationResult res;
 	GError *Err=NULL;
 	gchar *str;
@@ -503,12 +501,12 @@ void prt(GtkWidget *wgt, gpointer dta)
 
 void sav(GtkWidget *wgt, gpointer dta)
 {
-	GtkWidget *wfl, *dlg, *cnt, *lbl;
+	GtkWidget *wfl, *dlg, *lbl;
 	GtkPlot *pt;
 	GtkPlotLinear *plt;
 	gchar *cts, *str, *st2, *fot=NULL;
-	gchar s1[10], s2[10], s3[10], s4[10];
-	gint j, k, sz4, nx4, fg;
+	gchar s1[10], s2[10], s3[10];
+	gint j, sz4, nx4, fg;
 	gdouble num, num2, num3;
 	GError *Err=NULL;
 
