@@ -24,11 +24,13 @@
 
 #ifndef __MAIN_H__
 #	define __MAIN_H__
+#	ifdef HAVE_CONFIG_H
+#	include "config.h"
+#	endif
 #	include <gtk/gtk.h>
 #	include <glib/gi18n.h>
 #	include <math.h>
 #	include <gtkplot-2.0/gtkplotlinear.h>
-#	include "config.h"
 	G_BEGIN_DECLS
 #	define DZE 0.00001 /* divide by zero threshold */
 #	define NZE -0.00001 /* negative of this */

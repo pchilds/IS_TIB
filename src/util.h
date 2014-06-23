@@ -26,7 +26,9 @@
 #	define __UTIL_H__
 #	include "main.h"
 	extern GtkWidget *sbr;
+#	ifdef USE_GDOC
 	void hlp(GtkWidget*, gpointer);
+#	endif
 	void abt(GtkWidget*, gpointer);
 	void pmv(GtkPlotLinear*, gpointer);
 #endif

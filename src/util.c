@@ -24,6 +24,7 @@
 
 #include "util.h"
 
+#ifdef USE_GDOC
 void hlp(GtkWidget *wgt, gpointer dta)
 {
 	gchar *uri, *str;
@@ -40,6 +41,7 @@ void hlp(GtkWidget *wgt, gpointer dta)
 		{g_free(str); g_error_free(Err);}
 	}
 }
+#endif
 
 void abt(GtkWidget *wgt, gpointer dta)
 {
