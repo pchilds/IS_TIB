@@ -25,7 +25,7 @@
 #ifndef __PROC_H__
 #	define __PROC_H__
 #	include "main.h"
-#	include <fftw3.h>
+#	include <gtk/gtk.h>
 	extern gint fgs;
 	extern GtkWidget *cl, *crm, *crp, *dBs, *dl, *fst, *kms, *nbk, *neg, *nl, *nz, *pst, *psp, *pt1, *pt2, *sbr, *tx, *wdw, *wsp, *wst, *zpd;
 	void coe(GtkWidget*, gpointer);

@@ -23,6 +23,10 @@
  */
 
 #include "proc.h"
+#include "main.h"
+#include <fftw3.h>
+#include <gtk/gtk.h>
+#include <gtkplot-2.0/gtkplotlinear.h>
 
 void coe(GtkWidget *wgt, gpointer dta)
 {
@@ -435,8 +439,6 @@ void trs(GtkWidget *wgt, gpointer dta)
 				str=g_strdup(_("Offset must be nonzero for linear measurements."));
 				gtk_statusbar_push(GTK_STATUSBAR(sbr), gtk_statusbar_get_context_id(GTK_STATUSBAR(sbr), str), str);
 				g_free(str);
-				g_array_free(sz4, FALSE);
-				g_array_free(nx4, FALSE);
 				fftw_free(rf);
 				return;
 			}
@@ -556,6 +558,7 @@ void trs(GtkWidget *wgt, gpointer dta)
 		*dpr=mxy;
 		dpr=&g_array_index(kp, gdouble, zd2);
 		iv=atan2(cue[1],cue[0]);
+		if (iv<0) iv+=MY_2PI;
 		*dpr=iv;
 		if (iv>mxy) mxy=iv;
 		else if (iv<mny) mny=iv;
@@ -582,6 +585,7 @@ void trs(GtkWidget *wgt, gpointer dta)
 			if (iv>mxy) mxy=iv;
 			dpr=&g_array_index(kp, gdouble, zd2+m);
 			iv=atan2(cue[1],cue[0]);
+			if (iv<0) iv+=MY_2PI;
 			*dpr=iv;
 			if (iv>mxy) mxy=iv;
 			else if (iv<mny) mny=iv;
